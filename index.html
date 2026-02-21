@@ -354,11 +354,12 @@
         -webkit-overflow-scrolling:touch;
         scroll-behavior:smooth;
       }
-      #press .pressCard{
-        flex:0 0 auto;
-        min-width:240px;
-        scroll-snap-align:start;
-      }
+#press .pressCard{
+  flex:0 0 auto;
+  width:clamp(200px, 72vw, 240px); /* ✅ 카드 폭 줄이기 (작아짐) */
+  min-width:unset;
+  scroll-snap-align:start;
+}
 
       /* ✅ 모바일에서도 PRESS 썸네일 16:9 고정 (height 고정 제거) */
       #press .img{
