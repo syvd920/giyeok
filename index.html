@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>강남3구·마용성 부동산 인사이트</title>
   <meta name="description" content="강남3구·마용성 시세 흐름, 신축 하이엔드, 부동산 뉴스, 콘텐츠를 한 페이지에." />
+
   <style>
     :root{
       --bg:#ffffff;
@@ -25,6 +26,7 @@
     }
     a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:0 20px}
+
     header{
       position:sticky; top:0; background:rgba(255,255,255,.85);
       backdrop-filter:saturate(180%) blur(10px);
@@ -48,6 +50,7 @@
       display:grid; gap:16px;
       grid-template-columns: 1.15fr .85fr;
     }
+
     .card{
       background:var(--card);
       border:1px solid var(--line);
@@ -73,7 +76,7 @@
 
     .grid3{display:grid; gap:16px; grid-template-columns:repeat(3,1fr)}
     .grid4{display:grid; gap:16px; grid-template-columns:repeat(4,1fr)}
-    .grid5{display:grid; gap:16px; grid-template-columns:repeat(5,1fr)} /* ✅ PC 기사 5열 */
+    .grid5{display:grid; gap:16px; grid-template-columns:repeat(5,1fr)} /* PC 기사 5열 */
 
     .itemTitle{margin:12px 0 0; font-weight:650}
     .itemDesc{margin:6px 0 0; color:var(--muted); font-size:14px}
@@ -82,7 +85,7 @@
     .pressCard a{ text-decoration:none; display:block }
     .pressCard:hover{ transform:translateY(-2px); transition:.18s ease; box-shadow:0 10px 30px rgba(0,0,0,.06) }
 
-    /* ✅ 기사 섹션: 썸네일 더 작게 + 컴팩트 */
+    /* 기사 섹션: 썸네일 더 작게 + 컴팩트 */
     #press .img{
       height: 110px;
       aspect-ratio: auto;
@@ -92,7 +95,7 @@
     #press .itemTitle{ font-size:14px; line-height:1.3; margin-top:8px; }
     #press .meta{ font-size:12px; }
 
-    /* ✅ 공용: 아래 컨트롤바(화살표+진행바) */
+    /* 공용: 아래 컨트롤바(화살표+진행바) */
     .scrollControls{
       display:none;
       gap:12px;
@@ -108,7 +111,6 @@
       cursor:pointer;
       user-select:none;
     }
-    .scrollBtn:hover{ background:#fff; }
     .scrollBtn:disabled{ opacity:.35; cursor:default; }
 
     .scrollBar{
@@ -124,6 +126,14 @@
       background:#111;
       border-radius:999px;
       transition:width .12s ease;
+    }
+
+    /* NEW 섹션: 제목 한 줄 고정 */
+    .nowrap{ white-space:nowrap; }
+    #new .secTitle h2{
+      font-weight:700;
+      letter-spacing:-0.4px;
+      word-break:keep-all;
     }
 
     .cta{
@@ -158,20 +168,20 @@
       .heroGrid{grid-template-columns:1fr}
       .grid4{grid-template-columns:repeat(2,1fr)}
       .grid3{grid-template-columns:repeat(2,1fr)}
-      .grid5{grid-template-columns:repeat(2,1fr)} /* 태블릿에선 2열 */
+      .grid5{grid-template-columns:repeat(2,1fr)} /* 태블릿: 2열 */
       h1{font-size:34px}
     }
 
     @media (max-width: 560px){
-      .grid3{grid-template-columns:1fr}
       .menu{display:none}
+      h1{font-size:32px}
 
-      /* ✅ PRESS 모바일: 가로 스크롤 트랙 */
+      /* PRESS 모바일: 가로 스크롤 트랙 + 컨트롤 */
       #press .grid5{
         display:flex;
         gap:12px;
         overflow-x:auto;
-        padding: 6px 18px 10px; /* 다음 카드 살짝 보이게 */
+        padding: 6px 18px 10px;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
       }
@@ -182,26 +192,45 @@
       }
       #press .scrollControls{ display:flex; }
 
-      /* ✅ NEW 모바일: 가로 스크롤 트랙 */
+      /* NEW 모바일: 서브문구 숨김 + 가로 스크롤 + 카드 비율 안정화 */
+      #new .secTitle p{ display:none; }
+      #new .secTitle h2{ font-size:18px; line-height:1.2; }
+      #new .img{
+        height:180px;
+        aspect-ratio:auto;
+        object-fit:cover;
+      }
+      #new .pad{ padding:14px; }
+
       #new .grid3.newTrack{
         display:flex;
-        gap:12px;
+        gap:14px;
         overflow-x:auto;
-        padding: 6px 18px 10px; /* 다음 카드 살짝 보이게 */
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
+        padding:6px 18px 10px;
+        scroll-snap-type:x mandatory;
+        -webkit-overflow-scrolling:touch;
       }
       #new .grid3.newTrack > .card{
         flex:0 0 auto;
-        min-width: 260px;
+        min-width:260px;
         scroll-snap-align:start;
       }
       #new .scrollControls{ display:flex; }
+
+      /* CONTENT 모바일: 유튜브1 옆에 블로그1만 보이게(유튜브2 숨김) */
+      #content .grid3{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+      }
+      #content .onlyDesktop{ display:none !important; }
+      #content .pressCard .pad{ padding:12px; }
+      #content .itemTitle{ font-size:14px; line-height:1.25; margin-top:8px; }
+      #content .meta{ font-size:12px; }
     }
   </style>
 </head>
-<body>
 
+<body>
 <header>
   <div class="wrap nav">
     <div class="brand">고급주거의기역</div>
@@ -253,7 +282,7 @@
   <!-- NEW BUILD -->
   <section id="new">
     <div class="secTitle">
-      <h2>한남동 라스코 더 맨션 분양</h2>
+      <h2><span class="nowrap">한남동 라스코 더 맨션 분양</span></h2>
       <p>“보기 좋은 사진”보다 “설명 가능한 매물” 중심</p>
     </div>
 
@@ -266,6 +295,7 @@
             <p class="itemDesc">나보나 트래버틴</p>
           </div>
         </div>
+
         <div class="card">
           <img class="img" src="assets/new-2.jpg" alt="신축 이미지 2" />
           <div class="pad">
@@ -273,6 +303,7 @@
             <p class="itemDesc">남산뷰</p>
           </div>
         </div>
+
         <div class="card">
           <img class="img" src="assets/new-3.jpg" alt="신축 이미지 3" />
           <div class="pad">
@@ -282,7 +313,7 @@
         </div>
       </div>
 
-      <!-- ✅ 모바일 컨트롤바 -->
+      <!-- 모바일 컨트롤 -->
       <div class="scrollControls" id="newControls" aria-label="신축 스크롤 컨트롤">
         <button class="scrollBtn" id="newPrev" aria-label="이전">‹</button>
         <div class="scrollBar" aria-hidden="true">
@@ -301,7 +332,6 @@
     </div>
 
     <div class="pressWrap">
-      <!-- ✅ PC 5열 / 모바일 가로 트랙 -->
       <div class="grid5" id="pressTrack">
         <div class="card pressCard">
           <a href="https://example.com" target="_blank" rel="noreferrer">
@@ -344,7 +374,7 @@
         </div>
       </div>
 
-      <!-- ✅ 모바일 컨트롤바(기사) -->
+      <!-- 모바일 컨트롤(기사) -->
       <div class="scrollControls" id="pressControls" aria-label="기사 스크롤 컨트롤">
         <button class="scrollBtn" id="pressPrev" aria-label="이전 기사">‹</button>
         <div class="scrollBar" aria-hidden="true">
@@ -383,7 +413,8 @@
         </a>
       </div>
 
-      <div class="card pressCard">
+      <!-- ✅ 모바일에선 숨기고, PC/태블릿에선 보이게 -->
+      <div class="card pressCard onlyDesktop">
         <a href="https://youtube.com" target="_blank" rel="noreferrer">
           <img class="img" src="assets/yt-2.jpg" alt="유튜브 썸네일 2" />
           <div class="pad">
@@ -421,7 +452,7 @@
   // 연도
   document.getElementById("y").textContent = new Date().getFullYear();
 
-  // ✅ 공용 헬퍼: 트랙(가로 스크롤) + 아래 컨트롤바(화살표+진행바) 연결
+  // 공용: 트랙(가로 스크롤) + 아래 컨트롤바(화살표+진행바)
   function bindScrollControls(opts){
     const track = document.getElementById(opts.trackId);
     const prev  = document.getElementById(opts.prevId);
@@ -492,7 +523,7 @@
     startAuto();
   }
 
-  // ✅ 기사: 아래 컨트롤바 + 자동 스크롤(모바일)
+  // 기사: 아래 컨트롤바 + 자동 스크롤(모바일)
   bindScrollControls({
     trackId: 'pressTrack',
     prevId: 'pressPrev',
@@ -505,14 +536,14 @@
     autoInterval: 3200
   });
 
-  // ✅ 신축: 아래 컨트롤바(자동 스크롤 없음)
+  // 신축: 아래 컨트롤바(자동 스크롤 없음)
   bindScrollControls({
     trackId: 'newTrack',
     prevId: 'newPrev',
     nextId: 'newNext',
     fillId: 'newBarFill',
     cardSelector: '.card',
-    gap: 12,
+    gap: 14,
     fallbackStep: 280,
     auto: false
   });
