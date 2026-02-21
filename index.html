@@ -17,13 +17,16 @@
       --radius:18px;
 
       /* ✅ 배지 컬러(은은) */
-      --yt-bg: rgba(239, 68, 68, .12);   /* red-500 */
+      --yt-bg: rgba(239, 68, 68, .12);
       --yt-bd: rgba(239, 68, 68, .22);
       --yt-fg: #991b1b;
 
-      --blog-bg: rgba(16, 185, 129, .12); /* emerald-500 */
+      --blog-bg: rgba(16, 185, 129, .12);
       --blog-bd: rgba(16, 185, 129, .22);
       --blog-fg: #065f46;
+
+      /* ✅ 콘텐츠 상단바 배경 */
+      --cap-bg: #f3f4f6;
     }
     *{box-sizing:border-box}
     body{
@@ -87,7 +90,6 @@
 
     .itemTitle{margin:0; font-weight:650}
 
-    /* 공통: 카드 hover */
     .pressCard a{ text-decoration:none; display:block; height:100%; }
     .pressCard:hover{ transform:translateY(-2px); transition:.18s ease; box-shadow:0 10px 30px rgba(0,0,0,.06) }
 
@@ -140,7 +142,8 @@
 
     /* =========================
        CONTENT(유튜브/블로그)
-       ✅ 배지를 "상단 컬러바(둥근 모서리 영역)"에 중앙 정렬로
+       ✅ 카드 위 캡 제거
+       ✅ 대신 콘텐츠 그리드 "위"에 둥근 바(도형) 3열 생성
     ========================= */
     #content .contentGrid{
       display:grid;
@@ -151,6 +154,58 @@
       #content .contentGrid{ grid-template-columns:repeat(3,1fr); }
     }
 
+    /* ✅ 3열 상단 캡(도형) */
+    .contentCaps{
+      display:grid;
+      gap:16px;
+      grid-template-columns:repeat(2,1fr);
+      margin: 0 0 12px;
+    }
+    @media (min-width: 981px){
+      .contentCaps{ grid-template-columns:repeat(3,1fr); }
+    }
+
+    .capPill{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:var(--cap-bg);
+    }
+    .capPill .capBadge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      border:1px solid transparent;
+      background:#fff;
+      white-space:nowrap;
+    }
+    .capPill .capBadge .dot{
+      width:7px; height:7px; border-radius:999px;
+      background:currentColor;
+      opacity:.75;
+    }
+    .capPill .capSub{
+      font-size:12.5px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      min-width:0;
+      flex:1;
+    }
+    .capBadge--yt{ color:var(--yt-fg); border-color:var(--yt-bd); }
+    .capBadge--blog{ color:var(--blog-fg); border-color:var(--blog-bd); }
+    .capPill--yt{ background: linear-gradient(180deg, rgba(239,68,68,.10), rgba(243,244,246,1)); }
+    .capPill--blog{ background: linear-gradient(180deg, rgba(16,185,129,.10), rgba(243,244,246,1)); }
+
+    /* 카드 썸네일 랩 */
     .thumbWrap{
       position:relative;
       overflow:hidden;
@@ -165,56 +220,12 @@
       display:block;
     }
 
-    /* ✅ 상단 컬러바 */
-    .typeCap{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:10px 12px;
-      border-bottom:1px solid rgba(17,17,17,.06);
-    }
-    .typeCap--yt{
-      background: linear-gradient(180deg, rgba(239,68,68,.14), rgba(239,68,68,.08));
-    }
-    .typeCap--blog{
-      background: linear-gradient(180deg, rgba(16,185,129,.14), rgba(16,185,129,.08));
-    }
-
-    /* 배지(중앙) */
-    .badgePill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 12px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:750;
-      letter-spacing:-.2px;
-      border:1px solid transparent;
-      white-space:nowrap;
-      background:#fff;
-    }
-    .badgePill .miniDot{
-      width:7px; height:7px; border-radius:999px;
-      background:currentColor;
-      opacity:.75;
-    }
-    .badgePill--yt{
-      border-color:var(--yt-bd);
-      color:var(--yt-fg);
-    }
-    .badgePill--blog{
-      border-color:var(--blog-bd);
-      color:var(--blog-fg);
-    }
-
-    /* 제목 영역 */
+    /* 제목 영역(카드 안) */
     #content .pressCard .pad{
-      padding:12px;
-      padding-top:12px;
+      padding:14px;
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:12px; /* ✅ PC 답답함 완화 */
     }
     #content .itemTitle{
       font-size:14px;
@@ -229,11 +240,7 @@
       max-height:calc(1.32em * 2);
     }
     @media (min-width: 981px){
-      /* ✅ PC: 제목 1줄 + 간격 살짝 여유 */
-      #content .pressCard .pad{
-        padding:14px;
-        gap:12px;
-      }
+      /* ✅ PC: 제목 1줄 고정 */
       #content .itemTitle{
         display:block;
         white-space:nowrap;
@@ -241,8 +248,6 @@
         text-overflow:ellipsis;
         max-height:none;
       }
-      .typeCap{ padding:12px 14px; }
-      .badgePill{ padding:7px 13px; }
     }
 
     /* 모바일에서 2x2만 */
@@ -335,18 +340,9 @@
       #press .secTitle p{ display:none; }
       #new .secTitle p{ display:none; }
 
-      /* ✅ 모바일 PRESS: 카드 폭 살짝 줄여서 썸네일 과대 느낌 완화 */
-      #press .pressCard{
-        min-width: 220px; /* 기존 240px → 220px */
-      }
-
-      /* ✅ 모바일 PRESS: 썸네일이 너무 커지지 않게 상한 */
-      #press .thumbWrap{
-        aspect-ratio:16/9;
-        max-height: 130px; /* 너무 커지는 느낌 컷 */
-      }
-
-      /* ✅ 모바일 PRESS: 제목/메타 높이 고정 → 카드 높이 통일 */
+      /* ✅ 모바일 PRESS */
+      #press .pressCard{ min-width: 220px; }
+      #press .thumbWrap{ aspect-ratio:16/9; max-height: 130px; }
       #press .pressCard .pad{ gap:6px; }
       #press .itemTitle{
         line-height:1.35;
@@ -356,12 +352,8 @@
         white-space:normal;
         overflow:hidden;
       }
-      #press .meta{
-        min-height:1.2em;
-        max-height:1.2em;
-      }
+      #press .meta{ min-height:1.2em; max-height:1.2em; }
 
-      /* 모바일 PRESS: 가로 트랙 */
       #press .grid5{
         display:flex;
         gap:12px;
@@ -372,7 +364,7 @@
       }
       #press .carouselControls{ display:flex; }
 
-      /* 모바일 NEW: 가로 트랙 */
+      /* ✅ 모바일 NEW */
       #new .grid3{
         display:flex;
         gap:14px;
@@ -388,7 +380,6 @@
       }
       #new .carouselControls{ display:flex; }
 
-      /* 모바일 NEW 이미지 높이 */
       #new .img{
         height:180px;
         aspect-ratio:auto;
@@ -396,14 +387,14 @@
       }
       #new .pad{ padding:14px; }
 
-      /* ✅ 모바일 배지 더 작게 */
-      .typeCap{ padding:9px 10px; }
-      .badgePill{
-        padding:6px 10px;
-        font-size:11px;
-        gap:7px;
-      }
-      .badgePill .miniDot{ width:6px; height:6px; }
+      /* ✅ 모바일 콘텐츠 상단바 좀 타이트하게 */
+      .contentCaps{ margin-bottom:10px; }
+      .capPill{ padding:10px 12px; }
+      .capPill .capBadge{ padding:6px 10px; font-size:11px; }
+      .capPill .capBadge .dot{ width:6px; height:6px; }
+      .capPill .capSub{ font-size:12px; }
+      #content .pressCard .pad{ padding:12px; gap:10px; }
+      #content .itemTitle{ font-size:13.5px; }
     }
   </style>
 </head>
@@ -584,13 +575,26 @@
       <p>썸네일 클릭 → 해당 콘텐츠로 이동</p>
     </div>
 
+    <!-- ✅ 3열 상단 둥근 도형(바) -->
+    <div class="contentCaps" aria-label="콘텐츠 카테고리 바">
+      <div class="capPill capPill--yt">
+        <span class="capBadge capBadge--yt"><span class="dot"></span>YouTube</span>
+        <span class="capSub">하이엔드 매물 분석 · 3~6분</span>
+      </div>
+      <div class="capPill capPill--blog">
+        <span class="capBadge capBadge--blog"><span class="dot"></span>Blog</span>
+        <span class="capSub">주간 인사이트 · 핵심 포인트 정리</span>
+      </div>
+      <div class="capPill" style="background:linear-gradient(180deg, rgba(17,17,17,.06), rgba(243,244,246,1));">
+        <span class="capBadge" style="border-color:rgba(17,17,17,.14); color:#111;"><span class="dot"></span>Pick</span>
+        <span class="capSub">이번 주 추천 콘텐츠</span>
+      </div>
+    </div>
+
     <div class="contentGrid">
       <!-- YouTube 1 -->
       <div class="card pressCard">
         <a href="https://youtu.be/p2p5GNtTvF0" target="_blank" rel="noreferrer">
-          <div class="typeCap typeCap--yt">
-            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
-          </div>
           <div class="thumbWrap yt">
             <img src="assets/yt-1.jpg" alt="유튜브 썸네일 1" />
           </div>
@@ -603,9 +607,6 @@
       <!-- YouTube 2 -->
       <div class="card pressCard">
         <a href="https://youtu.be/luUgVTGmNgo" target="_blank" rel="noreferrer">
-          <div class="typeCap typeCap--yt">
-            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
-          </div>
           <div class="thumbWrap yt">
             <img src="assets/yt-2.jpg" alt="유튜브 썸네일 2" />
           </div>
@@ -618,9 +619,6 @@
       <!-- YouTube 3 (모바일 숨김) -->
       <div class="card pressCard onlyDesktop">
         <a href="https://youtu.be/BfmCFvGPwsE" target="_blank" rel="noreferrer">
-          <div class="typeCap typeCap--yt">
-            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
-          </div>
           <div class="thumbWrap yt">
             <img src="assets/yt-3.jpg" alt="유튜브 썸네일 3" />
           </div>
@@ -633,9 +631,6 @@
       <!-- Blog 1 -->
       <div class="card pressCard">
         <a href="https://blog.naver.com/0zzabang/224174279026" target="_blank" rel="noreferrer">
-          <div class="typeCap typeCap--blog">
-            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
-          </div>
           <div class="thumbWrap blog">
             <img src="assets/blog-1.jpg" alt="블로그 썸네일 1" />
           </div>
@@ -648,9 +643,6 @@
       <!-- Blog 2 -->
       <div class="card pressCard">
         <a href="https://blog.naver.com/0zzabang/224171721564" target="_blank" rel="noreferrer">
-          <div class="typeCap typeCap--blog">
-            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
-          </div>
           <div class="thumbWrap blog">
             <img src="assets/blog-2.jpg" alt="블로그 썸네일 2" />
           </div>
@@ -663,9 +655,6 @@
       <!-- Blog 3 (모바일 숨김) -->
       <div class="card pressCard onlyDesktop">
         <a href="https://blog.naver.com/0zzabang/224168771668" target="_blank" rel="noreferrer">
-          <div class="typeCap typeCap--blog">
-            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
-          </div>
           <div class="thumbWrap blog">
             <img src="assets/blog-3.jpg" alt="블로그 썸네일 3" />
           </div>
