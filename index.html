@@ -123,7 +123,7 @@
       color:var(--muted);
     }
 
-    /* 공용: 아래 컨트롤바(화살표+진행바) */
+    /* 공용: 아래 컨트롤바(화살표+점) */
     .scrollControls{
       display:none;
       gap:12px;
@@ -140,19 +140,28 @@
       user-select:none;
     }
     .scrollBtn:disabled{ opacity:.35; cursor:default; }
-    .scrollBar{
+
+    /* ✅ dots indicator */
+    .dots{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
       flex:1;
+    }
+    .dot{
+      width:6px;
       height:6px;
       border-radius:999px;
-      background:#eef0f3;
-      overflow:hidden;
+      background:#d1d5db; /* gray-300 */
+      transform:scale(1);
+      transition:transform .15s ease, background .15s ease, opacity .15s ease;
+      opacity:.9;
     }
-    .scrollBarFill{
-      height:100%;
-      width:0%;
+    .dot.is-active{
       background:#111;
-      border-radius:999px;
-      transition:width .12s ease;
+      transform:scale(1.35);
+      opacity:1;
     }
 
     /* NEW 섹션: 제목 한 줄 */
@@ -228,6 +237,40 @@
       }
     }
 
+    /* =================================================
+       ✅ 유튜브/블로그 구분 배지(썸네일 위)
+    ================================================= */
+    .mediaThumb{ position:relative; }
+    .badge{
+      position:absolute;
+      top:10px;
+      left:10px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:-.2px;
+      border:1px solid rgba(0,0,0,.12);
+      background:rgba(255,255,255,.92);
+      backdrop-filter: blur(8px);
+      color:#111;
+      user-select:none;
+      z-index:3;
+    }
+    .badge--yt::before{
+      content:"▶";
+      font-size:11px;
+      line-height:1;
+    }
+    .badge--blog::before{
+      content:"✎";
+      font-size:12px;
+      line-height:1;
+    }
+
     .cta{
       background:#0b0b0c;
       color:#fff;
@@ -283,7 +326,7 @@
         object-position:center;
       }
 
-      /* ✅ 모바일 PRESS: 카드 높이 들쭉날쭉 방지(제목 2줄 고정 + 메타 1줄 고정) */
+      /* ✅ 모바일 PRESS: 카드 높이 들쭉날쭉 방지 */
       #press .pressCard .pad{ gap:6px; }
       #press .itemTitle{
         line-height:1.35;
@@ -343,6 +386,14 @@
       #content .onlyDesktop{ display:none !important; }
       #content .pressCard .pad{ padding:10px; }
       #content .itemTitle{ font-size:13.5px; }
+
+      /* 배지 모바일 조금 더 컴팩트 */
+      .badge{
+        top:8px;
+        left:8px;
+        padding:5px 9px;
+        font-size:11px;
+      }
     }
   </style>
 </head>
@@ -430,12 +481,10 @@
         </div>
       </div>
 
-      <!-- 모바일 컨트롤 -->
+      <!-- 모바일 컨트롤(신축) : 진행바→점 -->
       <div class="scrollControls" id="newControls" aria-label="신축 스크롤 컨트롤">
         <button class="scrollBtn" id="newPrev" aria-label="이전">‹</button>
-        <div class="scrollBar" aria-hidden="true">
-          <div class="scrollBarFill" id="newBarFill"></div>
-        </div>
+        <div class="dots" id="newDots" aria-hidden="true"></div>
         <button class="scrollBtn" id="newNext" aria-label="다음">›</button>
       </div>
     </div>
@@ -501,12 +550,10 @@
         </div>
       </div>
 
-      <!-- 모바일 컨트롤(기사) -->
+      <!-- 모바일 컨트롤(기사) : 진행바→점 -->
       <div class="scrollControls" id="pressControls" aria-label="기사 스크롤 컨트롤">
         <button class="scrollBtn" id="pressPrev" aria-label="이전 기사">‹</button>
-        <div class="scrollBar" aria-hidden="true">
-          <div class="scrollBarFill" id="pressBarFill"></div>
-        </div>
+        <div class="dots" id="pressDots" aria-hidden="true"></div>
         <button class="scrollBtn" id="pressNext" aria-label="다음 기사">›</button>
       </div>
     </div>
@@ -524,7 +571,10 @@
       <!-- YouTube 1 -->
       <div class="card pressCard">
         <a href="https://youtu.be/p2p5GNtTvF0" target="_blank" rel="noreferrer">
-          <img class="img thumbYt" src="assets/yt-1.jpg" alt="유튜브 썸네일 1" />
+          <div class="mediaThumb">
+            <span class="badge badge--yt">YouTube</span>
+            <img class="img thumbYt" src="assets/yt-1.jpg" alt="유튜브 썸네일 1" />
+          </div>
           <div class="pad">
             <div class="itemTitle">제니는 왜 이 집을 골랐을까? Young & Rich Pretty</div>
             <div class="meta">YouTube 고급주거의기역</div>
@@ -535,7 +585,10 @@
       <!-- YouTube 2 -->
       <div class="card pressCard">
         <a href="https://youtu.be/luUgVTGmNgo" target="_blank" rel="noreferrer">
-          <img class="img thumbYt" src="assets/yt-2.jpg" alt="유튜브 썸네일 2" />
+          <div class="mediaThumb">
+            <span class="badge badge--yt">YouTube</span>
+            <img class="img thumbYt" src="assets/yt-2.jpg" alt="유튜브 썸네일 2" />
+          </div>
           <div class="pad">
             <div class="itemTitle">장원영의 집값이 137억? 루시드하우스 완전 분석!</div>
             <div class="meta">YouTube 고급주거의기역</div>
@@ -546,7 +599,10 @@
       <!-- YouTube 3 (모바일 숨김) -->
       <div class="card pressCard onlyDesktop">
         <a href="https://youtu.be/BfmCFvGPwsE" target="_blank" rel="noreferrer">
-          <img class="img thumbYt" src="assets/yt-3.jpg" alt="유튜브 썸네일 3" />
+          <div class="mediaThumb">
+            <span class="badge badge--yt">YouTube</span>
+            <img class="img thumbYt" src="assets/yt-3.jpg" alt="유튜브 썸네일 3" />
+          </div>
           <div class="pad">
             <div class="itemTitle">국내 하이퍼 하이엔드의 정점, 한남동 라스코 더 맨션</div>
             <div class="meta">YouTube 고급주거의기역</div>
@@ -557,7 +613,10 @@
       <!-- Blog 1 -->
       <div class="card pressCard">
         <a href="https://blog.naver.com/0zzabang/224174279026" target="_blank" rel="noreferrer">
-          <img class="img thumbBlog" src="assets/blog-1.jpg" alt="블로그 썸네일 1" />
+          <div class="mediaThumb">
+            <span class="badge badge--blog">Blog</span>
+            <img class="img thumbBlog" src="assets/blog-1.jpg" alt="블로그 썸네일 1" />
+          </div>
           <div class="pad">
             <div class="itemTitle">블랙핑크 제니와 이종석이 산 집?! 연예인들은 어떤 집에 살까?</div>
             <div class="meta">Blog 고급주거의기역</div>
@@ -568,7 +627,10 @@
       <!-- Blog 2 -->
       <div class="card pressCard">
         <a href="https://blog.naver.com/0zzabang/224171721564" target="_blank" rel="noreferrer">
-          <img class="img thumbBlog" src="assets/blog-2.jpg" alt="블로그 썸네일 2" />
+          <div class="mediaThumb">
+            <span class="badge badge--blog">Blog</span>
+            <img class="img thumbBlog" src="assets/blog-2.jpg" alt="블로그 썸네일 2" />
+          </div>
           <div class="pad">
             <div class="itemTitle">민간도심복합개발 진행된다면.. 최고의 입지 삼성동!</div>
             <div class="meta">Blog 고급주거의기역</div>
@@ -579,7 +641,10 @@
       <!-- Blog 3 (모바일 숨김) -->
       <div class="card pressCard onlyDesktop">
         <a href="https://blog.naver.com/0zzabang/224168771668" target="_blank" rel="noreferrer">
-          <img class="img thumbBlog" src="assets/blog-3.jpg" alt="블로그 썸네일 3" />
+          <div class="mediaThumb">
+            <span class="badge badge--blog">Blog</span>
+            <img class="img thumbBlog" src="assets/blog-3.jpg" alt="블로그 썸네일 3" />
+          </div>
           <div class="pad">
             <div class="itemTitle">04년생이 137억원 집을 샀다?! 장원영의 루시드 하우스</div>
             <div class="meta">Blog 고급주거의기역</div>
@@ -620,7 +685,25 @@
     return window.matchMedia && window.matchMedia('(max-width: 560px)').matches;
   }
 
-  // ✅ 모바일: 무한 스크롤(수동 스와이프 포함) - 앞/뒤 1장씩 복제해서 루프
+  // ✅ dots 렌더
+  function renderDots(dotsEl, count){
+    if(!dotsEl) return;
+    dotsEl.innerHTML = '';
+    for(let i=0;i<count;i++){
+      const d = document.createElement('span');
+      d.className = 'dot' + (i===0 ? ' is-active' : '');
+      d.dataset.index = String(i);
+      dotsEl.appendChild(d);
+    }
+  }
+
+  function setActiveDot(dotsEl, activeIndex){
+    if(!dotsEl) return;
+    const dots = Array.from(dotsEl.querySelectorAll('.dot'));
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === activeIndex));
+  }
+
+  // ✅ 모바일: 무한 스크롤(앞/뒤 1장씩 복제해서 루프)
   function enableInfiniteLoop(opts){
     const track = document.getElementById(opts.trackId);
     if(!track) return;
@@ -628,14 +711,14 @@
     // 이미 적용했으면 중복 적용 방지
     if(track.dataset.infinite === '1') return;
 
-    const getCards = () => Array.from(track.querySelectorAll(opts.cardSelector));
+    const cardSelector = opts.cardSelector || '.card';
+    const getOriginalCards = () => Array.from(track.querySelectorAll(cardSelector)).filter(el => !el.dataset.clone);
 
-    const originalCards = getCards();
-    if(originalCards.length < 2) return;
+    const originals = getOriginalCards();
+    if(originals.length < 2) return;
 
-    // 앞/뒤 복제
-    const first = originalCards[0].cloneNode(true);
-    const last  = originalCards[originalCards.length - 1].cloneNode(true);
+    const first = originals[0].cloneNode(true);
+    const last  = originals[originals.length - 1].cloneNode(true);
     first.dataset.clone = '1';
     last.dataset.clone  = '1';
 
@@ -644,14 +727,12 @@
 
     track.dataset.infinite = '1';
 
-    // 카드 스텝(폭+갭)
     function getStep(){
-      const card = track.querySelector(opts.cardSelector);
+      const card = track.querySelector(cardSelector);
       const w = card ? card.getBoundingClientRect().width : (opts.fallbackStep || 260);
       return w + (opts.gap || 12);
     }
 
-    // 시작 위치: "첫 원본"이 보이게(앞에 last clone이 있으니 1 step 이동)
     function snapToFirstOriginal(noSmooth){
       const step = getStep();
       track.style.scrollBehavior = noSmooth ? 'auto' : 'smooth';
@@ -659,7 +740,6 @@
       if(noSmooth) requestAnimationFrame(()=> track.style.scrollBehavior = '');
     }
 
-    // 루프 처리
     let ticking = false;
     function onScroll(){
       if(ticking) return;
@@ -668,18 +748,15 @@
       requestAnimationFrame(() => {
         ticking = false;
 
-        // 루프 판단은 step 기반이 제일 안정적
         const step = getStep();
         const maxScroll = track.scrollWidth - track.clientWidth;
 
-        // 맨 앞(= last clone 영역)에 도달하면 -> 끝쪽 원본으로 순간이동
         if(track.scrollLeft <= 1){
           track.style.scrollBehavior = 'auto';
           track.scrollLeft = maxScroll - step - 1;
           requestAnimationFrame(()=> track.style.scrollBehavior = '');
         }
 
-        // 맨 끝(= first clone 영역)에 도달하면 -> 첫 원본으로 순간이동
         if(track.scrollLeft >= maxScroll - 1){
           track.style.scrollBehavior = 'auto';
           track.scrollLeft = step + 1;
@@ -691,21 +768,49 @@
     track.addEventListener('scroll', onScroll, {passive:true});
     window.addEventListener('resize', () => {
       if(!isMobile()) return;
-      // 리사이즈 시 첫 원본 위치 재정렬
       snapToFirstOriginal(true);
     });
 
-    // 초기 정렬
     snapToFirstOriginal(true);
   }
 
-  // 공용: 트랙 + 컨트롤바(화살표+진행바)
+  // ✅ 현재 “원본 기준” 인덱스 계산 (clone 제외)
+  function getActiveIndexFromTrack(opts){
+    const track = document.getElementById(opts.trackId);
+    if(!track) return 0;
+    const cardSelector = opts.cardSelector || '.card';
+    const gap = opts.gap || 12;
+
+    const cardsAll = Array.from(track.querySelectorAll(cardSelector));
+    const originals = cardsAll.filter(el => !el.dataset.clone);
+    const total = originals.length || 1;
+
+    const card = track.querySelector(cardSelector);
+    const w = card ? card.getBoundingClientRect().width : (opts.fallbackStep || 260);
+    const step = w + gap;
+
+    // scrollLeft/step 기반으로 “현재 카드” 추정
+    // clone이 앞에 1개 있으므로 -1 보정
+    let idx = Math.round(track.scrollLeft / step) - 1;
+
+    // wrap
+    idx = ((idx % total) + total) % total;
+    return idx;
+  }
+
+  // ✅ 컨트롤 바인딩: 화살표 + dots + (옵션) 자동 스크롤
   function bindScrollControls(opts){
     const track = document.getElementById(opts.trackId);
     const prev  = document.getElementById(opts.prevId);
     const next  = document.getElementById(opts.nextId);
-    const fill  = document.getElementById(opts.fillId);
-    if(!track || !prev || !next || !fill) return;
+    const dotsEl= document.getElementById(opts.dotsId);
+    if(!track || !prev || !next || !dotsEl) return;
+
+    // dots 초기 렌더(원본 개수 기준)
+    const originalsCount = Array.from(track.querySelectorAll(opts.cardSelector || '.card')).filter(el => !el.dataset.clone).length
+      || Array.from(track.querySelectorAll(opts.cardSelector || '.card')).length
+      || 1;
+    renderDots(dotsEl, originalsCount);
 
     function getStep(){
       const card = track.querySelector(opts.cardSelector || '.card');
@@ -720,32 +825,27 @@
     function updateUI(){
       if(!isMobile()) return;
 
-      // 무한루프면 prev/next disabled는 의미 없음 → 항상 활성
+      // 무한루프일 땐 disabled 의미 없음 → 항상 활성
       prev.disabled = false;
       next.disabled = false;
 
-      // 진행바는 "대략적인 느낌"만(루프라서 0~100 고정이 어려움)
-      // 대신 현재 스크롤 위치 비율로 채움
-      const maxScroll = track.scrollWidth - track.clientWidth;
-      const x = Math.max(0, Math.min(track.scrollLeft, maxScroll));
-      const pct = maxScroll > 0 ? (x / maxScroll) * 100 : 0;
-      fill.style.width = pct + '%';
+      const active = getActiveIndexFromTrack(opts);
+      setActiveDot(dotsEl, active);
     }
 
     prev.addEventListener('click', () => scrollByCard(-1));
     next.addEventListener('click', () => scrollByCard( 1));
     track.addEventListener('scroll', () => window.requestAnimationFrame(updateUI), {passive:true});
-    window.addEventListener('resize', updateUI);
+    window.addEventListener('resize', () => {
+      // 리사이즈 시 dots도 즉시 업데이트
+      window.requestAnimationFrame(updateUI);
+    });
 
-    // 자동 스크롤(옵션) - 무한루프 켜져있으면 "끝에서 0으로" 같은 로직 필요 없음
     let timer = null;
     function startAuto(){
       stopAuto();
       if(!opts.auto || !isMobile()) return;
-
-      timer = setInterval(() => {
-        scrollByCard(1);
-      }, opts.autoInterval || 3200);
+      timer = setInterval(() => scrollByCard(1), opts.autoInterval || 3200);
     }
     function stopAuto(){
       if(timer){ clearInterval(timer); timer = null; }
@@ -765,7 +865,6 @@
     startAuto();
   }
 
-  // ✅ 모바일에서만 무한루프 적용 + 컨트롤 바인딩
   function setupMobileCarousels(){
     if(!isMobile()) return;
 
@@ -785,12 +884,12 @@
       fallbackStep: 280
     });
 
-    // 컨트롤 바인딩(기사: 자동 스크롤)
+    // 기사 dots + 자동 스크롤
     bindScrollControls({
       trackId: 'pressTrack',
       prevId: 'pressPrev',
       nextId: 'pressNext',
-      fillId: 'pressBarFill',
+      dotsId: 'pressDots',
       cardSelector: '.pressCard',
       gap: 12,
       fallbackStep: 260,
@@ -798,12 +897,12 @@
       autoInterval: 3200
     });
 
-    // 컨트롤 바인딩(신축: 자동 없음)
+    // 신축 dots (자동 없음)
     bindScrollControls({
       trackId: 'newTrack',
       prevId: 'newPrev',
       nextId: 'newNext',
-      fillId: 'newBarFill',
+      dotsId: 'newDots',
       cardSelector: '.card',
       gap: 14,
       fallbackStep: 280,
@@ -811,10 +910,8 @@
     });
   }
 
-  // 최초 1회 + 리사이즈시(모바일 진입 시)
   setupMobileCarousels();
   window.addEventListener('resize', () => {
-    // 모바일로 들어오는 순간에만 세팅(PC->모바일 전환)
     setupMobileCarousels();
   });
 </script>
