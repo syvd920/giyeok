@@ -103,14 +103,19 @@
       flex-direction:column;
       height:100%;
     }
+
+    /* ✅ FIX: PRESS 썸네일은 항상 16:9 (height 고정 제거) */
     #press .img{
-      height:120px;
-      aspect-ratio:16/9;
+      width:100%;
+      height:auto;              /* ✅ */
+      aspect-ratio:16/9;        /* ✅ 1280x720 비율 유지 */
       object-fit:cover;
       object-position:center;
       background:#eaecef;
       flex-shrink:0;
+      display:block;
     }
+
     #press .pressCard .pad{
       padding:12px;
       display:flex;
@@ -355,15 +360,17 @@
         scroll-snap-align:start;
       }
 
-      /* ✅ 모바일 기사 이미지 높이 고정(썸네일 들쭉날쭉 방지) */
+      /* ✅ 모바일에서도 PRESS 썸네일 16:9 고정 (height 고정 제거) */
       #press .img{
-        height:110px;
         width:100%;
+        height:auto;              /* ✅ */
+        aspect-ratio:16/9;        /* ✅ */
         object-fit:cover;
         object-position:center;
+        display:block;
       }
 
-      /* ✅ 모바일 기사 제목: 무조건 "2줄로 보이게" 강제 */
+      /* ✅ 모바일 기사 제목: 무조건 2줄로 보이게(2줄 높이 고정) */
       #press .itemTitle{
         white-space:normal !important;
         overflow:hidden !important;
@@ -373,9 +380,9 @@
         -webkit-line-clamp:2 !important;
 
         line-height:1.35 !important;
-        min-height:calc(1.35em * 2) !important; /* 2줄 확보 */
+        min-height:calc(1.35em * 2) !important; /* ✅ 2줄 확보 */
+        max-height:calc(1.35em * 2) !important; /* ✅ 2줄 이상 늘지 않음 */
 
-        /* 어떤 문자열이어도 줄바꿈 되게(공백 없는 경우 포함) */
         overflow-wrap:anywhere !important;
         word-break:break-word !important;
       }
