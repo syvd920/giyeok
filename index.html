@@ -17,11 +17,11 @@
       --radius:18px;
 
       /* 은은한 배지/바 색 */
-      --yt-bg: rgba(239, 68, 68, .08);   /* red-500 tint */
+      --yt-bg: rgba(239, 68, 68, .08);
       --yt-bd: rgba(239, 68, 68, .18);
       --yt-fg: #991b1b;
 
-      --blog-bg: rgba(59, 130, 246, .08); /* blue-500 tint */
+      --blog-bg: rgba(59, 130, 246, .08);
       --blog-bd: rgba(59, 130, 246, .18);
       --blog-fg: #1e3a8a;
     }
@@ -98,33 +98,45 @@
     .pressCard:hover{ transform:translateY(-2px); transition:.18s ease; box-shadow:0 10px 30px rgba(0,0,0,.06) }
 
     /* ============ PRESS (PC/태블릿 기본) ============ */
+    #press .pressCard a{
+      display:flex;
+      flex-direction:column;
+      height:100%;
+    }
     #press .img{
       height: 120px;
       aspect-ratio: 16 / 9;
       object-fit: cover;
       object-position:center;
       background:#eaecef;
+      flex-shrink:0;
     }
     #press .pressCard .pad{
       padding:12px;
       display:flex;
       flex-direction:column;
       gap:8px;
+      flex:1;
     }
     #press .itemTitle{
       font-size:14px;
       line-height:1.35;
 
-      /* PC/태블릿: 2줄 말줄임 */
       display:-webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow:hidden;
+
+      min-height:calc(1.35em * 2);
     }
     #press .meta{
       font-size:12px;
       line-height:1.2;
       color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      min-height:1.2em;
     }
 
     /* ============ NEW 섹션 타이틀 한 줄 ============ */
@@ -152,8 +164,7 @@
       cursor:pointer;
       user-select:none;
     }
-    .cBtn:disabled{ opacity:.35; cursor:default; }
-
+    .cBtn:active{ transform:scale(.98); }
     .dots{
       display:flex;
       align-items:center;
@@ -165,7 +176,7 @@
       width:6px; height:6px;
       border-radius:999px;
       background:#d1d5db;
-      transition:transform .12s ease, opacity .12s ease;
+      transition:transform .12s ease, opacity .12s ease, background .12s ease;
       opacity:.7;
     }
     .dot.on{
@@ -181,7 +192,6 @@
       gap:18px;
     }
 
-    /* “3열 위 도형(바)” */
     .rowBar{
       display:flex;
       align-items:center;
@@ -191,6 +201,7 @@
       border:1px solid var(--line);
       background:#fff;
     }
+
     .badge{
       display:inline-flex;
       align-items:center;
@@ -203,9 +214,23 @@
       letter-spacing:-.2px;
       white-space:nowrap;
       border:1px solid transparent;
+      position:relative;
     }
     .badge.yt{ background:var(--yt-bg); border-color:var(--yt-bd); color:var(--yt-fg); }
     .badge.blog{ background:var(--blog-bg); border-color:var(--blog-bd); color:var(--blog-fg); }
+
+    /* ✅ 배지 앞 점(원형 dot) 복구 */
+    .badge::before{
+      content:"";
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:currentColor;
+      display:inline-block;
+      margin-right:7px;
+      opacity:.75;
+      transform:translateY(-1px);
+    }
 
     .barText{
       font-size:13px;
@@ -213,26 +238,23 @@
       line-height:1.25;
     }
 
-    /* 유튜브/블로그 그리드 */
     .contentGrid{
       display:grid;
       gap:16px;
-      grid-template-columns:repeat(2,1fr); /* 기본 2열 */
+      grid-template-columns:repeat(2,1fr);
     }
     @media (min-width: 981px){
-      .contentGrid{ grid-template-columns:repeat(3,1fr); } /* PC 3열 */
+      .contentGrid{ grid-template-columns:repeat(3,1fr); }
     }
 
-    /* 썸네일 비율 */
     .thumbYt{ aspect-ratio:16/9; }
     .thumbBlog{ aspect-ratio:1/1; }
 
-    /* 제목/패딩(유튜브/블로그 공통) */
     #content .pressCard .pad{
       padding:12px;
       display:flex;
       flex-direction:column;
-      gap:10px;  /* ✅ PC에서 답답해보이던 부분 해결 */
+      gap:10px;
     }
     #content .itemTitle{
       font-size:14px;
@@ -240,14 +262,11 @@
       font-weight:650;
       margin:0;
 
-      /* 기본: 2줄 */
       display:-webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow:hidden;
     }
-
-    /* ✅ PC에서는 1줄 고정(칸 커지는 문제 해결) */
     @media (min-width: 981px){
       #content .itemTitle{
         display:block;
@@ -298,11 +317,9 @@
       .menu{display:none}
       h1{font-size:32px}
 
-      /* 모바일 섹션 타이틀 크기 */
       .secTitle h2{ font-size:20px; }
       .secTitle p{ font-size:13px; }
 
-      /* 모바일: 기사 안내문구 숨김 / 신축 안내문구 숨김 / 콘텐츠 안내문구 숨김 */
       #press .secTitle p{ display:none; }
       #new .secTitle p{ display:none; }
       #content .secTitle p{ display:none; }
@@ -323,7 +340,7 @@
         scroll-snap-align:start;
       }
 
-      /* ✅ 모바일 기사 이미지: “사진 들쭉날쭉” 방지 = 높이 고정 */
+      /* ✅ 모바일 기사 이미지 높이 고정 */
       #press .img{
         height:110px;
         width:100%;
@@ -331,23 +348,27 @@
         object-position:center;
       }
 
-      /* ✅ 모바일 기사 제목: 무조건 2줄 확보 (1줄 고정/nowrap 제거) */
+      /* ✅ 모바일 기사 제목: "긴데 1줄" 방지 (자연 줄바꿈 + 2줄 높이 고정) */
       #press .itemTitle{
+        display:block !important;
         white-space:normal !important;
-        display:-webkit-box !important;
-        -webkit-box-orient: vertical !important;
-        -webkit-line-clamp: 2 !important;
         overflow:hidden !important;
+
         line-height:1.35 !important;
-        min-height:calc(1.35em * 2); /* 2줄 높이 고정 */
+        min-height:calc(1.35em * 2) !important; /* 항상 2줄 공간 */
+        max-height:calc(1.35em * 2) !important; /* 최대 2줄까지만 */
+
+        /* Safari/Chrome에서 단어 끊김 안정 */
+        word-break:keep-all;
       }
+
       #press .meta{
         white-space:nowrap;
         overflow:hidden;
         text-overflow:ellipsis;
+        min-height:1.2em;
       }
 
-      /* 모바일에서 점+버튼 노출 */
       #press .carouselControls{ display:flex; }
 
       /* ===== NEW 모바일: 가로 스크롤 ===== */
@@ -375,10 +396,8 @@
 
       #new .carouselControls{ display:flex; }
 
-      /* ===== CONTENT 모바일: 2x2만 노출 ===== */
       .onlyDesktop{ display:none !important; }
 
-      /* 모바일에서 rowBar 조금 컴팩트 */
       .rowBar{
         padding:9px 10px;
         border-radius:13px;
@@ -476,7 +495,6 @@
         </div>
       </div>
 
-      <!-- 모바일 컨트롤(점 + 버튼) -->
       <div class="carouselControls" id="newControls" aria-label="신축 캐러셀 컨트롤">
         <button class="cBtn" id="newPrev" aria-label="이전">‹</button>
         <div class="dots" id="newDots" aria-hidden="true"></div>
@@ -545,7 +563,6 @@
         </div>
       </div>
 
-      <!-- 모바일 컨트롤(점 + 버튼) -->
       <div class="carouselControls" id="pressControls" aria-label="기사 캐러셀 컨트롤">
         <button class="cBtn" id="pressPrev" aria-label="이전 기사">‹</button>
         <div class="dots" id="pressDots" aria-hidden="true"></div>
@@ -562,8 +579,6 @@
     </div>
 
     <div class="contentWrap">
-
-      <!-- ✅ 유튜브 3열 위: 바 1개 -->
       <div class="rowBar" aria-label="유튜브 구역">
         <span class="badge yt">YouTube</span>
         <span class="barText">최신 영상 / 매물 분석 / 하이엔드</span>
@@ -598,7 +613,6 @@
         </div>
       </div>
 
-      <!-- ✅ 블로그 3열 위: 바 1개 -->
       <div class="rowBar" aria-label="블로그 구역">
         <span class="badge blog">Blog</span>
         <span class="barText">정리형 글 / 정책·입지 / 시세 체크</span>
@@ -632,7 +646,6 @@
           </a>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -666,103 +679,205 @@
     return window.matchMedia && window.matchMedia('(max-width: 560px)').matches;
   }
 
-  // 모바일 캐러셀: 버튼 + 점(도트)
-  function bindDotsCarousel(opts){
+  /**
+   * ✅ 모바일 인피니트 캐러셀 + 자동스크롤 + 도트 + 버튼
+   * - cloneCount 만큼 앞/뒤 복제해서 무한루프
+   * - autoplayDelay(ms)로 자동스크롤
+   */
+  function createInfiniteCarousel(opts){
     const track = document.getElementById(opts.trackId);
-    const prev = document.getElementById(opts.prevId);
-    const next = document.getElementById(opts.nextId);
-    const dotsWrap = document.getElementById(opts.dotsId);
+    const prev  = document.getElementById(opts.prevId);
+    const next  = document.getElementById(opts.nextId);
+    const dotsEl= document.getElementById(opts.dotsId);
 
-    if(!track || !prev || !next || !dotsWrap) return;
+    if(!track || !prev || !next || !dotsEl) return;
+    if(!isMobile()) return;
 
-    const selector = opts.cardSelector || '.card';
+    // 중복 바인딩 방지
+    const key = 'carousel_' + opts.trackId;
+    if(track.dataset[key] === '1') return;
+    track.dataset[key] = '1';
 
-    function cards(){
-      return Array.from(track.querySelectorAll(selector));
+    const cardSelector = opts.cardSelector;
+    const gap = opts.gap || 12;
+    const cloneCount = opts.cloneCount || 2;
+    const autoplayDelay = opts.autoplayDelay || 2800;
+
+    const originals = Array.from(track.querySelectorAll(cardSelector));
+    const n = originals.length;
+    if(n < 2) return;
+
+    // 도트 생성
+    dotsEl.innerHTML = '';
+    const dots = [];
+    for(let i=0;i<n;i++){
+      const d = document.createElement('span');
+      d.className = 'dot' + (i===0 ? ' on' : '');
+      dotsEl.appendChild(d);
+      dots.push(d);
     }
 
-    function step(){
-      const c = track.querySelector(selector);
-      const w = c ? c.getBoundingClientRect().width : (opts.fallbackStep || 260);
-      return w + (opts.gap || 12);
+    // 앞/뒤 클론
+    const head = [];
+    const tail = [];
+    for(let i=0;i<cloneCount;i++){
+      const fromEnd = originals[n - 1 - i].cloneNode(true);
+      fromEnd.dataset.clone = '1';
+      head.unshift(fromEnd);
+    }
+    for(let i=0;i<cloneCount;i++){
+      const fromStart = originals[i].cloneNode(true);
+      fromStart.dataset.clone = '1';
+      tail.push(fromStart);
+    }
+    head.forEach(node => track.insertBefore(node, track.firstChild));
+    tail.forEach(node => track.appendChild(node));
+
+    function getStep(){
+      const card = track.querySelector(cardSelector);
+      const w = card ? card.getBoundingClientRect().width : (opts.fallbackStep || 260);
+      return w + gap;
     }
 
-    function ensureDots(){
-      const n = cards().length;
-      if(dotsWrap.childElementCount === n) return;
-      dotsWrap.innerHTML = '';
-      for(let i=0;i<n;i++){
-        const d = document.createElement('span');
-        d.className = 'dot' + (i===0 ? ' on':'' );
-        dotsWrap.appendChild(d);
+    function setDots(active){
+      dots.forEach((d,i)=> d.classList.toggle('on', i===active));
+    }
+
+    function getActiveIndex(){
+      const step = getStep();
+      const raw = Math.round(track.scrollLeft / step);
+      let idx = (raw - cloneCount) % n;
+      if(idx < 0) idx += n;
+      return idx;
+    }
+
+    function jumpToFirstOriginal(){
+      const step = getStep();
+      const x = step * cloneCount;
+      track.style.scrollBehavior = 'auto';
+      track.style.scrollSnapType = 'none';
+      track.scrollLeft = x;
+      requestAnimationFrame(() => {
+        track.style.scrollSnapType = '';
+        track.style.scrollBehavior = '';
+      });
+    }
+
+    let ticking = false;
+    function onScroll(){
+      if(ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        ticking = false;
+
+        const step = getStep();
+        const maxScroll = track.scrollWidth - track.clientWidth;
+
+        setDots(getActiveIndex());
+
+        // 좌측 끝 근처 → 오른쪽으로 점프
+        if(track.scrollLeft <= step * (cloneCount - 0.6)){
+          track.style.scrollBehavior = 'auto';
+          track.style.scrollSnapType = 'none';
+          track.scrollLeft = track.scrollLeft + step * n;
+          requestAnimationFrame(() => {
+            track.style.scrollSnapType = '';
+            track.style.scrollBehavior = '';
+          });
+        }
+
+        // 우측 끝 근처 → 왼쪽으로 점프
+        if(track.scrollLeft >= (maxScroll - step * (cloneCount - 0.6))){
+          track.style.scrollBehavior = 'auto';
+          track.style.scrollSnapType = 'none';
+          track.scrollLeft = track.scrollLeft - step * n;
+          requestAnimationFrame(() => {
+            track.style.scrollSnapType = '';
+            track.style.scrollBehavior = '';
+          });
+        }
+      });
+    }
+
+    function scrollByCard(dir){
+      track.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
+    }
+
+    prev.addEventListener('click', ()=> scrollByCard(-1));
+    next.addEventListener('click', ()=> scrollByCard( 1));
+    track.addEventListener('scroll', onScroll, {passive:true});
+
+    // ✅ 자동스크롤(autoplay) 복구
+    let timer = null;
+    function startAutoplay(){
+      stopAutoplay();
+      timer = setInterval(() => {
+        if(!isMobile()) return;
+        scrollByCard(1);
+      }, autoplayDelay);
+    }
+    function stopAutoplay(){
+      if(timer){
+        clearInterval(timer);
+        timer = null;
       }
     }
 
-    function currentIndex(){
-      const s = step();
-      if(s <= 0) return 0;
-      const i = Math.round(track.scrollLeft / s);
-      const n = cards().length;
-      return Math.max(0, Math.min(i, n-1));
+    // 사용자 터치/휠 때 잠깐 멈추고 다시 시작 (너무 튀는거 방지)
+    let resumeT = null;
+    function pauseAndResume(){
+      stopAutoplay();
+      if(resumeT) clearTimeout(resumeT);
+      resumeT = setTimeout(startAutoplay, 1800);
     }
 
-    function setDots(i){
-      const dots = Array.from(dotsWrap.children);
-      dots.forEach((d, idx)=> d.classList.toggle('on', idx === i));
-    }
+    track.addEventListener('touchstart', pauseAndResume, {passive:true});
+    track.addEventListener('wheel', pauseAndResume, {passive:true});
+    prev.addEventListener('click', pauseAndResume);
+    next.addEventListener('click', pauseAndResume);
 
-    function scrollToIndex(i){
-      const n = cards().length;
-      if(n === 0) return;
-
-      // “끝에서 1페이지로” 뚝 끊겨 보이는 문제 해결:
-      // -> wrap할 때도 smooth로 0으로 이동 (클론 점프 안 씀)
-      if(i < 0) i = n - 1;
-      if(i >= n) i = 0;
-
-      track.scrollTo({ left: i * step(), behavior: 'smooth' });
-    }
-
-    function update(){
+    window.addEventListener('resize', () => {
       if(!isMobile()) return;
-      ensureDots();
-      setDots(currentIndex());
-    }
+      jumpToFirstOriginal();
+      setDots(getActiveIndex());
+    });
 
-    prev.addEventListener('click', ()=> scrollToIndex(currentIndex() - 1));
-    next.addEventListener('click', ()=> scrollToIndex(currentIndex() + 1));
-    track.addEventListener('scroll', ()=> requestAnimationFrame(update), {passive:true});
-    window.addEventListener('resize', ()=> requestAnimationFrame(update));
-
-    // 초기
-    update();
+    jumpToFirstOriginal();
+    setDots(getActiveIndex());
+    startAutoplay();
   }
 
-  function setupMobile(){
-    // 모바일에서만 dot controls 의미가 있으니, PC에서는 그냥 DOM 남겨둬도 OK
-    bindDotsCarousel({
+  function setupMobileCarousels(){
+    if(!isMobile()) return;
+
+    createInfiniteCarousel({
       trackId:'pressTrack',
       prevId:'pressPrev',
       nextId:'pressNext',
       dotsId:'pressDots',
       cardSelector:'.pressCard',
       gap:12,
-      fallbackStep:260
+      fallbackStep:260,
+      cloneCount:2,
+      autoplayDelay:2600
     });
 
-    bindDotsCarousel({
+    createInfiniteCarousel({
       trackId:'newTrack',
       prevId:'newPrev',
       nextId:'newNext',
       dotsId:'newDots',
       cardSelector:'#newTrack > .card',
       gap:14,
-      fallbackStep:280
+      fallbackStep:280,
+      cloneCount:2,
+      autoplayDelay:2800
     });
   }
 
-  setupMobile();
-  window.addEventListener('resize', setupMobile);
+  setupMobileCarousels();
+  window.addEventListener('resize', setupMobileCarousels);
 </script>
 </body>
 </html>
