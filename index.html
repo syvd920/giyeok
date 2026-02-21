@@ -98,9 +98,6 @@
 
     /* =========================
        PRESS(기사)
-       ✅ 핵심 변경:
-       - height 고정 제거 → aspect-ratio로만 16:9 유지(모바일 가로로 길어지는 느낌 제거)
-       - 제목: clamp + fallback(max-height) 병행(모바일에서 2줄 안정화)
     ========================= */
     #press .thumbWrap{
       position:relative;
@@ -125,13 +122,11 @@
       line-height:1.35;
       font-weight:650;
 
-      /* 기본: 2줄 */
       display:-webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow:hidden;
 
-      /* ✅ 폴백(클램프가 흔들려도 2줄 높이 제한으로 들쭉날쭉 방지) */
       max-height:calc(1.35em * 2);
     }
     #press .meta{
@@ -145,12 +140,7 @@
 
     /* =========================
        CONTENT(유튜브/블로그)
-       ✅ 핵심 변경:
-       - 배지 오버레이 제거 → 썸네일 아래 "라벨바"로 분리(묻힘 0)
-       - 배지 컬러 은은하게 복구/강화
-       - PC에서 제목 영역 답답함: padding/gap 살짝 증가
-       - PC: 제목 1줄, 모바일: 2줄
-       - 블로그 1:1 비율 PC에서도 유지(thumbWrap.blog로 해결)
+       ✅ 배지를 "상단 컬러바(둥근 모서리 영역)"에 중앙 정렬로
     ========================= */
     #content .contentGrid{
       display:grid;
@@ -167,7 +157,7 @@
       background:#eaecef;
     }
     .thumbWrap.yt { aspect-ratio:16/9; }
-    .thumbWrap.blog { aspect-ratio:1/1; } /* ✅ PC/모바일 모두 1:1 */
+    .thumbWrap.blog { aspect-ratio:1/1; }
     .thumbWrap img{
       width:100%;
       height:100%;
@@ -175,40 +165,45 @@
       display:block;
     }
 
-    /* 라벨바(썸네일 아래) */
-    .labelBar{
+    /* ✅ 상단 컬러바 */
+    .typeCap{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:10px 12px 0;
+      justify-content:center;
+      padding:10px 12px;
+      border-bottom:1px solid rgba(17,17,17,.06);
+    }
+    .typeCap--yt{
+      background: linear-gradient(180deg, rgba(239,68,68,.14), rgba(239,68,68,.08));
+    }
+    .typeCap--blog{
+      background: linear-gradient(180deg, rgba(16,185,129,.14), rgba(16,185,129,.08));
     }
 
+    /* 배지(중앙) */
     .badgePill{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:7px 10px;
+      padding:7px 12px;
       border-radius:999px;
       font-size:12px;
-      font-weight:700;
+      font-weight:750;
       letter-spacing:-.2px;
       border:1px solid transparent;
       white-space:nowrap;
+      background:#fff;
     }
     .badgePill .miniDot{
       width:7px; height:7px; border-radius:999px;
       background:currentColor;
-      opacity:.7;
+      opacity:.75;
     }
-
     .badgePill--yt{
-      background:var(--yt-bg);
       border-color:var(--yt-bd);
       color:var(--yt-fg);
     }
     .badgePill--blog{
-      background:var(--blog-bg);
       border-color:var(--blog-bd);
       color:var(--blog-fg);
     }
@@ -216,7 +211,7 @@
     /* 제목 영역 */
     #content .pressCard .pad{
       padding:12px;
-      padding-top:10px;
+      padding-top:12px;
       display:flex;
       flex-direction:column;
       gap:10px;
@@ -234,10 +229,9 @@
       max-height:calc(1.32em * 2);
     }
     @media (min-width: 981px){
-      /* ✅ PC: 제목 1줄 고정 + 여백 살짝 증가(답답함 제거) */
+      /* ✅ PC: 제목 1줄 + 간격 살짝 여유 */
       #content .pressCard .pad{
         padding:14px;
-        padding-top:12px;
         gap:12px;
       }
       #content .itemTitle{
@@ -247,19 +241,18 @@
         text-overflow:ellipsis;
         max-height:none;
       }
-      .labelBar{ padding:12px 14px 0; }
+      .typeCap{ padding:12px 14px; }
+      .badgePill{ padding:7px 13px; }
     }
 
-    /* 모바일에서 2x2만: yt3/blog3 숨김 */
+    /* 모바일에서 2x2만 */
     .onlyDesktop{ display:block; }
     @media (max-width: 560px){
       .onlyDesktop{ display:none !important; }
     }
 
     /* =========================
-       모바일 캐러셀(기사/신축)
-       - 점 인디케이터
-       - 무한 루프(부드럽게)
+       모바일 캐러셀(기사/신축) - 점 인디케이터
     ========================= */
     .carouselControls{
       display:none;
@@ -342,8 +335,16 @@
       #press .secTitle p{ display:none; }
       #new .secTitle p{ display:none; }
 
-      /* ✅ 모바일 PRESS: 썸네일 비율만 유지(높이 고정 없음) */
-      #press .thumbWrap{ aspect-ratio:16/9; }
+      /* ✅ 모바일 PRESS: 카드 폭 살짝 줄여서 썸네일 과대 느낌 완화 */
+      #press .pressCard{
+        min-width: 220px; /* 기존 240px → 220px */
+      }
+
+      /* ✅ 모바일 PRESS: 썸네일이 너무 커지지 않게 상한 */
+      #press .thumbWrap{
+        aspect-ratio:16/9;
+        max-height: 130px; /* 너무 커지는 느낌 컷 */
+      }
 
       /* ✅ 모바일 PRESS: 제목/메타 높이 고정 → 카드 높이 통일 */
       #press .pressCard .pad{ gap:6px; }
@@ -351,7 +352,7 @@
         line-height:1.35;
         max-height:calc(1.35em * 2);
         min-height:calc(1.35em * 2);
-        display:block;          /* ✅ 줄바꿈 확실하게 */
+        display:block;
         white-space:normal;
         overflow:hidden;
       }
@@ -368,11 +369,6 @@
         padding: 6px 18px 10px;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
-      }
-      #press .pressCard{
-        flex:0 0 auto;
-        min-width: 240px;
-        scroll-snap-align:start;
       }
       #press .carouselControls{ display:flex; }
 
@@ -392,7 +388,7 @@
       }
       #new .carouselControls{ display:flex; }
 
-      /* 모바일 NEW 이미지 높이(원하면 이건 유지) */
+      /* 모바일 NEW 이미지 높이 */
       #new .img{
         height:180px;
         aspect-ratio:auto;
@@ -400,9 +396,14 @@
       }
       #new .pad{ padding:14px; }
 
-      /* 모바일 CONTENT 라벨바/패딩 살짝 타이트 */
-      .labelBar{ padding:10px 12px 0; }
-      #content .pressCard .pad{ padding:12px; padding-top:10px; gap:10px; }
+      /* ✅ 모바일 배지 더 작게 */
+      .typeCap{ padding:9px 10px; }
+      .badgePill{
+        padding:6px 10px;
+        font-size:11px;
+        gap:7px;
+      }
+      .badgePill .miniDot{ width:6px; height:6px; }
     }
   </style>
 </head>
@@ -587,11 +588,11 @@
       <!-- YouTube 1 -->
       <div class="card pressCard">
         <a href="https://youtu.be/p2p5GNtTvF0" target="_blank" rel="noreferrer">
+          <div class="typeCap typeCap--yt">
+            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
+          </div>
           <div class="thumbWrap yt">
             <img src="assets/yt-1.jpg" alt="유튜브 썸네일 1" />
-          </div>
-          <div class="labelBar">
-            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
           </div>
           <div class="pad">
             <div class="itemTitle">제니는 왜 이 집을 골랐을까? Young & Rich Pretty</div>
@@ -602,11 +603,11 @@
       <!-- YouTube 2 -->
       <div class="card pressCard">
         <a href="https://youtu.be/luUgVTGmNgo" target="_blank" rel="noreferrer">
+          <div class="typeCap typeCap--yt">
+            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
+          </div>
           <div class="thumbWrap yt">
             <img src="assets/yt-2.jpg" alt="유튜브 썸네일 2" />
-          </div>
-          <div class="labelBar">
-            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
           </div>
           <div class="pad">
             <div class="itemTitle">장원영의 집값이 137억? 루시드하우스 완전 분석!</div>
@@ -617,11 +618,11 @@
       <!-- YouTube 3 (모바일 숨김) -->
       <div class="card pressCard onlyDesktop">
         <a href="https://youtu.be/BfmCFvGPwsE" target="_blank" rel="noreferrer">
+          <div class="typeCap typeCap--yt">
+            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
+          </div>
           <div class="thumbWrap yt">
             <img src="assets/yt-3.jpg" alt="유튜브 썸네일 3" />
-          </div>
-          <div class="labelBar">
-            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
           </div>
           <div class="pad">
             <div class="itemTitle">국내 하이퍼 하이엔드의 정점, 한남동 라스코 더 맨션</div>
@@ -632,11 +633,11 @@
       <!-- Blog 1 -->
       <div class="card pressCard">
         <a href="https://blog.naver.com/0zzabang/224174279026" target="_blank" rel="noreferrer">
+          <div class="typeCap typeCap--blog">
+            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
+          </div>
           <div class="thumbWrap blog">
             <img src="assets/blog-1.jpg" alt="블로그 썸네일 1" />
-          </div>
-          <div class="labelBar">
-            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
           </div>
           <div class="pad">
             <div class="itemTitle">블랙핑크 제니와 이종석이 산 집?! 연예인들은 어떤 집에 살까?</div>
@@ -647,11 +648,11 @@
       <!-- Blog 2 -->
       <div class="card pressCard">
         <a href="https://blog.naver.com/0zzabang/224171721564" target="_blank" rel="noreferrer">
+          <div class="typeCap typeCap--blog">
+            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
+          </div>
           <div class="thumbWrap blog">
             <img src="assets/blog-2.jpg" alt="블로그 썸네일 2" />
-          </div>
-          <div class="labelBar">
-            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
           </div>
           <div class="pad">
             <div class="itemTitle">민간도심복합개발 진행된다면.. 최고의 입지 삼성동!</div>
@@ -662,11 +663,11 @@
       <!-- Blog 3 (모바일 숨김) -->
       <div class="card pressCard onlyDesktop">
         <a href="https://blog.naver.com/0zzabang/224168771668" target="_blank" rel="noreferrer">
+          <div class="typeCap typeCap--blog">
+            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
+          </div>
           <div class="thumbWrap blog">
             <img src="assets/blog-3.jpg" alt="블로그 썸네일 3" />
-          </div>
-          <div class="labelBar">
-            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
           </div>
           <div class="pad">
             <div class="itemTitle">04년생이 137억원 집을 샀다?! 장원영의 루시드 하우스</div>
@@ -705,7 +706,6 @@
     return window.matchMedia && window.matchMedia('(max-width: 560px)').matches;
   }
 
-  // 모바일 무한 캐러셀 + 도트
   function createInfiniteCarousel(opts){
     const track = document.getElementById(opts.trackId);
     const prev = document.getElementById(opts.prevId);
@@ -793,7 +793,6 @@
 
         setDots(getActiveIndex());
 
-        // loop jump (snap 잠깐 off)
         if(track.scrollLeft <= step * (cloneCount - 0.6)){
           track.style.scrollBehavior = 'auto';
           track.style.scrollSnapType = 'none';
