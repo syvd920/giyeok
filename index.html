@@ -89,15 +89,12 @@
     .pressCard:hover{ transform:translateY(-2px); transition:.18s ease; box-shadow:0 10px 30px rgba(0,0,0,.06) }
 
     /* =================================================
-       PRESS(기사) 정리
-       - 썸네일: "이상한 레터박스" 없애고 깔끔하게 cover
-       - 제목/메타 간격 벌리기
-       - 제목 2줄 말줄임
+       PRESS(기사) 기본(PC/태블릿)
     ================================================= */
     #press .img{
       height: 120px;
-      aspect-ratio: 16 / 9;     /* ✅ 기사 카드 비주얼 통일 */
-      object-fit: cover;        /* ✅ 레터박스 제거 */
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
       object-position:center;
       background:#eaecef;
     }
@@ -105,7 +102,7 @@
       padding:12px;
       display:flex;
       flex-direction:column;
-      gap:8px;                  /* ✅ 제목-메타 간격 */
+      gap:8px;
     }
     #press .itemTitle{
       margin:0;
@@ -113,7 +110,7 @@
       line-height:1.35;
       font-weight:650;
 
-      /* ✅ 2줄 말줄임 */
+      /* 기본: 2줄 말줄임(PC/태블릿) */
       display:-webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
@@ -167,11 +164,7 @@
     }
 
     /* =================================================
-       CONTENT(유튜브/블로그) 정리
-       - PC: 3열(2행)
-       - 태블릿/모바일: 2열
-       - 모바일: 2x2(yt1,yt2,blog1,blog2)만 노출
-       - 유튜브 제목 영역이 너무 커지는 문제: 패딩/마진/2줄말줄임 통일
+       CONTENT(유튜브/블로그)
     ================================================= */
     #content .contentGrid{
       display:grid;
@@ -180,7 +173,7 @@
     }
     @media (min-width: 981px){
       #content .contentGrid{
-        grid-template-columns:repeat(3,1fr); /* ✅ PC: 3열 */
+        grid-template-columns:repeat(3,1fr); /* PC: 3열 */
       }
     }
 
@@ -199,7 +192,7 @@
       line-height:1.3;
       font-weight:650;
 
-      /* ✅ 2줄 말줄임(유튜브/블로그 동일) */
+      /* 기본: 2줄 */
       display:-webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
@@ -212,10 +205,27 @@
       color:var(--muted);
     }
 
-    /* PC에서 이미지 너무 길어 보이는 거 살짝 제한 */
+    /* ✅ PC에서 제목은 1줄 고정(칸 커지는 문제 해결) */
     @media (min-width: 981px){
-      #content .thumbYt{ max-height:260px; width:100%; object-fit:cover; }
-      #content .thumbBlog{ max-height:260px; width:100%; object-fit:cover; }
+      #content .itemTitle{
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        display:block;
+      }
+
+      /* ✅ 유튜브만 max-height 유지(원하면 둘 다 빼도 됨) */
+      #content .thumbYt{
+        max-height:260px;
+        width:100%;
+        object-fit:cover;
+      }
+      /* ✅ 블로그는 1:1 유지하려면 max-height 제거 */
+      #content .thumbBlog{
+        max-height:none;
+        width:100%;
+        object-fit:cover;
+      }
     }
 
     .cta{
@@ -258,20 +268,34 @@
       .menu{display:none}
       h1{font-size:32px}
 
-  /* ✅ 모바일 PRESS 썸네일 높이 통일(길쭉해지는 느낌 방지) */
-  #press .img{
-    height:110px;
-    width:100%;
-    object-fit:cover;
-    object-position:center;
-  }
-      
       /* 모바일 섹션 타이틀 크기 통일 */
       .secTitle h2{ font-size:20px; }
       .secTitle p{ font-size:13px; }
 
       /* PRESS: 모바일에서는 설명문구 숨김 */
       #press .secTitle p{ display:none; }
+
+      /* ✅ 모바일 PRESS 썸네일 높이/비율 강제(길쭉해 보이는 것 방지) */
+      #press .img{
+        height:110px;
+        width:100%;
+        object-fit:cover;
+        object-position:center;
+      }
+
+      /* ✅ 모바일 PRESS: 카드 높이 들쭉날쭉 방지(제목 2줄 고정 + 메타 1줄 고정) */
+      #press .pressCard .pad{ gap:6px; }
+      #press .itemTitle{
+        line-height:1.35;
+        height:calc(1.35em * 2); /* 2줄 높이 고정 */
+        overflow:hidden;
+        display:block;           /* iOS에서 clamp 흔들림 방지 */
+      }
+      #press .meta{
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
 
       /* PRESS 모바일: 가로 스크롤 트랙 + 컨트롤 */
       #press .grid5{
@@ -281,6 +305,7 @@
         padding: 6px 18px 10px;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
+        scroll-behavior:smooth;
       }
       #press .pressCard{
         flex:0 0 auto;
@@ -305,6 +330,7 @@
         padding:6px 18px 10px;
         scroll-snap-type:x mandatory;
         -webkit-overflow-scrolling:touch;
+        scroll-behavior:smooth;
       }
       #new .grid3.newTrack > .card{
         flex:0 0 auto;
@@ -493,7 +519,6 @@
       <p>썸네일 클릭 → 해당 콘텐츠로 이동</p>
     </div>
 
-    <!-- ✅ 순서 고정: PC 3열 2행에서 1행=유튜브123, 2행=블로그123 -->
     <div class="contentGrid">
 
       <!-- YouTube 1 -->
@@ -591,7 +616,90 @@
   // 연도
   document.getElementById("y").textContent = new Date().getFullYear();
 
-  // 공용: 트랙(가로 스크롤) + 아래 컨트롤바(화살표+진행바)
+  function isMobile(){
+    return window.matchMedia && window.matchMedia('(max-width: 560px)').matches;
+  }
+
+  // ✅ 모바일: 무한 스크롤(수동 스와이프 포함) - 앞/뒤 1장씩 복제해서 루프
+  function enableInfiniteLoop(opts){
+    const track = document.getElementById(opts.trackId);
+    if(!track) return;
+
+    // 이미 적용했으면 중복 적용 방지
+    if(track.dataset.infinite === '1') return;
+
+    const getCards = () => Array.from(track.querySelectorAll(opts.cardSelector));
+
+    const originalCards = getCards();
+    if(originalCards.length < 2) return;
+
+    // 앞/뒤 복제
+    const first = originalCards[0].cloneNode(true);
+    const last  = originalCards[originalCards.length - 1].cloneNode(true);
+    first.dataset.clone = '1';
+    last.dataset.clone  = '1';
+
+    track.insertBefore(last, track.firstChild);
+    track.appendChild(first);
+
+    track.dataset.infinite = '1';
+
+    // 카드 스텝(폭+갭)
+    function getStep(){
+      const card = track.querySelector(opts.cardSelector);
+      const w = card ? card.getBoundingClientRect().width : (opts.fallbackStep || 260);
+      return w + (opts.gap || 12);
+    }
+
+    // 시작 위치: "첫 원본"이 보이게(앞에 last clone이 있으니 1 step 이동)
+    function snapToFirstOriginal(noSmooth){
+      const step = getStep();
+      track.style.scrollBehavior = noSmooth ? 'auto' : 'smooth';
+      track.scrollLeft = step;
+      if(noSmooth) requestAnimationFrame(()=> track.style.scrollBehavior = '');
+    }
+
+    // 루프 처리
+    let ticking = false;
+    function onScroll(){
+      if(ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        ticking = false;
+
+        // 루프 판단은 step 기반이 제일 안정적
+        const step = getStep();
+        const maxScroll = track.scrollWidth - track.clientWidth;
+
+        // 맨 앞(= last clone 영역)에 도달하면 -> 끝쪽 원본으로 순간이동
+        if(track.scrollLeft <= 1){
+          track.style.scrollBehavior = 'auto';
+          track.scrollLeft = maxScroll - step - 1;
+          requestAnimationFrame(()=> track.style.scrollBehavior = '');
+        }
+
+        // 맨 끝(= first clone 영역)에 도달하면 -> 첫 원본으로 순간이동
+        if(track.scrollLeft >= maxScroll - 1){
+          track.style.scrollBehavior = 'auto';
+          track.scrollLeft = step + 1;
+          requestAnimationFrame(()=> track.style.scrollBehavior = '');
+        }
+      });
+    }
+
+    track.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', () => {
+      if(!isMobile()) return;
+      // 리사이즈 시 첫 원본 위치 재정렬
+      snapToFirstOriginal(true);
+    });
+
+    // 초기 정렬
+    snapToFirstOriginal(true);
+  }
+
+  // 공용: 트랙 + 컨트롤바(화살표+진행바)
   function bindScrollControls(opts){
     const track = document.getElementById(opts.trackId);
     const prev  = document.getElementById(opts.prevId);
@@ -599,49 +707,44 @@
     const fill  = document.getElementById(opts.fillId);
     if(!track || !prev || !next || !fill) return;
 
-    function isMobile(){
-      return window.matchMedia && window.matchMedia('(max-width: 560px)').matches;
+    function getStep(){
+      const card = track.querySelector(opts.cardSelector || '.card');
+      const w = card ? (card.getBoundingClientRect().width) : (opts.fallbackStep || 260);
+      return w + (opts.gap || 12);
     }
 
     function scrollByCard(dir){
-      const card = track.querySelector(opts.cardSelector || '.card');
-      const step = card ? (card.getBoundingClientRect().width + (opts.gap || 12)) : (opts.fallbackStep || 260);
-      track.scrollBy({ left: dir * step, behavior: 'smooth' });
+      track.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
     }
 
     function updateUI(){
       if(!isMobile()) return;
 
+      // 무한루프면 prev/next disabled는 의미 없음 → 항상 활성
+      prev.disabled = false;
+      next.disabled = false;
+
+      // 진행바는 "대략적인 느낌"만(루프라서 0~100 고정이 어려움)
+      // 대신 현재 스크롤 위치 비율로 채움
       const maxScroll = track.scrollWidth - track.clientWidth;
       const x = Math.max(0, Math.min(track.scrollLeft, maxScroll));
-
-      prev.disabled = x <= 2;
-      next.disabled = x >= (maxScroll - 2);
-
       const pct = maxScroll > 0 ? (x / maxScroll) * 100 : 0;
       fill.style.width = pct + '%';
     }
 
     prev.addEventListener('click', () => scrollByCard(-1));
     next.addEventListener('click', () => scrollByCard( 1));
-    track.addEventListener('scroll', () => window.requestAnimationFrame(updateUI));
+    track.addEventListener('scroll', () => window.requestAnimationFrame(updateUI), {passive:true});
     window.addEventListener('resize', updateUI);
 
-    // 자동 스크롤(옵션)
+    // 자동 스크롤(옵션) - 무한루프 켜져있으면 "끝에서 0으로" 같은 로직 필요 없음
     let timer = null;
     function startAuto(){
       stopAuto();
       if(!opts.auto || !isMobile()) return;
 
       timer = setInterval(() => {
-        const maxScroll = track.scrollWidth - track.clientWidth;
-        if(maxScroll <= 0) return;
-
-        if(track.scrollLeft >= maxScroll - 2){
-          track.scrollTo({ left: 0, behavior: 'smooth' });
-        }else{
-          scrollByCard(1);
-        }
+        scrollByCard(1);
       }, opts.autoInterval || 3200);
     }
     function stopAuto(){
@@ -662,29 +765,57 @@
     startAuto();
   }
 
-  // 기사: 아래 컨트롤바 + 자동 스크롤(모바일)
-  bindScrollControls({
-    trackId: 'pressTrack',
-    prevId: 'pressPrev',
-    nextId: 'pressNext',
-    fillId: 'pressBarFill',
-    cardSelector: '.pressCard',
-    gap: 12,
-    fallbackStep: 260,
-    auto: true,
-    autoInterval: 3200
-  });
+  // ✅ 모바일에서만 무한루프 적용 + 컨트롤 바인딩
+  function setupMobileCarousels(){
+    if(!isMobile()) return;
 
-  // 신축: 아래 컨트롤바(자동 스크롤 없음)
-  bindScrollControls({
-    trackId: 'newTrack',
-    prevId: 'newPrev',
-    nextId: 'newNext',
-    fillId: 'newBarFill',
-    cardSelector: '.card',
-    gap: 14,
-    fallbackStep: 280,
-    auto: false
+    // 기사 무한루프
+    enableInfiniteLoop({
+      trackId: 'pressTrack',
+      cardSelector: '.pressCard',
+      gap: 12,
+      fallbackStep: 260
+    });
+
+    // 신축 무한루프
+    enableInfiniteLoop({
+      trackId: 'newTrack',
+      cardSelector: '.card',
+      gap: 14,
+      fallbackStep: 280
+    });
+
+    // 컨트롤 바인딩(기사: 자동 스크롤)
+    bindScrollControls({
+      trackId: 'pressTrack',
+      prevId: 'pressPrev',
+      nextId: 'pressNext',
+      fillId: 'pressBarFill',
+      cardSelector: '.pressCard',
+      gap: 12,
+      fallbackStep: 260,
+      auto: true,
+      autoInterval: 3200
+    });
+
+    // 컨트롤 바인딩(신축: 자동 없음)
+    bindScrollControls({
+      trackId: 'newTrack',
+      prevId: 'newPrev',
+      nextId: 'newNext',
+      fillId: 'newBarFill',
+      cardSelector: '.card',
+      gap: 14,
+      fallbackStep: 280,
+      auto: false
+    });
+  }
+
+  // 최초 1회 + 리사이즈시(모바일 진입 시)
+  setupMobileCarousels();
+  window.addEventListener('resize', () => {
+    // 모바일로 들어오는 순간에만 세팅(PC->모바일 전환)
+    setupMobileCarousels();
   });
 </script>
 </body>
