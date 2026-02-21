@@ -92,29 +92,39 @@
     #press .itemTitle{ font-size:14px; line-height:1.3; margin-top:8px; }
     #press .meta{ font-size:12px; }
 
-    /* ✅ 모바일 기사: 가로 스크롤 + 화살표 */
-    .pressWrap{ position:relative; }
-    .pressNav{
-      display:none; /* 모바일에서만 보이게 */
-      position:absolute;
-      top:50%;
-      transform:translateY(-50%);
-      width:34px;
-      height:34px;
+    /* ✅ 공용: 아래 컨트롤바(화살표+진행바) */
+    .scrollControls{
+      display:none;
+      gap:12px;
+      align-items:center;
+      margin-top:10px;
+    }
+    .scrollBtn{
+      width:36px; height:36px;
       border-radius:999px;
       border:1px solid var(--line);
-      background:rgba(255,255,255,.92);
-      backdrop-filter: blur(8px);
-      align-items:center;
-      justify-content:center;
+      background:#fff;
+      display:flex; align-items:center; justify-content:center;
       cursor:pointer;
-      z-index:5;
       user-select:none;
     }
-    .pressNav:hover{ background:#fff; }
-    .pressNav:disabled{ opacity:.35; cursor:default; }
-    .pressPrev{ left:10px; }
-    .pressNext{ right:10px; }
+    .scrollBtn:hover{ background:#fff; }
+    .scrollBtn:disabled{ opacity:.35; cursor:default; }
+
+    .scrollBar{
+      flex:1;
+      height:6px;
+      border-radius:999px;
+      background:#eef0f3;
+      overflow:hidden;
+    }
+    .scrollBarFill{
+      height:100%;
+      width:0%;
+      background:#111;
+      border-radius:999px;
+      transition:width .12s ease;
+    }
 
     .cta{
       background:#0b0b0c;
@@ -156,12 +166,12 @@
       .grid3{grid-template-columns:1fr}
       .menu{display:none}
 
-      /* ✅ 모바일 기사: 세로로 길어지는 문제 해결(가로 스크롤 트랙) */
+      /* ✅ PRESS 모바일: 가로 스크롤 트랙 */
       #press .grid5{
         display:flex;
         gap:12px;
         overflow-x:auto;
-        padding: 6px 44px 10px; /* 화살표 공간 */
+        padding: 6px 18px 10px; /* 다음 카드 살짝 보이게 */
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
       }
@@ -170,7 +180,23 @@
         min-width: 240px;
         scroll-snap-align:start;
       }
-      .pressNav{ display:flex; }
+      #press .scrollControls{ display:flex; }
+
+      /* ✅ NEW 모바일: 가로 스크롤 트랙 */
+      #new .grid3.newTrack{
+        display:flex;
+        gap:12px;
+        overflow-x:auto;
+        padding: 6px 18px 10px; /* 다음 카드 살짝 보이게 */
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+      #new .grid3.newTrack > .card{
+        flex:0 0 auto;
+        min-width: 260px;
+        scroll-snap-align:start;
+      }
+      #new .scrollControls{ display:flex; }
     }
   </style>
 </head>
@@ -231,27 +257,38 @@
       <p>“보기 좋은 사진”보다 “설명 가능한 매물” 중심</p>
     </div>
 
-    <div class="grid3">
-      <div class="card">
-        <img class="img" src="assets/new-1.jpg" alt="신축 이미지 1" />
-        <div class="pad">
-          <div class="itemTitle">외관</div>
-          <p class="itemDesc">나보나 트래버틴</p>
+    <div class="newWrap">
+      <div class="grid3 newTrack" id="newTrack">
+        <div class="card">
+          <img class="img" src="assets/new-1.jpg" alt="신축 이미지 1" />
+          <div class="pad">
+            <div class="itemTitle">외관</div>
+            <p class="itemDesc">나보나 트래버틴</p>
+          </div>
+        </div>
+        <div class="card">
+          <img class="img" src="assets/new-2.jpg" alt="신축 이미지 2" />
+          <div class="pad">
+            <div class="itemTitle">C타입</div>
+            <p class="itemDesc">남산뷰</p>
+          </div>
+        </div>
+        <div class="card">
+          <img class="img" src="assets/new-3.jpg" alt="신축 이미지 3" />
+          <div class="pad">
+            <div class="itemTitle">펜트</div>
+            <p class="itemDesc">남산뷰 LDK 18M</p>
+          </div>
         </div>
       </div>
-      <div class="card">
-        <img class="img" src="assets/new-2.jpg" alt="신축 이미지 2" />
-        <div class="pad">
-          <div class="itemTitle">C타입</div>
-          <p class="itemDesc">남산뷰</p>
+
+      <!-- ✅ 모바일 컨트롤바 -->
+      <div class="scrollControls" id="newControls" aria-label="신축 스크롤 컨트롤">
+        <button class="scrollBtn" id="newPrev" aria-label="이전">‹</button>
+        <div class="scrollBar" aria-hidden="true">
+          <div class="scrollBarFill" id="newBarFill"></div>
         </div>
-      </div>
-      <div class="card">
-        <img class="img" src="assets/new-3.jpg" alt="신축 이미지 3" />
-        <div class="pad">
-          <div class="itemTitle">펜트</div>
-          <p class="itemDesc">남산뷰 LDK 18M</p>
-        </div>
+        <button class="scrollBtn" id="newNext" aria-label="다음">›</button>
       </div>
     </div>
   </section>
@@ -264,10 +301,6 @@
     </div>
 
     <div class="pressWrap">
-      <!-- ✅ 모바일용 화살표 -->
-      <button class="pressNav pressPrev" id="pressPrev" aria-label="이전 기사">‹</button>
-      <button class="pressNav pressNext" id="pressNext" aria-label="다음 기사">›</button>
-
       <!-- ✅ PC 5열 / 모바일 가로 트랙 -->
       <div class="grid5" id="pressTrack">
         <div class="card pressCard">
@@ -309,19 +342,15 @@
             </div>
           </a>
         </div>
+      </div>
 
-        <!-- ✅ 5열 느낌 제대로 내고 싶으면 5번째 카드 추가 (복사해서 쓰면 됨) -->
-        <!--
-        <div class="card pressCard">
-          <a href="https://example.com" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-5.jpg" alt="기사 썸네일 5" />
-            <div class="pad">
-              <div class="itemTitle">기사 제목 05</div>
-              <div class="meta">출처 · 날짜</div>
-            </div>
-          </a>
+      <!-- ✅ 모바일 컨트롤바(기사) -->
+      <div class="scrollControls" id="pressControls" aria-label="기사 스크롤 컨트롤">
+        <button class="scrollBtn" id="pressPrev" aria-label="이전 기사">‹</button>
+        <div class="scrollBar" aria-hidden="true">
+          <div class="scrollBarFill" id="pressBarFill"></div>
         </div>
-        -->
+        <button class="scrollBtn" id="pressNext" aria-label="다음 기사">›</button>
       </div>
     </div>
   </section>
@@ -392,75 +421,101 @@
   // 연도
   document.getElementById("y").textContent = new Date().getFullYear();
 
-  // ✅ 기사: 모바일 가로 스크롤 화살표 + 자동 스크롤
-  (function(){
-    const track = document.getElementById('pressTrack');
-    const prev = document.getElementById('pressPrev');
-    const next = document.getElementById('pressNext');
-    if(!track || !prev || !next) return;
+  // ✅ 공용 헬퍼: 트랙(가로 스크롤) + 아래 컨트롤바(화살표+진행바) 연결
+  function bindScrollControls(opts){
+    const track = document.getElementById(opts.trackId);
+    const prev  = document.getElementById(opts.prevId);
+    const next  = document.getElementById(opts.nextId);
+    const fill  = document.getElementById(opts.fillId);
+    if(!track || !prev || !next || !fill) return;
 
     function isMobile(){
       return window.matchMedia && window.matchMedia('(max-width: 560px)').matches;
     }
 
-    function updateButtons(){
-      if(!isMobile()){
-        prev.style.display = 'none';
-        next.style.display = 'none';
-        return;
-      }
-      prev.style.display = '';
-      next.style.display = '';
-
-      const maxScroll = track.scrollWidth - track.clientWidth;
-      prev.disabled = track.scrollLeft <= 2;
-      next.disabled = track.scrollLeft >= (maxScroll - 2);
+    function scrollByCard(dir){
+      const card = track.querySelector(opts.cardSelector || '.card');
+      const step = card ? (card.getBoundingClientRect().width + (opts.gap || 12)) : (opts.fallbackStep || 260);
+      track.scrollBy({ left: dir * step, behavior: 'smooth' });
     }
 
-    function scrollByCard(dir){
-      const card = track.querySelector('.pressCard');
-      const step = card ? (card.getBoundingClientRect().width + 12) : 260;
-      track.scrollBy({ left: dir * step, behavior: 'smooth' });
+    function updateUI(){
+      if(!isMobile()) return;
+
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      const x = Math.max(0, Math.min(track.scrollLeft, maxScroll));
+
+      prev.disabled = x <= 2;
+      next.disabled = x >= (maxScroll - 2);
+
+      const pct = maxScroll > 0 ? (x / maxScroll) * 100 : 0;
+      fill.style.width = pct + '%';
     }
 
     prev.addEventListener('click', () => scrollByCard(-1));
     next.addEventListener('click', () => scrollByCard( 1));
-    track.addEventListener('scroll', () => window.requestAnimationFrame(updateButtons));
-    window.addEventListener('resize', updateButtons);
+    track.addEventListener('scroll', () => window.requestAnimationFrame(updateUI));
+    window.addEventListener('resize', updateUI);
 
-    // ✅ 자동 스크롤(모바일에서만)
+    // 자동 스크롤(옵션)
     let timer = null;
     function startAuto(){
       stopAuto();
-      if(!isMobile()) return;
+      if(!opts.auto || !isMobile()) return;
 
       timer = setInterval(() => {
         const maxScroll = track.scrollWidth - track.clientWidth;
         if(maxScroll <= 0) return;
 
-        // 끝에 도달하면 처음으로 부드럽게 돌아가기
         if(track.scrollLeft >= maxScroll - 2){
           track.scrollTo({ left: 0, behavior: 'smooth' });
         }else{
           scrollByCard(1);
         }
-      }, 3200); // 3.2초마다
+      }, opts.autoInterval || 3200);
     }
     function stopAuto(){
       if(timer){ clearInterval(timer); timer = null; }
     }
 
-    // 사용자가 터치/마우스로 조작하면 자동 스크롤 잠깐 멈춤
-    ['pointerdown','touchstart','mouseenter','focusin'].forEach(evt=>{
-      track.addEventListener(evt, stopAuto, {passive:true});
-    });
-    ['pointerup','touchend','mouseleave','focusout'].forEach(evt=>{
-      track.addEventListener(evt, startAuto, {passive:true});
-    });
+    if(opts.auto){
+      ['pointerdown','touchstart','mouseenter','focusin'].forEach(evt=>{
+        track.addEventListener(evt, stopAuto, {passive:true});
+      });
+      ['pointerup','touchend','mouseleave','focusout'].forEach(evt=>{
+        track.addEventListener(evt, startAuto, {passive:true});
+      });
+      window.addEventListener('resize', startAuto);
+    }
 
-    updateButtons();
+    updateUI();
     startAuto();
-  })();
+  }
+
+  // ✅ 기사: 아래 컨트롤바 + 자동 스크롤(모바일)
+  bindScrollControls({
+    trackId: 'pressTrack',
+    prevId: 'pressPrev',
+    nextId: 'pressNext',
+    fillId: 'pressBarFill',
+    cardSelector: '.pressCard',
+    gap: 12,
+    fallbackStep: 260,
+    auto: true,
+    autoInterval: 3200
+  });
+
+  // ✅ 신축: 아래 컨트롤바(자동 스크롤 없음)
+  bindScrollControls({
+    trackId: 'newTrack',
+    prevId: 'newPrev',
+    nextId: 'newNext',
+    fillId: 'newBarFill',
+    cardSelector: '.card',
+    gap: 12,
+    fallbackStep: 280,
+    auto: false
+  });
 </script>
 </body>
 </html>
