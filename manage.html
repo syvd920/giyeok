@@ -1,1 +1,473 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>관리페이지 · 고급주거의기역</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --fg:#111111;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --card:#f9fafb;
+      --radius:14px;
+      --max:980px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", Arial, "Apple SD Gothic Neo", sans-serif;
+      background:var(--bg);
+      color:var(--fg);
+      line-height:1.55;
+    }
+    .wrap{max-width:var(--max); margin:0 auto; padding:24px 16px 60px}
+    h1{margin:0 0 6px; letter-spacing:-.4px}
+    .sub{margin:0 0 18px; color:var(--muted); font-size:14px}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:16px;
+      margin:14px 0;
+    }
+    .grid2{display:grid; gap:12px; grid-template-columns:1fr 1fr}
+    @media (max-width:720px){ .grid2{grid-template-columns:1fr} }
+    label{display:block; font-size:12px; color:var(--muted); margin:10px 0 6px}
+    input, textarea{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:#fff;
+      font:inherit;
+    }
+    textarea{min-height:88px; resize:vertical}
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px}
+    button{
+      appearance:none;
+      border:1px solid var(--line);
+      background:#fff;
+      padding:10px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:650;
+    }
+    button.primary{background:#111; color:#fff; border-color:#111}
+    button:hover{opacity:.92}
+    .hint{color:var(--muted); font-size:12px; margin-top:8px}
+    .miniTitle{font-weight:800; letter-spacing:-.2px; margin:0 0 8px}
+    .itemBox{border:1px dashed #d1d5db; border-radius:12px; padding:12px; background:#fff}
+    .itemHead{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px}
+    .pill{font-size:12px; padding:6px 10px; border:1px solid var(--line); border-radius:999px; color:var(--muted); background:#fff}
+    pre{
+      white-space:pre-wrap;
+      word-break:break-word;
+      background:#0b0b0c;
+      color:#fff;
+      padding:14px;
+      border-radius:12px;
+      overflow:auto;
+      border:1px solid #111;
+    }
+    .warn{color:#b45309; font-size:12px; margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>관리페이지</h1>
+    <p class="sub">여기서 수정 → <b>Export</b> → 나온 블록을 <b>index.html 상단 window.SITE_DATA</b>에 그대로 붙여넣으면 방문자 전원에게 반영됩니다.</p>
 
+    <div class="card">
+      <div class="miniTitle">Market(시세) 텍스트</div>
+      <div class="grid2">
+        <div>
+          <label>좌측 카드 타이틀</label>
+          <input id="mLeftTitle" />
+          <label>좌측 카드 메타(업데이트)</label>
+          <input id="mLeftMeta" />
+        </div>
+        <div>
+          <label>우측 카드 타이틀</label>
+          <input id="mRightTitle" />
+          <label>우측 카드 설명</label>
+          <input id="mRightDesc" />
+        </div>
+      </div>
+      <label>우측 칩(쉼표로 구분)</label>
+      <input id="mRightChips" placeholder="예: 매매,전세,거래량" />
+    </div>
+
+    <div class="card">
+      <div class="miniTitle">신축 섹션</div>
+      <div class="grid2">
+        <div>
+          <label>섹션 제목</label>
+          <input id="newTitle" />
+        </div>
+        <div>
+          <label>섹션 서브문구(모바일 숨김)</label>
+          <input id="newSub" />
+        </div>
+      </div>
+
+      <div id="newItems"></div>
+      <p class="hint">이미지는 index.html에서 <code>assets/new-1.jpg</code> 같은 파일만 교체하면 됩니다(여기서는 제목/설명만).</p>
+    </div>
+
+    <div class="card">
+      <div class="miniTitle">기사(Press) 섹션</div>
+      <div class="grid2">
+        <div>
+          <label>섹션 제목</label>
+          <input id="pressTitle" />
+        </div>
+        <div>
+          <label>섹션 서브문구(모바일 숨김)</label>
+          <input id="pressSub" />
+        </div>
+      </div>
+
+      <div id="pressItems"></div>
+      <p class="hint">각 기사에서 수정: <b>제목/출처/날짜/링크</b>만 바꾸면 됩니다. 썸네일 이미지는 assets/press-*.jpg 교체.</p>
+    </div>
+
+    <div class="card">
+      <div class="miniTitle">콘텐츠(유튜브/블로그)</div>
+      <div class="grid2">
+        <div>
+          <label>섹션 제목</label>
+          <input id="contentTitle" />
+        </div>
+        <div>
+          <label>섹션 서브문구(모바일 숨김)</label>
+          <input id="contentSub" />
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:12px">
+        <div>
+          <div class="itemHead">
+            <div class="pill">YouTube 1~3 (모바일은 1~2만 노출)</div>
+          </div>
+          <div id="ytItems"></div>
+        </div>
+        <div>
+          <div class="itemHead">
+            <div class="pill">Blog 1~3 (모바일은 1~2만 노출)</div>
+          </div>
+          <div id="blogItems"></div>
+        </div>
+      </div>
+
+      <p class="hint">콘텐츠는 <b>제목/링크</b>만 바꾸면 됩니다. 썸네일 이미지는 assets/yt-*.jpg / assets/blog-*.jpg 교체.</p>
+    </div>
+
+    <div class="card">
+      <div class="miniTitle">내보내기 / 가져오기</div>
+      <div class="row">
+        <button class="primary" id="btnExport">Export (index.html에 붙여넣기)</button>
+        <button id="btnCopy">복사</button>
+        <button id="btnImport">Import (붙여넣은 JSON로 채우기)</button>
+        <button id="btnReset">기본값으로 리셋</button>
+      </div>
+      <p class="warn">※ Import는 JSON 또는 <code>window.SITE_DATA = {...}</code> 형태 둘 다 허용합니다.</p>
+      <label>Export 결과</label>
+      <pre id="out"></pre>
+      <label>Import 입력</label>
+      <textarea id="in" placeholder='여기에 JSON 또는 window.SITE_DATA = {...} 를 붙여넣고 Import 누르세요'></textarea>
+    </div>
+  </div>
+
+<script>
+  // 기본 데이터(= index.html의 기본값과 동일하게 맞춰둠)
+  const DEFAULT = {
+    market: {
+      leftTitle: "강남3구 · 마용성",
+      leftMeta: "업데이트: 7일",
+      rightTitle: "핵심 지표",
+      rightDesc: "전세/매매/거래량",
+      rightChips: ["매매","전세","거래량"]
+    },
+    newBuild: {
+      sectionTitle: "한남동 라스코 더 맨션 분양",
+      sectionSub: "“보기 좋은 사진”보다 “설명 가능한 매물” 중심",
+      items: [
+        { title:"외관", desc:"나보나 트래버틴", img:"assets/new-1.jpg", alt:"신축 이미지 1" },
+        { title:"C타입", desc:"남산뷰", img:"assets/new-2.jpg", alt:"신축 이미지 2" },
+        { title:"펜트", desc:"남산뷰 LDK 18M", img:"assets/new-3.jpg", alt:"신축 이미지 3" }
+      ]
+    },
+    press: {
+      sectionTitle: "기사 스크랩",
+      sectionSub: "카드 클릭 → 기사로 이동",
+      items: [
+        { title:"장원영, 137억 ‘이곳’에 쐈다…김태희도 산 한남 고급빌라 어딜까", source:"헤럴드경제", date:"2026-02-16", href:"https://biz.heraldcorp.com/article/10676551?ref=naver", img:"assets/press-1.jpg", alt:"기사 썸네일 1" },
+        { title:"‘국토장관 \"60억원 아파트 50억대로…", source:"조선경제", date:"2026-02-21", href:"https://www.chosun.com/economy/economy_general/2026/02/21/SS3XSFOD7NDOJFDNMPSBUPXVSA/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news", img:"assets/press-2.jpg", alt:"기사 썸네일 2" },
+        { title:"주택 임대사업자 대출 14조 육박…", source:"매일경제", date:"2026-02-21", href:"https://www.mk.co.kr/news/economy/11967769", img:"assets/press-3.jpg", alt:"기사 썸네일 3" },
+        { title:"“1억 아니, 1억5천 낮출게요”…조급해진 다주택자들에 ‘이 동네’ 집값도 하락세", source:"매일경제", date:"2026-02-21", href:"https://www.mk.co.kr/news/realestate/11967967", img:"assets/press-4.jpg", alt:"기사 썸네일 4" },
+        { title:"\"평당 3억 땅에 임대주택?\"… 용산 이어 강남에도 근조화환 등장", source:"조선비즈", date:"2026-02-21", href:"https://biz.chosun.com/real_estate/real_estate_general/2026/02/21/E3GE7VZXGRDIRBCZZHIIU6PBYY/?utm_source=naver&utm_medium=original&utm_campaign=biz", img:"assets/press-5.jpg", alt:"기사 썸네일 5" }
+      ]
+    },
+    content: {
+      sectionTitle: "블로그 & 유튜브",
+      sectionSub: "썸네일 클릭 → 해당 콘텐츠로 이동",
+      youtube: [
+        { title:"제니는 왜 이 집을 골랐을까? Young & Rich Pretty", href:"https://youtu.be/p2p5GNtTvF0", img:"assets/yt-1.jpg", alt:"유튜브 썸네일 1" },
+        { title:"장원영의 집값이 137억? 루시드하우스 완전 분석!", href:"https://youtu.be/luUgVTGmNgo", img:"assets/yt-2.jpg", alt:"유튜브 썸네일 2" },
+        { title:"국내 하이퍼 하이엔드의 정점, 한남동 라스코 더 맨션", href:"https://youtu.be/BfmCFvGPwsE", img:"assets/yt-3.jpg", alt:"유튜브 썸네일 3" }
+      ],
+      blog: [
+        { title:"블랙핑크 제니와 이종석이 산 집?! 연예인들은 어떤 집에 살까?", href:"https://blog.naver.com/0zzabang/224174279026", img:"assets/blog-1.jpg", alt:"블로그 썸네일 1" },
+        { title:"민간도심복합개발 진행된다면.. 최고의 입지 삼성동!", href:"https://blog.naver.com/0zzabang/224171721564", img:"assets/blog-2.jpg", alt:"블로그 썸네일 2" },
+        { title:"04년생이 137억원 집을 샀다?! 장원영의 루시드 하우스", href:"https://blog.naver.com/0zzabang/224168771668", img:"assets/blog-3.jpg", alt:"블로그 썸네일 3" }
+      ]
+    }
+  };
+
+  let state = structuredClone(DEFAULT);
+
+  const $ = (id) => document.getElementById(id);
+
+  function setVal(id, v){ const n = $(id); if(n) n.value = v ?? ""; }
+  function getVal(id){ const n = $(id); return n ? n.value : ""; }
+
+  function renderItemEditors(){
+    // NEW items (title/desc만)
+    const newWrap = $("newItems");
+    newWrap.innerHTML = "";
+    state.newBuild.items.forEach((it, idx) => {
+      const box = document.createElement("div");
+      box.className = "itemBox";
+      box.style.marginTop = "12px";
+      box.innerHTML = `
+        <div class="itemHead">
+          <div class="pill">신축 ${idx+1}</div>
+          <div class="pill">${it.img}</div>
+        </div>
+        <label>타이틀</label>
+        <input data-k="new-title" data-i="${idx}" value="${escape(it.title)}" />
+        <label>설명</label>
+        <input data-k="new-desc" data-i="${idx}" value="${escape(it.desc)}" />
+      `;
+      newWrap.appendChild(box);
+    });
+
+    // Press items
+    const pressWrap = $("pressItems");
+    pressWrap.innerHTML = "";
+    state.press.items.forEach((it, idx) => {
+      const box = document.createElement("div");
+      box.className = "itemBox";
+      box.style.marginTop = "12px";
+      box.innerHTML = `
+        <div class="itemHead">
+          <div class="pill">기사 ${idx+1}</div>
+          <div class="pill">${it.img}</div>
+        </div>
+        <label>제목</label>
+        <input data-k="press-title" data-i="${idx}" value="${escape(it.title)}" />
+        <div class="grid2">
+          <div>
+            <label>출처</label>
+            <input data-k="press-source" data-i="${idx}" value="${escape(it.source)}" />
+          </div>
+          <div>
+            <label>날짜</label>
+            <input data-k="press-date" data-i="${idx}" value="${escape(it.date)}" />
+          </div>
+        </div>
+        <label>링크(URL)</label>
+        <input data-k="press-href" data-i="${idx}" value="${escape(it.href)}" />
+      `;
+      pressWrap.appendChild(box);
+    });
+
+    // YouTube items (title/href만)
+    const ytWrap = $("ytItems");
+    ytWrap.innerHTML = "";
+    state.content.youtube.forEach((it, idx) => {
+      const box = document.createElement("div");
+      box.className = "itemBox";
+      box.style.marginTop = "12px";
+      box.innerHTML = `
+        <div class="itemHead">
+          <div class="pill">YouTube ${idx+1}</div>
+          <div class="pill">${it.img}</div>
+        </div>
+        <label>제목</label>
+        <input data-k="yt-title" data-i="${idx}" value="${escape(it.title)}" />
+        <label>링크(URL)</label>
+        <input data-k="yt-href" data-i="${idx}" value="${escape(it.href)}" />
+      `;
+      ytWrap.appendChild(box);
+    });
+
+    // Blog items
+    const blogWrap = $("blogItems");
+    blogWrap.innerHTML = "";
+    state.content.blog.forEach((it, idx) => {
+      const box = document.createElement("div");
+      box.className = "itemBox";
+      box.style.marginTop = "12px";
+      box.innerHTML = `
+        <div class="itemHead">
+          <div class="pill">Blog ${idx+1}</div>
+          <div class="pill">${it.img}</div>
+        </div>
+        <label>제목</label>
+        <input data-k="blog-title" data-i="${idx}" value="${escape(it.title)}" />
+        <label>링크(URL)</label>
+        <input data-k="blog-href" data-i="${idx}" value="${escape(it.href)}" />
+      `;
+      blogWrap.appendChild(box);
+    });
+  }
+
+  function escape(v){
+    return String(v ?? "").replace(/"/g, "&quot;");
+  }
+
+  function wireInputs(){
+    // 상단 필드
+    setVal("mLeftTitle", state.market.leftTitle);
+    setVal("mLeftMeta",  state.market.leftMeta);
+    setVal("mRightTitle",state.market.rightTitle);
+    setVal("mRightDesc", state.market.rightDesc);
+    setVal("mRightChips", state.market.rightChips.join(","));
+
+    setVal("newTitle", state.newBuild.sectionTitle);
+    setVal("newSub", state.newBuild.sectionSub);
+
+    setVal("pressTitle", state.press.sectionTitle);
+    setVal("pressSub", state.press.sectionSub);
+
+    setVal("contentTitle", state.content.sectionTitle);
+    setVal("contentSub", state.content.sectionSub);
+
+    renderItemEditors();
+
+    // 이벤트 위임
+    document.body.addEventListener("input", (e) => {
+      const t = e.target;
+      if(!(t instanceof HTMLInputElement)) return;
+
+      const k = t.dataset.k;
+      const i = Number(t.dataset.i);
+
+      if(!k){
+        // 상단 기본 필드
+        state.market.leftTitle  = getVal("mLeftTitle");
+        state.market.leftMeta   = getVal("mLeftMeta");
+        state.market.rightTitle = getVal("mRightTitle");
+        state.market.rightDesc  = getVal("mRightDesc");
+        state.market.rightChips = getVal("mRightChips").split(",").map(s=>s.trim()).filter(Boolean);
+
+        state.newBuild.sectionTitle = getVal("newTitle");
+        state.newBuild.sectionSub   = getVal("newSub");
+
+        state.press.sectionTitle = getVal("pressTitle");
+        state.press.sectionSub   = getVal("pressSub");
+
+        state.content.sectionTitle = getVal("contentTitle");
+        state.content.sectionSub   = getVal("contentSub");
+        return;
+      }
+
+      // Item 필드
+      if(k === "new-title") state.newBuild.items[i].title = t.value;
+      if(k === "new-desc")  state.newBuild.items[i].desc  = t.value;
+
+      if(k === "press-title")  state.press.items[i].title  = t.value;
+      if(k === "press-source") state.press.items[i].source = t.value;
+      if(k === "press-date")   state.press.items[i].date   = t.value;
+      if(k === "press-href")   state.press.items[i].href   = t.value;
+
+      if(k === "yt-title") state.content.youtube[i].title = t.value;
+      if(k === "yt-href")  state.content.youtube[i].href  = t.value;
+
+      if(k === "blog-title") state.content.blog[i].title = t.value;
+      if(k === "blog-href")  state.content.blog[i].href  = t.value;
+    }, {passive:true});
+  }
+
+  function exportBlock(){
+    const json = JSON.stringify(state, null, 2);
+    return `window.SITE_DATA = ${json};`;
+  }
+
+  function setOut(){
+    $("out").textContent = exportBlock();
+  }
+
+  function parseImport(txt){
+    let s = txt.trim();
+    if(!s) throw new Error("빈 값입니다.");
+
+    // window.SITE_DATA = ...; 형태면 우변만 추출
+    const m = s.match(/window\.SITE_DATA\s*=\s*([\s\S]*?);?\s*$/);
+    if(m) s = m[1].trim();
+
+    // JSON 파싱
+    const obj = JSON.parse(s);
+    return obj;
+  }
+
+  // buttons
+  $("btnExport").addEventListener("click", () => {
+    // 상단 필드 동기화 한번 더
+    state.market.leftTitle  = getVal("mLeftTitle");
+    state.market.leftMeta   = getVal("mLeftMeta");
+    state.market.rightTitle = getVal("mRightTitle");
+    state.market.rightDesc  = getVal("mRightDesc");
+    state.market.rightChips = getVal("mRightChips").split(",").map(s=>s.trim()).filter(Boolean);
+
+    state.newBuild.sectionTitle = getVal("newTitle");
+    state.newBuild.sectionSub   = getVal("newSub");
+
+    state.press.sectionTitle = getVal("pressTitle");
+    state.press.sectionSub   = getVal("pressSub");
+
+    state.content.sectionTitle = getVal("contentTitle");
+    state.content.sectionSub   = getVal("contentSub");
+
+    setOut();
+    window.scrollTo({top: document.body.scrollHeight, behavior:"smooth"});
+  });
+
+  $("btnCopy").addEventListener("click", async () => {
+    const text = $("out").textContent || "";
+    if(!text.trim()) setOut();
+    try{
+      await navigator.clipboard.writeText($("out").textContent);
+      alert("복사 완료! index.html 상단 window.SITE_DATA 블록에 붙여넣으세요.");
+    }catch(e){
+      alert("복사 실패(브라우저 권한). Export 결과를 직접 드래그해서 복사해 주세요.");
+    }
+  });
+
+  $("btnImport").addEventListener("click", () => {
+    try{
+      const obj = parseImport(getVal("in"));
+      state = obj;
+      wireInputs();
+      setOut();
+      alert("Import 완료! Export 눌러서 index.html에 붙여넣으면 반영됩니다.");
+    }catch(e){
+      alert("Import 실패: " + e.message);
+    }
+  });
+
+  $("btnReset").addEventListener("click", () => {
+    state = structuredClone(DEFAULT);
+    wireInputs();
+    setOut();
+  });
+
+  // init
+  wireInputs();
+  setOut();
+</script>
+</body>
+</html>
