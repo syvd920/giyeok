@@ -88,16 +88,43 @@
     .pressCard a{ text-decoration:none; display:block }
     .pressCard:hover{ transform:translateY(-2px); transition:.18s ease; box-shadow:0 10px 30px rgba(0,0,0,.06) }
 
-/* ✅ 기사 섹션 */
-#press .img{
-  height: 110px;
-  aspect-ratio: 1 / 1;   /* 정사각 기준 */
-  object-fit: contain;   /* ✅ 안 잘리게 */
-  background: #fff;      /* 레터박스 배경 */
-}
-    #press .pressCard .pad{ padding:10px; }
-    #press .itemTitle{ font-size:14px; line-height:1.3; margin-top:8px; }
-    #press .meta{ font-size:12px; }
+    /* =================================================
+       PRESS(기사) 정리
+       - 썸네일: "이상한 레터박스" 없애고 깔끔하게 cover
+       - 제목/메타 간격 벌리기
+       - 제목 2줄 말줄임
+    ================================================= */
+    #press .img{
+      height: 120px;
+      aspect-ratio: 16 / 9;     /* ✅ 기사 카드 비주얼 통일 */
+      object-fit: cover;        /* ✅ 레터박스 제거 */
+      object-position:center;
+      background:#eaecef;
+    }
+    #press .pressCard .pad{
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;                  /* ✅ 제목-메타 간격 */
+    }
+    #press .itemTitle{
+      margin:0;
+      font-size:14px;
+      line-height:1.35;
+      font-weight:650;
+
+      /* ✅ 2줄 말줄임 */
+      display:-webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow:hidden;
+    }
+    #press .meta{
+      margin:0;
+      font-size:12px;
+      line-height:1.2;
+      color:var(--muted);
+    }
 
     /* 공용: 아래 컨트롤바(화살표+진행바) */
     .scrollControls{
@@ -131,42 +158,64 @@
       transition:width .12s ease;
     }
 
-    /* NEW 섹션: 제목 한 줄 + 타이포(크기는 secTitle 기본값 사용 → 기사와 동일) */
+    /* NEW 섹션: 제목 한 줄 */
     .nowrap{ white-space:nowrap; }
     #new .secTitle h2{
       font-weight:700;
-      letter-spacing:-.3px;   /* 기사와 동일 톤 */
+      letter-spacing:-.3px;
       word-break:keep-all;
     }
 
-    /* CONTENT: 유튜브/블로그 2열 고정(PC도 2열) */
-#content .contentGrid{
-  display:grid;
-  gap:16px;
-  grid-template-columns:repeat(2,1fr); /* 기본: 2열(태블릿/모바일) */
-}
+    /* =================================================
+       CONTENT(유튜브/블로그) 정리
+       - PC: 3열(2행)
+       - 태블릿/모바일: 2열
+       - 모바일: 2x2(yt1,yt2,blog1,blog2)만 노출
+       - 유튜브 제목 영역이 너무 커지는 문제: 패딩/마진/2줄말줄임 통일
+    ================================================= */
+    #content .contentGrid{
+      display:grid;
+      gap:16px;
+      grid-template-columns:repeat(2,1fr); /* 기본: 2열 */
+    }
+    @media (min-width: 981px){
+      #content .contentGrid{
+        grid-template-columns:repeat(3,1fr); /* ✅ PC: 3열 */
+      }
+    }
 
-/* ✅ PC에선 3열 → 6개가 3열 2행 */
-@media (min-width: 981px){
-  #content .contentGrid{
-    grid-template-columns:repeat(3,1fr);
-  }
-}
-
-    /* CONTENT 썸네일 비율 */
     #content .thumbYt{ aspect-ratio:16/9; }
     #content .thumbBlog{ aspect-ratio:1/1; }
 
-    /* CONTENT 카드 타이포 조금 컴팩트 */
-    #content .pressCard .pad{ padding:12px; }
-    #content .itemTitle{ font-size:14px; line-height:1.25; margin-top:8px; }
-    #content .meta{ font-size:12px; }
+    #content .pressCard .pad{
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    #content .itemTitle{
+      margin:0;
+      font-size:14px;
+      line-height:1.3;
+      font-weight:650;
 
-    /* PC에서 2열일 때 너무 커 보이면 이미지 높이 살짝 제한(선택) */
+      /* ✅ 2줄 말줄임(유튜브/블로그 동일) */
+      display:-webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow:hidden;
+    }
+    #content .meta{
+      margin:0;
+      font-size:12px;
+      line-height:1.2;
+      color:var(--muted);
+    }
+
+    /* PC에서 이미지 너무 길어 보이는 거 살짝 제한 */
     @media (min-width: 981px){
-      #content .thumbYt{ max-height:260px; }
-      #content .thumbBlog{ max-height:260px; }
-      #content .thumbYt, #content .thumbBlog{ width:100%; object-fit:cover; }
+      #content .thumbYt{ max-height:260px; width:100%; object-fit:cover; }
+      #content .thumbBlog{ max-height:260px; width:100%; object-fit:cover; }
     }
 
     .cta{
@@ -209,7 +258,7 @@
       .menu{display:none}
       h1{font-size:32px}
 
-      /* 모바일 섹션 타이틀 크기 통일(NEW/기사 동일) */
+      /* 모바일 섹션 타이틀 크기 통일 */
       .secTitle h2{ font-size:20px; }
       .secTitle p{ font-size:13px; }
 
@@ -232,9 +281,8 @@
       }
       #press .scrollControls{ display:flex; }
 
-      /* NEW 모바일: 서브문구 숨김 + 가로 스크롤 + 카드 비율 안정화 */
+      /* NEW 모바일: 서브문구 숨김 + 가로 스크롤 */
       #new .secTitle p{ display:none; }
-
       #new .img{
         height:180px;
         aspect-ratio:auto;
@@ -257,20 +305,11 @@
       }
       #new .scrollControls{ display:flex; }
 
-      /* CONTENT: 모바일에서는 유튜브3/블로그3 숨김 → 유튜브1~2 + 블로그1~2 = 2열 2행 */
+      /* CONTENT: 모바일은 2x2만 노출 */
       #content .onlyDesktop{ display:none !important; }
-
-      /* CONTENT: 모바일에서 너무 세로 길어 보이면 카드 패딩/타이포 더 타이트 */
       #content .pressCard .pad{ padding:10px; }
       #content .itemTitle{ font-size:13.5px; }
     }
-    /* ✅ 기사 제목 2줄 제한 + 말줄임 */
-#press .itemTitle{
-  display:-webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow:hidden;
-}
   </style>
 </head>
 
@@ -417,9 +456,9 @@
           </a>
         </div>
 
-         <div class="card pressCard">
+        <div class="card pressCard">
           <a href="https://biz.chosun.com/real_estate/real_estate_general/2026/02/21/E3GE7VZXGRDIRBCZZHIIU6PBYY/?utm_source=naver&utm_medium=original&utm_campaign=biz" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-4.jpg" alt="기사 썸네일 4" />
+            <img class="img" src="assets/press-5.jpg" alt="기사 썸네일 5" />
             <div class="pad">
               <div class="itemTitle">"평당 3억 땅에 임대주택?"… 용산 이어 강남에도 근조화환 등장</div>
               <div class="meta">조선비즈 · 2026-02-21</div>
@@ -446,7 +485,7 @@
       <p>썸네일 클릭 → 해당 콘텐츠로 이동</p>
     </div>
 
-    <!-- ✅ 2열 그리드(PC도 2열) + 모바일은 2x2만 남김 -->
+    <!-- ✅ 순서 고정: PC 3열 2행에서 1행=유튜브123, 2행=블로그123 -->
     <div class="contentGrid">
 
       <!-- YouTube 1 -->
@@ -471,6 +510,17 @@
         </a>
       </div>
 
+      <!-- YouTube 3 (모바일 숨김) -->
+      <div class="card pressCard onlyDesktop">
+        <a href="https://youtube.com" target="_blank" rel="noreferrer">
+          <img class="img thumbYt" src="assets/yt-3.jpg" alt="유튜브 썸네일 3" />
+          <div class="pad">
+            <div class="itemTitle">유튜브 제목 03</div>
+            <div class="meta">YouTube</div>
+          </div>
+        </a>
+      </div>
+
       <!-- Blog 1 -->
       <div class="card pressCard">
         <a href="https://blog.naver.com" target="_blank" rel="noreferrer">
@@ -489,17 +539,6 @@
           <div class="pad">
             <div class="itemTitle">블로그 글 제목 02</div>
             <div class="meta">Blog</div>
-          </div>
-        </a>
-      </div>
-
-      <!-- YouTube 3 (모바일 숨김) -->
-      <div class="card pressCard onlyDesktop">
-        <a href="https://youtube.com" target="_blank" rel="noreferrer">
-          <img class="img thumbYt" src="assets/yt-3.jpg" alt="유튜브 썸네일 3" />
-          <div class="pad">
-            <div class="itemTitle">유튜브 제목 03</div>
-            <div class="meta">YouTube</div>
           </div>
         </a>
       </div>
