@@ -6,6 +6,53 @@
   <title>강남3구·마용성 부동산 인사이트</title>
   <meta name="description" content="강남3구·마용성 시세 흐름, 신축 하이엔드, 부동산 뉴스, 콘텐츠를 한 페이지에." />
 
+  <!-- ✅ 여기만 바꾸면 전체 반영 (manage.html에서 Export해서 붙여넣기) -->
+  <script>
+  window.SITE_DATA = {
+    "market": {
+      "leftTitle": "강남3구 · 마용성",
+      "leftMeta": "업데이트: 7일",
+      "rightTitle": "핵심 지표",
+      "rightDesc": "전세/매매/거래량",
+      "rightChips": ["매매","전세","거래량"]
+    },
+    "newBuild": {
+      "sectionTitle": "한남동 라스코 더 맨션 분양",
+      "sectionSub": "“보기 좋은 사진”보다 “설명 가능한 매물” 중심",
+      "items": [
+        {"title":"외관","desc":"나보나 트래버틴","img":"assets/new-1.jpg","alt":"신축 이미지 1"},
+        {"title":"C타입","desc":"남산뷰","img":"assets/new-2.jpg","alt":"신축 이미지 2"},
+        {"title":"펜트","desc":"남산뷰 LDK 18M","img":"assets/new-3.jpg","alt":"신축 이미지 3"}
+      ]
+    },
+    "press": {
+      "sectionTitle": "기사 스크랩",
+      "sectionSub": "카드 클릭 → 기사로 이동",
+      "items": [
+        {"title":"장원영, 137억 ‘이곳’에 쐈다…김태희도 산 한남 고급빌라 어딜까","source":"헤럴드경제","date":"2026-02-16","href":"https://biz.heraldcorp.com/article/10676551?ref=naver","img":"assets/press-1.jpg","alt":"기사 썸네일 1"},
+        {"title":"‘국토장관 \"60억원 아파트 50억대로…","source":"조선경제","date":"2026-02-21","href":"https://www.chosun.com/economy/economy_general/2026/02/21/SS3XSFOD7NDOJFDNMPSBUPXVSA/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news","img":"assets/press-2.jpg","alt":"기사 썸네일 2"},
+        {"title":"주택 임대사업자 대출 14조 육박…","source":"매일경제","date":"2026-02-21","href":"https://www.mk.co.kr/news/economy/11967769","img":"assets/press-3.jpg","alt":"기사 썸네일 3"},
+        {"title":"“1억 아니, 1억5천 낮출게요”…조급해진 다주택자들에 ‘이 동네’ 집값도 하락세","source":"매일경제","date":"2026-02-21","href":"https://www.mk.co.kr/news/realestate/11967967","img":"assets/press-4.jpg","alt":"기사 썸네일 4"},
+        {"title":"\"평당 3억 땅에 임대주택?\"… 용산 이어 강남에도 근조화환 등장","source":"조선비즈","date":"2026-02-21","href":"https://biz.chosun.com/real_estate/real_estate_general/2026/02/21/E3GE7VZXGRDIRBCZZHIIU6PBYY/?utm_source=naver&utm_medium=original&utm_campaign=biz","img":"assets/press-5.jpg","alt":"기사 썸네일 5"}
+      ]
+    },
+    "content": {
+      "sectionTitle": "블로그 & 유튜브",
+      "sectionSub": "썸네일 클릭 → 해당 콘텐츠로 이동",
+      "youtube": [
+        {"title":"제니는 왜 이 집을 골랐을까? Young & Rich Pretty","href":"https://youtu.be/p2p5GNtTvF0","img":"assets/yt-1.jpg","alt":"유튜브 썸네일 1"},
+        {"title":"장원영의 집값이 137억? 루시드하우스 완전 분석!","href":"https://youtu.be/luUgVTGmNgo","img":"assets/yt-2.jpg","alt":"유튜브 썸네일 2"},
+        {"title":"국내 하이퍼 하이엔드의 정점, 한남동 라스코 더 맨션","href":"https://youtu.be/BfmCFvGPwsE","img":"assets/yt-3.jpg","alt":"유튜브 썸네일 3"}
+      ],
+      "blog": [
+        {"title":"블랙핑크 제니와 이종석이 산 집?! 연예인들은 어떤 집에 살까?","href":"https://blog.naver.com/0zzabang/224174279026","img":"assets/blog-1.jpg","alt":"블로그 썸네일 1"},
+        {"title":"민간도심복합개발 진행된다면.. 최고의 입지 삼성동!","href":"https://blog.naver.com/0zzabang/224171721564","img":"assets/blog-2.jpg","alt":"블로그 썸네일 2"},
+        {"title":"04년생이 137억원 집을 샀다?! 장원영의 루시드 하우스","href":"https://blog.naver.com/0zzabang/224168771668","img":"assets/blog-3.jpg","alt":"블로그 썸네일 3"}
+      ]
+    }
+  };
+  </script>
+
   <style>
     :root{
       --bg:#ffffff;
@@ -15,20 +62,7 @@
       --card:#f9fafb;
       --max:1120px;
       --radius:18px;
-
-      /* 은은한 배지 톤 */
-      --yt-bg: rgba(239, 68, 68, .10);
-      --yt-bd: rgba(239, 68, 68, .22);
-      --yt-fg: #991b1b;
-
-      --blog-bg: rgba(16, 185, 129, .10);
-      --blog-bd: rgba(16, 185, 129, .22);
-      --blog-fg: #065f46;
-
-      /* 캡(도형) 배경 */
-      --cap-bg: #f3f4f6;
     }
-
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -46,7 +80,10 @@
       border-bottom:1px solid var(--line);
       z-index:20;
     }
-    .nav{display:flex; align-items:center; justify-content:space-between; height:64px;}
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      height:64px;
+    }
     .brand{font-weight:700; letter-spacing:-.2px}
     .menu{display:flex; gap:14px; font-size:14px; color:var(--muted)}
     .menu a{ text-decoration:none; padding:8px 10px; border-radius:999px }
@@ -56,7 +93,10 @@
     .kicker{color:var(--muted); font-size:14px; margin:0 0 10px}
     h1{font-size:40px; letter-spacing:-.8px; margin:0 0 12px}
     .sub{color:var(--muted); margin:0 0 22px; max-width:60ch}
-    .heroGrid{display:grid; gap:16px; grid-template-columns: 1.15fr .85fr;}
+    .heroGrid{
+      display:grid; gap:16px;
+      grid-template-columns: 1.15fr .85fr;
+    }
 
     .card{
       background:var(--card);
@@ -64,7 +104,6 @@
       border-radius:var(--radius);
       overflow:hidden;
     }
-
     .img{
       width:100%;
       aspect-ratio: 16 / 9;
@@ -72,7 +111,6 @@
       display:block;
       background:#eaecef;
     }
-
     .pad{padding:18px}
     .meta{font-size:13px; color:var(--muted)}
     .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
@@ -89,25 +127,20 @@
     .grid3{display:grid; gap:16px; grid-template-columns:repeat(3,1fr)}
     .grid5{display:grid; gap:16px; grid-template-columns:repeat(5,1fr)}
 
-    .pressCard a{ text-decoration:none; display:block; height:100%; }
+    .itemTitle{margin:0; font-weight:650}
+    .itemDesc{margin:6px 0 0; color:var(--muted); font-size:14px}
+
+    .pressCard .pad{padding:14px}
+    .pressCard a{ text-decoration:none; display:block }
     .pressCard:hover{ transform:translateY(-2px); transition:.18s ease; box-shadow:0 10px 30px rgba(0,0,0,.06) }
 
-    .nowrap{ white-space:nowrap; }
-
-    /* =========================
-       PRESS(기사) (너가 해결됐다고 해서 유지용 최소)
-    ========================= */
-    #press .thumbWrap{
-      position:relative;
-      aspect-ratio:16/9;
+    /* ========= PRESS(기사) ========= */
+    #press .img{
+      height: 120px;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      object-position:center;
       background:#eaecef;
-      overflow:hidden;
-    }
-    #press .thumbWrap img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
     }
     #press .pressCard .pad{
       padding:12px;
@@ -116,20 +149,15 @@
       gap:8px;
     }
     #press .itemTitle{
-      margin:0;
       font-size:14px;
       line-height:1.35;
       font-weight:650;
-
       display:-webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow:hidden;
-
-      max-height:calc(1.35em * 2);
     }
     #press .meta{
-      margin:0;
       font-size:12px;
       line-height:1.2;
       color:var(--muted);
@@ -138,124 +166,71 @@
       text-overflow:ellipsis;
     }
 
-    /* =========================
-       CONTENT(유튜브/블로그)
-       ✅ 그룹별 캡 1개씩
-    ========================= */
-    #content .contentGroup{ margin-top:14px; }
-    #content .contentGroup:first-of-type{ margin-top:0; }
+    /* ========= NEW ========= */
+    .nowrap{ white-space:nowrap; }
+    #new .secTitle h2{font-weight:700; word-break:keep-all;}
 
-    /* 캡(도형): 그룹 폭을 꽉 채움 */
-    .groupCap{
-      display:flex;
-      align-items:center;
-      justify-content:flex-start;
-      gap:10px;
-
-      padding:12px 14px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:var(--cap-bg);
-      margin: 0 0 12px;
-    }
-    .groupCap--yt{
-      background: linear-gradient(180deg, var(--yt-bg), rgba(243,244,246,1));
-    }
-    .groupCap--blog{
-      background: linear-gradient(180deg, var(--blog-bg), rgba(243,244,246,1));
-    }
-
-    .capBadge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 12px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:800;
-      border:1px solid transparent;
-      background:#fff;
-      white-space:nowrap;
-    }
-    .capBadge .dot{
-      width:7px; height:7px; border-radius:999px;
-      background:currentColor;
-      opacity:.75;
-    }
-    .capBadge--yt{ color:var(--yt-fg); border-color:var(--yt-bd); }
-    .capBadge--blog{ color:var(--blog-fg); border-color:var(--blog-bd); }
-
-    .capSub{
-      min-width:0;
-      flex:1;
-      font-size:12.5px;
-      color:var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    /* 그룹 그리드 */
-    .contentGrid{
+    /* ========= CONTENT ========= */
+    #content .contentGrid{
       display:grid;
       gap:16px;
-      grid-template-columns:repeat(2,1fr);
+      grid-template-columns:repeat(2,1fr); /* 기본: 2열 */
     }
     @media (min-width: 981px){
-      .contentGrid{ grid-template-columns:repeat(3,1fr); }
+      #content .contentGrid{ grid-template-columns:repeat(3,1fr); } /* PC: 3열 */
     }
-
-    /* 썸네일 랩 */
-    .thumbWrap{ position:relative; overflow:hidden; background:#eaecef; }
-    .thumbWrap.yt{ aspect-ratio:16/9; }
-    .thumbWrap.blog{ aspect-ratio:1/1; }
-    .thumbWrap img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-
-    /* 제목 영역 */
+    #content .thumbYt{ aspect-ratio:16/9; }
+    #content .thumbBlog{ aspect-ratio:1/1; }
     #content .pressCard .pad{
-      padding:14px;
+      padding:12px;
       display:flex;
       flex-direction:column;
-      gap:12px; /* ✅ PC에서 답답함 완화 */
+      gap:10px; /* ✅ PC에서 덜 답답하게 */
     }
     #content .itemTitle{
-      margin:0;
       font-size:14px;
-      line-height:1.32;
+      line-height:1.3;
       font-weight:650;
-
       display:-webkit-box;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2; /* 모바일/태블릿 2줄 */
+      -webkit-line-clamp: 2;
       overflow:hidden;
-      max-height:calc(1.32em * 2);
     }
+
+    /* PC에서 제목은 1줄(칸 커지는 현상 방지) */
     @media (min-width: 981px){
-      /* ✅ PC: 제목 1줄 고정 */
       #content .itemTitle{
-        display:block;
         white-space:nowrap;
         overflow:hidden;
         text-overflow:ellipsis;
-        max-height:none;
+        display:block;
       }
-      /* PC에서 위아래 간격 살짝 더 */
-      #content .pressCard .pad{ padding:16px; gap:14px; }
     }
 
-    /* 모바일에서는 2x2만 보이게 */
-    .onlyDesktop{ display:block; }
-    @media (max-width: 560px){
-      .onlyDesktop{ display:none !important; }
+    /* ========= 모바일 캐러셀 컨트롤: 점(도트) ========= */
+    .dots{
+      display:none;
+      gap:8px;
+      justify-content:center;
+      align-items:center;
+      margin-top:10px;
+    }
+    .dot{
+      width:6px; height:6px;
+      border-radius:999px;
+      background:#d1d5db;
+      transition:transform .15s ease, background .15s ease;
+    }
+    .dot.is-active{
+      background:#111;
+      transform:scale(1.35);
     }
 
-    /* CTA / Footer */
-    .cta{ background:#0b0b0c; color:#fff; border-top:1px solid #111; }
+    .cta{
+      background:#0b0b0c;
+      color:#fff;
+      border-top:1px solid #111;
+    }
     .ctaBox{
       display:flex; align-items:center; justify-content:space-between; gap:18px;
       padding:26px; border-radius:var(--radius);
@@ -279,9 +254,6 @@
     footer{padding:26px 0; color:var(--muted); font-size:13px; border-top:1px solid var(--line)}
     .hr{height:1px; background:var(--line); margin:8px 0 0}
 
-    /* =========================
-       반응형
-    ========================= */
     @media (max-width: 980px){
       .heroGrid{grid-template-columns:1fr}
       .grid3{grid-template-columns:repeat(2,1fr)}
@@ -296,14 +268,58 @@
       .secTitle h2{ font-size:20px; }
       .secTitle p{ font-size:13px; }
 
-      /* 캡(도형) 모바일 크기 */
-      .groupCap{ padding:10px 12px; margin-bottom:10px; }
-      .capBadge{ padding:6px 10px; font-size:11px; }
-      .capBadge .dot{ width:6px; height:6px; }
-      .capSub{ font-size:12px; }
+      /* ✅ 모바일: PRESS/NEW 설명문구 숨김 */
+      #press .secTitle p{ display:none; }
+      #new .secTitle p{ display:none; }
+      #content .secTitle p{ display:none; }
 
-      #content .pressCard .pad{ padding:12px; gap:10px; }
-      #content .itemTitle{ font-size:13.5px; }
+      /* ✅ 모바일: PRESS 캐러셀 */
+      #press .grid5{
+        display:flex;
+        gap:12px;
+        overflow-x:auto;
+        padding: 6px 18px 10px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior:smooth;
+      }
+      #press .pressCard{
+        flex:0 0 auto;
+        min-width: 240px;
+        scroll-snap-align:start;
+      }
+      #press .img{ height:110px; } /* 모바일에서 너무 커지지 않게 */
+      #press .itemTitle{
+        line-height:1.35;
+        height:calc(1.35em * 2); /* 2줄 높이 고정 */
+        overflow:hidden;
+        display:block; /* iOS 안정 */
+      }
+      #press .dots{ display:flex; }
+
+      /* ✅ 모바일: NEW 캐러셀 */
+      #new .grid3{
+        display:flex;
+        gap:14px;
+        overflow-x:auto;
+        padding:6px 18px 10px;
+        scroll-snap-type:x mandatory;
+        -webkit-overflow-scrolling:touch;
+        scroll-behavior:smooth;
+      }
+      #new .grid3 .card{
+        flex:0 0 auto;
+        min-width:260px;
+        scroll-snap-align:start;
+      }
+      #new .img{ height:180px; aspect-ratio:auto; }
+      #new .pad{ padding:14px; }
+      #new .dots{ display:flex; }
+
+      /* ✅ 모바일: 콘텐츠는 2x2만 (yt1~2 + blog1~2) */
+      #content .onlyDesktop{ display:none !important; }
+      #content .pressCard .pad{ padding:10px; gap:8px; }
+      #content .itemTitle{ font-size:13.5px; display:-webkit-box; -webkit-line-clamp:2; }
     }
   </style>
 </head>
@@ -334,8 +350,8 @@
         <img class="img" src="assets/market-map.jpg" alt="강남3구·마용성 지도 이미지" />
         <div class="pad">
           <div style="display:flex; justify-content:space-between; gap:10px; align-items:baseline;">
-            <div style="font-weight:650;">강남3구 · 마용성</div>
-            <div class="meta">업데이트: 7일</div>
+            <div style="font-weight:650;" id="mLeftTitle">강남3구 · 마용성</div>
+            <div class="meta" id="mLeftMeta">업데이트: 7일</div>
           </div>
           <div class="chips">
             <span class="chip">강남</span><span class="chip">서초</span><span class="chip">송파</span>
@@ -347,9 +363,9 @@
       <div class="card">
         <img class="img" src="assets/market-chart.jpg" alt="시세 차트 이미지" />
         <div class="pad">
-          <div style="font-weight:650;">핵심 지표</div>
-          <p class="meta" style="margin:8px 0 0;">전세/매매/거래량</p>
-          <div class="chips">
+          <div style="font-weight:650;" id="mRightTitle">핵심 지표</div>
+          <p class="itemDesc" style="margin-top:8px;" id="mRightDesc">전세/매매/거래량</p>
+          <div class="chips" id="mRightChips">
             <span class="chip">매매</span><span class="chip">전세</span><span class="chip">거래량</span>
           </div>
         </div>
@@ -357,180 +373,40 @@
     </div>
   </section>
 
-  <!-- NEW BUILD (원래 쓰던 그대로 두는 영역) -->
+  <!-- NEW BUILD -->
   <section id="new">
     <div class="secTitle">
-      <h2><span class="nowrap">한남동 라스코 더 맨션 분양</span></h2>
-      <p>“보기 좋은 사진”보다 “설명 가능한 매물” 중심</p>
+      <h2><span class="nowrap" id="newTitle">한남동 라스코 더 맨션 분양</span></h2>
+      <p id="newSub">“보기 좋은 사진”보다 “설명 가능한 매물” 중심</p>
     </div>
 
-    <div class="grid3" id="newTrack">
-      <div class="card">
-        <img class="img" src="assets/new-1.jpg" alt="신축 이미지 1" />
-        <div class="pad">
-          <div style="font-weight:650;">외관</div>
-          <p class="meta" style="margin:6px 0 0;">나보나 트래버틴</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <img class="img" src="assets/new-2.jpg" alt="신축 이미지 2" />
-        <div class="pad">
-          <div style="font-weight:650;">C타입</div>
-          <p class="meta" style="margin:6px 0 0;">남산뷰</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <img class="img" src="assets/new-3.jpg" alt="신축 이미지 3" />
-        <div class="pad">
-          <div style="font-weight:650;">펜트</div>
-          <p class="meta" style="margin:6px 0 0;">남산뷰 LDK 18M</p>
-        </div>
-      </div>
+    <div class="newWrap">
+      <div class="grid3" id="newTrack"></div>
+      <div class="dots" id="newDots" aria-label="신축 도트"></div>
     </div>
   </section>
 
-  <!-- PRESS (원래 쓰던 그대로 두는 영역) -->
+  <!-- PRESS -->
   <section id="press">
     <div class="secTitle">
-      <h2>기사 스크랩</h2>
-      <p>카드 클릭 → 기사로 이동</p>
+      <h2 id="pressTitle">기사 스크랩</h2>
+      <p id="pressSub">카드 클릭 → 기사로 이동</p>
     </div>
 
-    <div class="grid5" id="pressTrack">
-      <div class="card pressCard">
-        <a href="https://biz.heraldcorp.com/article/10676551?ref=naver" target="_blank" rel="noreferrer">
-          <div class="thumbWrap"><img src="assets/press-1.jpg" alt="기사 썸네일 1"></div>
-          <div class="pad">
-            <div class="itemTitle">장원영, 137억 ‘이곳’에 쐈다…김태희도 산 한남 고급빌라 어딜까</div>
-            <div class="meta">헤럴드경제 · 2026-02-16</div>
-          </div>
-        </a>
-      </div>
-
-      <div class="card pressCard">
-        <a href="https://www.chosun.com/economy/economy_general/2026/02/21/SS3XSFOD7NDOJFDNMPSBUPXVSA/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news" target="_blank" rel="noreferrer">
-          <div class="thumbWrap"><img src="assets/press-2.jpg" alt="기사 썸네일 2"></div>
-          <div class="pad">
-            <div class="itemTitle">‘국토장관 "60억원 아파트 50억대로…</div>
-            <div class="meta">조선경제 · 2026-02-21</div>
-          </div>
-        </a>
-      </div>
-
-      <div class="card pressCard">
-        <a href="https://www.mk.co.kr/news/economy/11967769" target="_blank" rel="noreferrer">
-          <div class="thumbWrap"><img src="assets/press-3.jpg" alt="기사 썸네일 3"></div>
-          <div class="pad">
-            <div class="itemTitle">주택 임대사업자 대출 14조 육박…</div>
-            <div class="meta">매일경제 · 2026-02-21</div>
-          </div>
-        </a>
-      </div>
-
-      <div class="card pressCard">
-        <a href="https://www.mk.co.kr/news/realestate/11967967" target="_blank" rel="noreferrer">
-          <div class="thumbWrap"><img src="assets/press-4.jpg" alt="기사 썸네일 4"></div>
-          <div class="pad">
-            <div class="itemTitle">“1억 아니, 1억5천 낮출게요”…조급해진 다주택자들에 ‘이 동네’ 집값도 하락세</div>
-            <div class="meta">매일경제 · 2026-02-21</div>
-          </div>
-        </a>
-      </div>
-
-      <div class="card pressCard">
-        <a href="https://biz.chosun.com/real_estate/real_estate_general/2026/02/21/E3GE7VZXGRDIRBCZZHIIU6PBYY/?utm_source=naver&utm_medium=original&utm_campaign=biz" target="_blank" rel="noreferrer">
-          <div class="thumbWrap"><img src="assets/press-5.jpg" alt="기사 썸네일 5"></div>
-          <div class="pad">
-            <div class="itemTitle">"평당 3억 땅에 임대주택?"… 용산 이어 강남에도 근조화환 등장</div>
-            <div class="meta">조선비즈 · 2026-02-21</div>
-          </div>
-        </a>
-      </div>
+    <div class="pressWrap">
+      <div class="grid5" id="pressTrack"></div>
+      <div class="dots" id="pressDots" aria-label="기사 도트"></div>
     </div>
   </section>
 
   <!-- CONTENT -->
   <section id="content">
     <div class="secTitle">
-      <h2>블로그 & 유튜브</h2>
-      <p>썸네일 클릭 → 해당 콘텐츠로 이동</p>
+      <h2 id="contentTitle">블로그 & 유튜브</h2>
+      <p id="contentSub">썸네일 클릭 → 해당 콘텐츠로 이동</p>
     </div>
 
-    <!-- ✅ 유튜브 그룹 -->
-    <div class="contentGroup">
-      <div class="groupCap groupCap--yt">
-        <span class="capBadge capBadge--yt"><span class="dot"></span>YouTube</span>
-        <span class="capSub">하이엔드 매물 중심 · 3~6분 요약/분석</span>
-      </div>
-
-      <div class="contentGrid">
-        <div class="card pressCard">
-          <a href="https://youtu.be/p2p5GNtTvF0" target="_blank" rel="noreferrer">
-            <div class="thumbWrap yt"><img src="assets/yt-1.jpg" alt="유튜브 썸네일 1"></div>
-            <div class="pad">
-              <div class="itemTitle">제니는 왜 이 집을 골랐을까? Young & Rich Pretty</div>
-            </div>
-          </a>
-        </div>
-
-        <div class="card pressCard">
-          <a href="https://youtu.be/luUgVTGmNgo" target="_blank" rel="noreferrer">
-            <div class="thumbWrap yt"><img src="assets/yt-2.jpg" alt="유튜브 썸네일 2"></div>
-            <div class="pad">
-              <div class="itemTitle">장원영의 집값이 137억? 루시드하우스 완전 분석!</div>
-            </div>
-          </a>
-        </div>
-
-        <div class="card pressCard onlyDesktop">
-          <a href="https://youtu.be/BfmCFvGPwsE" target="_blank" rel="noreferrer">
-            <div class="thumbWrap yt"><img src="assets/yt-3.jpg" alt="유튜브 썸네일 3"></div>
-            <div class="pad">
-              <div class="itemTitle">국내 하이퍼 하이엔드의 정점, 한남동 라스코 더 맨션</div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- ✅ 블로그 그룹 -->
-    <div class="contentGroup">
-      <div class="groupCap groupCap--blog">
-        <span class="capBadge capBadge--blog"><span class="dot"></span>Blog</span>
-        <span class="capSub">주간 인사이트 · 핵심 포인트만 정리</span>
-      </div>
-
-      <div class="contentGrid">
-        <div class="card pressCard">
-          <a href="https://blog.naver.com/0zzabang/224174279026" target="_blank" rel="noreferrer">
-            <div class="thumbWrap blog"><img src="assets/blog-1.jpg" alt="블로그 썸네일 1"></div>
-            <div class="pad">
-              <div class="itemTitle">블랙핑크 제니와 이종석이 산 집?! 연예인들은 어떤 집에 살까?</div>
-            </div>
-          </a>
-        </div>
-
-        <div class="card pressCard">
-          <a href="https://blog.naver.com/0zzabang/224171721564" target="_blank" rel="noreferrer">
-            <div class="thumbWrap blog"><img src="assets/blog-2.jpg" alt="블로그 썸네일 2"></div>
-            <div class="pad">
-              <div class="itemTitle">민간도심복합개발 진행된다면.. 최고의 입지 삼성동!</div>
-            </div>
-          </a>
-        </div>
-
-        <div class="card pressCard onlyDesktop">
-          <a href="https://blog.naver.com/0zzabang/224168771668" target="_blank" rel="noreferrer">
-            <div class="thumbWrap blog"><img src="assets/blog-3.jpg" alt="블로그 썸네일 3"></div>
-            <div class="pad">
-              <div class="itemTitle">04년생이 137억원 집을 샀다?! 장원영의 루시드 하우스</div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
+    <div class="contentGrid" id="contentGrid"></div>
   </section>
 
 </main>
@@ -556,7 +432,185 @@
 </footer>
 
 <script>
+  // 연도
   document.getElementById("y").textContent = new Date().getFullYear();
+
+  const DATA = window.SITE_DATA || {};
+
+  function el(id){ return document.getElementById(id); }
+  function isMobile(){ return window.matchMedia && window.matchMedia('(max-width: 560px)').matches; }
+
+  function safeText(node, text){
+    if(!node) return;
+    node.textContent = (text ?? "");
+  }
+
+  function renderMarket(){
+    const m = DATA.market || {};
+    safeText(el("mLeftTitle"), m.leftTitle || "강남3구 · 마용성");
+    safeText(el("mLeftMeta"),  m.leftMeta  || "업데이트: 수시");
+    safeText(el("mRightTitle"),m.rightTitle|| "핵심 지표");
+    safeText(el("mRightDesc"), m.rightDesc || "전세/매매/거래량");
+
+    const chipsWrap = el("mRightChips");
+    if(chipsWrap && Array.isArray(m.rightChips)){
+      chipsWrap.innerHTML = m.rightChips.map(t => `<span class="chip">${escapeHtml(t)}</span>`).join("");
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, s => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[s]));
+  }
+
+  function pressCardHTML(item){
+    const title = escapeHtml(item.title || "");
+    const meta  = escapeHtml(`${item.source || ""} · ${item.date || ""}`.trim());
+    const href  = item.href || "#";
+    const img   = item.img  || "";
+    const alt   = escapeHtml(item.alt || "기사 썸네일");
+    return `
+      <div class="card pressCard">
+        <a href="${href}" target="_blank" rel="noreferrer">
+          <img class="img" src="${img}" alt="${alt}" />
+          <div class="pad">
+            <div class="itemTitle">${title}</div>
+            <div class="meta">${meta}</div>
+          </div>
+        </a>
+      </div>
+    `;
+  }
+
+  function newCardHTML(item){
+    const title = escapeHtml(item.title || "");
+    const desc  = escapeHtml(item.desc  || "");
+    const img   = item.img  || "";
+    const alt   = escapeHtml(item.alt || "신축 이미지");
+    return `
+      <div class="card">
+        <img class="img" src="${img}" alt="${alt}" />
+        <div class="pad">
+          <div class="itemTitle">${title}</div>
+          <p class="itemDesc">${desc}</p>
+        </div>
+      </div>
+    `;
+  }
+
+  function contentCardHTML(kind, item, onlyDesktop){
+    // kind: "youtube" | "blog"
+    const title = escapeHtml(item.title || "");
+    const href  = item.href || "#";
+    const img   = item.img  || "";
+    const alt   = escapeHtml(item.alt || (kind === "youtube" ? "유튜브 썸네일" : "블로그 썸네일"));
+    const cls   = `card pressCard ${onlyDesktop ? "onlyDesktop" : ""}`.trim();
+    const imgCls= `img ${kind === "youtube" ? "thumbYt" : "thumbBlog"}`;
+    return `
+      <div class="${cls}">
+        <a href="${href}" target="_blank" rel="noreferrer">
+          <img class="${imgCls}" src="${img}" alt="${alt}" />
+          <div class="pad">
+            <div class="itemTitle">${title}</div>
+          </div>
+        </a>
+      </div>
+    `;
+  }
+
+  function renderNew(){
+    const n = DATA.newBuild || {};
+    safeText(el("newTitle"), n.sectionTitle || "한남동 라스코 더 맨션 분양");
+    safeText(el("newSub"),   n.sectionSub || "");
+
+    const track = el("newTrack");
+    if(!track) return;
+
+    const items = Array.isArray(n.items) ? n.items : [];
+    track.innerHTML = items.map(newCardHTML).join("");
+  }
+
+  function renderPress(){
+    const p = DATA.press || {};
+    safeText(el("pressTitle"), p.sectionTitle || "기사 스크랩");
+    safeText(el("pressSub"),   p.sectionSub || "");
+
+    const track = el("pressTrack");
+    if(!track) return;
+
+    const items = Array.isArray(p.items) ? p.items : [];
+    track.innerHTML = items.map(pressCardHTML).join("");
+  }
+
+  function renderContent(){
+    const c = DATA.content || {};
+    safeText(el("contentTitle"), c.sectionTitle || "블로그 & 유튜브");
+    safeText(el("contentSub"),   c.sectionSub || "");
+
+    const grid = el("contentGrid");
+    if(!grid) return;
+
+    const yt = Array.isArray(c.youtube) ? c.youtube : [];
+    const bl = Array.isArray(c.blog) ? c.blog : [];
+
+    // ✅ PC: 1행 유튜브 3개, 2행 블로그 3개 (순서 고정)
+    // ✅ 모바일: yt 2개 + blog 2개만 보이도록 3번째들은 onlyDesktop 처리
+    const ytHTML = yt.map((it, idx) => contentCardHTML("youtube", it, idx >= 2)).join("");
+    const blHTML = bl.map((it, idx) => contentCardHTML("blog", it, idx >= 2)).join("");
+    grid.innerHTML = ytHTML + blHTML;
+  }
+
+  // ===== 모바일 도트(점) 표시: 현재 카드 인덱스 기반 =====
+  function bindDots(trackId, dotsId, cardSelector){
+    const track = el(trackId);
+    const dotsWrap = el(dotsId);
+    if(!track || !dotsWrap) return;
+
+    function buildDots(){
+      const cards = Array.from(track.querySelectorAll(cardSelector));
+      if(cards.length === 0){ dotsWrap.innerHTML = ""; return; }
+      // 모바일만 보이므로, 모바일에서만 "보이는 카드수" 기준으로 도트 생성
+      dotsWrap.innerHTML = cards.map(() => `<span class="dot"></span>`).join("");
+      setActiveDot();
+    }
+
+    function setActiveDot(){
+      if(!isMobile()) return;
+      const cards = Array.from(track.querySelectorAll(cardSelector));
+      const dots  = Array.from(dotsWrap.querySelectorAll(".dot"));
+      if(cards.length === 0 || dots.length === 0) return;
+
+      // 가장 왼쪽에 가까운 카드가 active
+      const trackLeft = track.getBoundingClientRect().left;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+      cards.forEach((card, idx) => {
+        const dist = Math.abs(card.getBoundingClientRect().left - trackLeft);
+        if(dist < bestDist){ bestDist = dist; bestIdx = idx; }
+      });
+
+      dots.forEach((d,i)=> d.classList.toggle("is-active", i === bestIdx));
+    }
+
+    track.addEventListener("scroll", () => requestAnimationFrame(setActiveDot), {passive:true});
+    window.addEventListener("resize", () => {
+      buildDots();
+      requestAnimationFrame(setActiveDot);
+    });
+
+    buildDots();
+  }
+
+  // 초기 렌더
+  renderMarket();
+  renderNew();
+  renderPress();
+  renderContent();
+
+  // 모바일 도트 바인딩(NEW/PRESS)
+  bindDots("pressTrack", "pressDots", ".pressCard");
+  bindDots("newTrack", "newDots", ".card");
 </script>
 </body>
 </html>
