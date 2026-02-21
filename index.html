@@ -89,15 +89,29 @@
     .pressCard:hover{ transform:translateY(-2px); transition:.18s ease; box-shadow:0 10px 30px rgba(0,0,0,.06) }
 
     /* =================================================
-       PRESS(기사) 기본(PC/태블릿)
+       ✅ 썸네일 프레임(비율 고정) - 모바일 길쭉 문제 원천 차단
     ================================================= */
-    #press .img{
-      height: 120px;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      object-position:center;
+    .thumbFrame{
+      position:relative;
+      width:100%;
+      overflow:hidden;
       background:#eaecef;
     }
+    .thumb16x9{ aspect-ratio:16/9; }
+    .thumb1x1{ aspect-ratio:1/1; }
+    .thumbFrame > img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+      display:block;
+    }
+
+    /* =================================================
+       PRESS(기사) 기본(PC/태블릿)
+    ================================================= */
     #press .pressCard .pad{
       padding:12px;
       display:flex;
@@ -109,8 +123,6 @@
       font-size:14px;
       line-height:1.35;
       font-weight:650;
-
-      /* 기본: 2줄 말줄임(PC/태블릿) */
       display:-webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
@@ -123,11 +135,16 @@
       color:var(--muted);
     }
 
-    /* 공용: 아래 컨트롤바(화살표+점) */
+    /* =================================================
+       ✅ 스크롤 컨트롤(화살표 + DOT)
+       - 진행바(%) 제거
+       - 무한루프에서도 "원본 인덱스" 기준으로 점 표시
+    ================================================= */
     .scrollControls{
       display:none;
-      gap:12px;
       align-items:center;
+      justify-content:space-between;
+      gap:12px;
       margin-top:10px;
     }
     .scrollBtn{
@@ -139,29 +156,26 @@
       cursor:pointer;
       user-select:none;
     }
+    .scrollBtn:active{ transform:scale(.98); }
     .scrollBtn:disabled{ opacity:.35; cursor:default; }
 
-    /* ✅ dots indicator */
     .dots{
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:6px;
+      gap:8px;
       flex:1;
     }
     .dot{
-      width:6px;
-      height:6px;
+      width:6px; height:6px;
       border-radius:999px;
       background:#d1d5db; /* gray-300 */
-      transform:scale(1);
-      transition:transform .15s ease, background .15s ease, opacity .15s ease;
-      opacity:.9;
+      transition:transform .15s ease, background .15s ease, width .15s ease;
     }
     .dot.is-active{
       background:#111;
-      transform:scale(1.35);
-      opacity:1;
+      transform:scale(1.25);
+      width:10px;
     }
 
     /* NEW 섹션: 제목 한 줄 */
@@ -173,7 +187,45 @@
     }
 
     /* =================================================
+       ✅ 배지(YouTube/Blog) — 썸네일 위가 아니라 텍스트 영역
+       - 은은한 색상 차별 + 묻힘 없음
+    ================================================= */
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:750;
+      letter-spacing:-.2px;
+      line-height:1;
+      user-select:none;
+      width:max-content;
+      border:1px solid rgba(0,0,0,.10);
+      background:#fff;
+      color:#111;
+      box-shadow:0 1px 0 rgba(0,0,0,.02);
+    }
+    .badge--yt{
+      background:rgba(239, 68, 68, .10);
+      border-color:rgba(239, 68, 68, .20);
+      color:#b91c1c;
+    }
+    .badge--blog{
+      background:rgba(16, 185, 129, .10);
+      border-color:rgba(16, 185, 129, .20);
+      color:#047857;
+    }
+    .badge--yt::before{ content:"▶"; font-size:11px; line-height:1; }
+    .badge--blog::before{ content:"✎"; font-size:12px; line-height:1; }
+
+    /* =================================================
        CONTENT(유튜브/블로그)
+       - PC: 3열(2행)
+       - 태블릿/모바일: 2열
+       - 모바일: 2x2(yt1,yt2,blog1,blog2)만 노출
+       - "제목칸 답답" → 배지/제목 사이 간격 살짝 늘림 + meta 간격 정리
     ================================================= */
     #content .contentGrid{
       display:grid;
@@ -182,23 +234,23 @@
     }
     @media (min-width: 981px){
       #content .contentGrid{
-        grid-template-columns:repeat(3,1fr); /* PC: 3열 */
+        grid-template-columns:repeat(3,1fr);
       }
     }
-
-    #content .thumbYt{ aspect-ratio:16/9; }
-    #content .thumbBlog{ aspect-ratio:1/1; }
 
     #content .pressCard .pad{
       padding:12px;
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:8px;              /* ✅ 전체 간격 살짝 */
     }
+
+    #content .badge{ margin-bottom:2px; } /* ✅ 배지와 제목 사이 숨 쉴 틈 */
+
     #content .itemTitle{
       margin:0;
       font-size:14px;
-      line-height:1.3;
+      line-height:1.35;
       font-weight:650;
 
       /* 기본: 2줄 */
@@ -214,7 +266,7 @@
       color:var(--muted);
     }
 
-    /* ✅ PC에서 제목은 1줄 고정(칸 커지는 문제 해결) */
+    /* ✅ PC에서 제목 1줄 고정(칸 커지는 문제 해결) */
     @media (min-width: 981px){
       #content .itemTitle{
         white-space:nowrap;
@@ -222,53 +274,6 @@
         text-overflow:ellipsis;
         display:block;
       }
-
-      /* ✅ 유튜브만 max-height 유지(원하면 둘 다 빼도 됨) */
-      #content .thumbYt{
-        max-height:260px;
-        width:100%;
-        object-fit:cover;
-      }
-      /* ✅ 블로그는 1:1 유지하려면 max-height 제거 */
-      #content .thumbBlog{
-        max-height:none;
-        width:100%;
-        object-fit:cover;
-      }
-    }
-
-    /* =================================================
-       ✅ 유튜브/블로그 구분 배지(썸네일 위)
-    ================================================= */
-    .mediaThumb{ position:relative; }
-    .badge{
-      position:absolute;
-      top:10px;
-      left:10px;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:-.2px;
-      border:1px solid rgba(0,0,0,.12);
-      background:rgba(255,255,255,.92);
-      backdrop-filter: blur(8px);
-      color:#111;
-      user-select:none;
-      z-index:3;
-    }
-    .badge--yt::before{
-      content:"▶";
-      font-size:11px;
-      line-height:1;
-    }
-    .badge--blog::before{
-      content:"✎";
-      font-size:12px;
-      line-height:1;
     }
 
     .cta{
@@ -311,36 +316,13 @@
       .menu{display:none}
       h1{font-size:32px}
 
-      /* 모바일 섹션 타이틀 크기 통일 */
       .secTitle h2{ font-size:20px; }
       .secTitle p{ font-size:13px; }
 
       /* PRESS: 모바일에서는 설명문구 숨김 */
       #press .secTitle p{ display:none; }
 
-      /* ✅ 모바일 PRESS 썸네일 높이/비율 강제(길쭉해 보이는 것 방지) */
-      #press .img{
-        height:110px;
-        width:100%;
-        object-fit:cover;
-        object-position:center;
-      }
-
-      /* ✅ 모바일 PRESS: 카드 높이 들쭉날쭉 방지 */
-      #press .pressCard .pad{ gap:6px; }
-      #press .itemTitle{
-        line-height:1.35;
-        height:calc(1.35em * 2); /* 2줄 높이 고정 */
-        overflow:hidden;
-        display:block;           /* iOS에서 clamp 흔들림 방지 */
-      }
-      #press .meta{
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-      }
-
-      /* PRESS 모바일: 가로 스크롤 트랙 + 컨트롤 */
+      /* PRESS 모바일: 가로 스크롤 트랙 */
       #press .grid5{
         display:flex;
         gap:12px;
@@ -357,15 +339,20 @@
       }
       #press .scrollControls{ display:flex; }
 
+      /* ✅ 모바일 PRESS: 카드 들쭉날쭉 방지(제목 2줄 높이 고정) */
+      #press .itemTitle{
+        height:calc(1.35em * 2);
+        overflow:hidden;
+        display:block; /* iOS clamp 흔들림 방지 */
+      }
+      #press .meta{
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+
       /* NEW 모바일: 서브문구 숨김 + 가로 스크롤 */
       #new .secTitle p{ display:none; }
-      #new .img{
-        height:180px;
-        aspect-ratio:auto;
-        object-fit:cover;
-      }
-      #new .pad{ padding:14px; }
-
       #new .grid3.newTrack{
         display:flex;
         gap:14px;
@@ -384,16 +371,9 @@
 
       /* CONTENT: 모바일은 2x2만 노출 */
       #content .onlyDesktop{ display:none !important; }
-      #content .pressCard .pad{ padding:10px; }
+      #content .pressCard .pad{ padding:10px; gap:8px; }
       #content .itemTitle{ font-size:13.5px; }
-
-      /* 배지 모바일 조금 더 컴팩트 */
-      .badge{
-        top:8px;
-        left:8px;
-        padding:5px 9px;
-        font-size:11px;
-      }
+      .badge{ padding:5px 9px; font-size:11px; }
     }
   </style>
 </head>
@@ -457,7 +437,9 @@
     <div class="newWrap">
       <div class="grid3 newTrack" id="newTrack">
         <div class="card">
-          <img class="img" src="assets/new-1.jpg" alt="신축 이미지 1" />
+          <div class="thumbFrame thumb16x9">
+            <img src="assets/new-1.jpg" alt="신축 이미지 1" />
+          </div>
           <div class="pad">
             <div class="itemTitle">외관</div>
             <p class="itemDesc">나보나 트래버틴</p>
@@ -465,7 +447,9 @@
         </div>
 
         <div class="card">
-          <img class="img" src="assets/new-2.jpg" alt="신축 이미지 2" />
+          <div class="thumbFrame thumb16x9">
+            <img src="assets/new-2.jpg" alt="신축 이미지 2" />
+          </div>
           <div class="pad">
             <div class="itemTitle">C타입</div>
             <p class="itemDesc">남산뷰</p>
@@ -473,7 +457,9 @@
         </div>
 
         <div class="card">
-          <img class="img" src="assets/new-3.jpg" alt="신축 이미지 3" />
+          <div class="thumbFrame thumb16x9">
+            <img src="assets/new-3.jpg" alt="신축 이미지 3" />
+          </div>
           <div class="pad">
             <div class="itemTitle">펜트</div>
             <p class="itemDesc">남산뷰 LDK 18M</p>
@@ -481,10 +467,10 @@
         </div>
       </div>
 
-      <!-- 모바일 컨트롤(신축) : 진행바→점 -->
+      <!-- 모바일 컨트롤(신축) -->
       <div class="scrollControls" id="newControls" aria-label="신축 스크롤 컨트롤">
         <button class="scrollBtn" id="newPrev" aria-label="이전">‹</button>
-        <div class="dots" id="newDots" aria-hidden="true"></div>
+        <div class="dots" id="newDots" aria-label="슬라이드 위치"></div>
         <button class="scrollBtn" id="newNext" aria-label="다음">›</button>
       </div>
     </div>
@@ -501,7 +487,9 @@
       <div class="grid5" id="pressTrack">
         <div class="card pressCard">
           <a href="https://biz.heraldcorp.com/article/10676551?ref=naver" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-1.jpg" alt="기사 썸네일 1" />
+            <div class="thumbFrame thumb16x9">
+              <img src="assets/press-1.jpg" alt="기사 썸네일 1" />
+            </div>
             <div class="pad">
               <div class="itemTitle">장원영, 137억 ‘이곳’에 쐈다…김태희도 산 한남 고급빌라 어딜까</div>
               <div class="meta">헤럴드경제 · 2026-02-16</div>
@@ -511,9 +499,11 @@
 
         <div class="card pressCard">
           <a href="https://www.chosun.com/economy/economy_general/2026/02/21/SS3XSFOD7NDOJFDNMPSBUPXVSA/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-2.jpg" alt="기사 썸네일 2" />
+            <div class="thumbFrame thumb16x9">
+              <img src="assets/press-2.jpg" alt="기사 썸네일 2" />
+            </div>
             <div class="pad">
-              <div class="itemTitle">‘국토장관 "60억원 아파트 50억대로…</div>
+              <div class="itemTitle">국토장관 “60억원 아파트 50억대로…”</div>
               <div class="meta">조선경제 · 2026-02-21</div>
             </div>
           </a>
@@ -521,7 +511,9 @@
 
         <div class="card pressCard">
           <a href="https://www.mk.co.kr/news/economy/11967769" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-3.jpg" alt="기사 썸네일 3" />
+            <div class="thumbFrame thumb16x9">
+              <img src="assets/press-3.jpg" alt="기사 썸네일 3" />
+            </div>
             <div class="pad">
               <div class="itemTitle">주택 임대사업자 대출 14조 육박…</div>
               <div class="meta">매일경제 · 2026-02-21</div>
@@ -531,9 +523,11 @@
 
         <div class="card pressCard">
           <a href="https://www.mk.co.kr/news/realestate/11967967" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-4.jpg" alt="기사 썸네일 4" />
+            <div class="thumbFrame thumb16x9">
+              <img src="assets/press-4.jpg" alt="기사 썸네일 4" />
+            </div>
             <div class="pad">
-              <div class="itemTitle">“1억 아니, 1억5천 낮출게요”…조급해진 다주택자들에 ‘이 동네’ 집값도 하락세</div>
+              <div class="itemTitle">“1억 아니, 1억5천 낮출게요”… 조급해진 다주택자들</div>
               <div class="meta">매일경제 · 2026-02-21</div>
             </div>
           </a>
@@ -541,19 +535,21 @@
 
         <div class="card pressCard">
           <a href="https://biz.chosun.com/real_estate/real_estate_general/2026/02/21/E3GE7VZXGRDIRBCZZHIIU6PBYY/?utm_source=naver&utm_medium=original&utm_campaign=biz" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-5.jpg" alt="기사 썸네일 5" />
+            <div class="thumbFrame thumb16x9">
+              <img src="assets/press-5.jpg" alt="기사 썸네일 5" />
+            </div>
             <div class="pad">
-              <div class="itemTitle">"평당 3억 땅에 임대주택?"… 용산 이어 강남에도 근조화환 등장</div>
+              <div class="itemTitle">“평당 3억 땅에 임대주택?”… 용산 이어 강남에도 근조화환</div>
               <div class="meta">조선비즈 · 2026-02-21</div>
             </div>
           </a>
         </div>
       </div>
 
-      <!-- 모바일 컨트롤(기사) : 진행바→점 -->
+      <!-- 모바일 컨트롤(기사) -->
       <div class="scrollControls" id="pressControls" aria-label="기사 스크롤 컨트롤">
         <button class="scrollBtn" id="pressPrev" aria-label="이전 기사">‹</button>
-        <div class="dots" id="pressDots" aria-hidden="true"></div>
+        <div class="dots" id="pressDots" aria-label="슬라이드 위치"></div>
         <button class="scrollBtn" id="pressNext" aria-label="다음 기사">›</button>
       </div>
     </div>
@@ -571,13 +567,13 @@
       <!-- YouTube 1 -->
       <div class="card pressCard">
         <a href="https://youtu.be/p2p5GNtTvF0" target="_blank" rel="noreferrer">
-          <div class="mediaThumb">
-            <span class="badge badge--yt">YouTube</span>
-            <img class="img thumbYt" src="assets/yt-1.jpg" alt="유튜브 썸네일 1" />
+          <div class="thumbFrame thumb16x9">
+            <img src="assets/yt-1.jpg" alt="유튜브 썸네일 1" />
           </div>
           <div class="pad">
+            <span class="badge badge--yt">YouTube</span>
             <div class="itemTitle">제니는 왜 이 집을 골랐을까? Young & Rich Pretty</div>
-            <div class="meta">YouTube 고급주거의기역</div>
+            <div class="meta">고급주거의기역</div>
           </div>
         </a>
       </div>
@@ -585,13 +581,13 @@
       <!-- YouTube 2 -->
       <div class="card pressCard">
         <a href="https://youtu.be/luUgVTGmNgo" target="_blank" rel="noreferrer">
-          <div class="mediaThumb">
-            <span class="badge badge--yt">YouTube</span>
-            <img class="img thumbYt" src="assets/yt-2.jpg" alt="유튜브 썸네일 2" />
+          <div class="thumbFrame thumb16x9">
+            <img src="assets/yt-2.jpg" alt="유튜브 썸네일 2" />
           </div>
           <div class="pad">
+            <span class="badge badge--yt">YouTube</span>
             <div class="itemTitle">장원영의 집값이 137억? 루시드하우스 완전 분석!</div>
-            <div class="meta">YouTube 고급주거의기역</div>
+            <div class="meta">고급주거의기역</div>
           </div>
         </a>
       </div>
@@ -599,13 +595,13 @@
       <!-- YouTube 3 (모바일 숨김) -->
       <div class="card pressCard onlyDesktop">
         <a href="https://youtu.be/BfmCFvGPwsE" target="_blank" rel="noreferrer">
-          <div class="mediaThumb">
-            <span class="badge badge--yt">YouTube</span>
-            <img class="img thumbYt" src="assets/yt-3.jpg" alt="유튜브 썸네일 3" />
+          <div class="thumbFrame thumb16x9">
+            <img src="assets/yt-3.jpg" alt="유튜브 썸네일 3" />
           </div>
           <div class="pad">
+            <span class="badge badge--yt">YouTube</span>
             <div class="itemTitle">국내 하이퍼 하이엔드의 정점, 한남동 라스코 더 맨션</div>
-            <div class="meta">YouTube 고급주거의기역</div>
+            <div class="meta">고급주거의기역</div>
           </div>
         </a>
       </div>
@@ -613,13 +609,13 @@
       <!-- Blog 1 -->
       <div class="card pressCard">
         <a href="https://blog.naver.com/0zzabang/224174279026" target="_blank" rel="noreferrer">
-          <div class="mediaThumb">
-            <span class="badge badge--blog">Blog</span>
-            <img class="img thumbBlog" src="assets/blog-1.jpg" alt="블로그 썸네일 1" />
+          <div class="thumbFrame thumb1x1">
+            <img src="assets/blog-1.jpg" alt="블로그 썸네일 1" />
           </div>
           <div class="pad">
+            <span class="badge badge--blog">Blog</span>
             <div class="itemTitle">블랙핑크 제니와 이종석이 산 집?! 연예인들은 어떤 집에 살까?</div>
-            <div class="meta">Blog 고급주거의기역</div>
+            <div class="meta">고급주거의기역</div>
           </div>
         </a>
       </div>
@@ -627,13 +623,13 @@
       <!-- Blog 2 -->
       <div class="card pressCard">
         <a href="https://blog.naver.com/0zzabang/224171721564" target="_blank" rel="noreferrer">
-          <div class="mediaThumb">
-            <span class="badge badge--blog">Blog</span>
-            <img class="img thumbBlog" src="assets/blog-2.jpg" alt="블로그 썸네일 2" />
+          <div class="thumbFrame thumb1x1">
+            <img src="assets/blog-2.jpg" alt="블로그 썸네일 2" />
           </div>
           <div class="pad">
+            <span class="badge badge--blog">Blog</span>
             <div class="itemTitle">민간도심복합개발 진행된다면.. 최고의 입지 삼성동!</div>
-            <div class="meta">Blog 고급주거의기역</div>
+            <div class="meta">고급주거의기역</div>
           </div>
         </a>
       </div>
@@ -641,13 +637,13 @@
       <!-- Blog 3 (모바일 숨김) -->
       <div class="card pressCard onlyDesktop">
         <a href="https://blog.naver.com/0zzabang/224168771668" target="_blank" rel="noreferrer">
-          <div class="mediaThumb">
-            <span class="badge badge--blog">Blog</span>
-            <img class="img thumbBlog" src="assets/blog-3.jpg" alt="블로그 썸네일 3" />
+          <div class="thumbFrame thumb1x1">
+            <img src="assets/blog-3.jpg" alt="블로그 썸네일 3" />
           </div>
           <div class="pad">
+            <span class="badge badge--blog">Blog</span>
             <div class="itemTitle">04년생이 137억원 집을 샀다?! 장원영의 루시드 하우스</div>
-            <div class="meta">Blog 고급주거의기역</div>
+            <div class="meta">고급주거의기역</div>
           </div>
         </a>
       </div>
@@ -685,36 +681,16 @@
     return window.matchMedia && window.matchMedia('(max-width: 560px)').matches;
   }
 
-  // ✅ dots 렌더
-  function renderDots(dotsEl, count){
-    if(!dotsEl) return;
-    dotsEl.innerHTML = '';
-    for(let i=0;i<count;i++){
-      const d = document.createElement('span');
-      d.className = 'dot' + (i===0 ? ' is-active' : '');
-      d.dataset.index = String(i);
-      dotsEl.appendChild(d);
-    }
-  }
-
-  function setActiveDot(dotsEl, activeIndex){
-    if(!dotsEl) return;
-    const dots = Array.from(dotsEl.querySelectorAll('.dot'));
-    dots.forEach((d, i) => d.classList.toggle('is-active', i === activeIndex));
-  }
-
-  // ✅ 모바일: 무한 스크롤(앞/뒤 1장씩 복제해서 루프)
+  // ✅ 모바일: 무한루프(앞/뒤 1장 복제) + "뚝" 끊김 완화(스크롤 멈춘 뒤 텔레포트)
   function enableInfiniteLoop(opts){
     const track = document.getElementById(opts.trackId);
     if(!track) return;
-
-    // 이미 적용했으면 중복 적용 방지
     if(track.dataset.infinite === '1') return;
 
     const cardSelector = opts.cardSelector || '.card';
-    const getOriginalCards = () => Array.from(track.querySelectorAll(cardSelector)).filter(el => !el.dataset.clone);
+    const gap = opts.gap || 12;
 
-    const originals = getOriginalCards();
+    const originals = Array.from(track.querySelectorAll(cardSelector)).filter(el => !el.dataset.clone);
     if(originals.length < 2) return;
 
     const first = originals[0].cloneNode(true);
@@ -724,13 +700,12 @@
 
     track.insertBefore(last, track.firstChild);
     track.appendChild(first);
-
     track.dataset.infinite = '1';
 
     function getStep(){
       const card = track.querySelector(cardSelector);
       const w = card ? card.getBoundingClientRect().width : (opts.fallbackStep || 260);
-      return w + (opts.gap || 12);
+      return w + gap;
     }
 
     function snapToFirstOriginal(noSmooth){
@@ -740,29 +715,28 @@
       if(noSmooth) requestAnimationFrame(()=> track.style.scrollBehavior = '');
     }
 
-    let ticking = false;
+    let scrollEndTimer = null;
+
+    function maybeTeleport(){
+      const step = getStep();
+      const maxScroll = track.scrollWidth - track.clientWidth;
+
+      if(track.scrollLeft <= 1){
+        track.style.scrollBehavior = 'auto';
+        track.scrollLeft = maxScroll - step - 1;
+        requestAnimationFrame(()=> track.style.scrollBehavior = '');
+        return;
+      }
+      if(track.scrollLeft >= maxScroll - 1){
+        track.style.scrollBehavior = 'auto';
+        track.scrollLeft = step + 1;
+        requestAnimationFrame(()=> track.style.scrollBehavior = '');
+      }
+    }
+
     function onScroll(){
-      if(ticking) return;
-      ticking = true;
-
-      requestAnimationFrame(() => {
-        ticking = false;
-
-        const step = getStep();
-        const maxScroll = track.scrollWidth - track.clientWidth;
-
-        if(track.scrollLeft <= 1){
-          track.style.scrollBehavior = 'auto';
-          track.scrollLeft = maxScroll - step - 1;
-          requestAnimationFrame(()=> track.style.scrollBehavior = '');
-        }
-
-        if(track.scrollLeft >= maxScroll - 1){
-          track.style.scrollBehavior = 'auto';
-          track.scrollLeft = step + 1;
-          requestAnimationFrame(()=> track.style.scrollBehavior = '');
-        }
-      });
+      if(scrollEndTimer) clearTimeout(scrollEndTimer);
+      scrollEndTimer = setTimeout(maybeTeleport, 80);
     }
 
     track.addEventListener('scroll', onScroll, {passive:true});
@@ -774,73 +748,88 @@
     snapToFirstOriginal(true);
   }
 
-  // ✅ 현재 “원본 기준” 인덱스 계산 (clone 제외)
-  function getActiveIndexFromTrack(opts){
-    const track = document.getElementById(opts.trackId);
-    if(!track) return 0;
-    const cardSelector = opts.cardSelector || '.card';
-    const gap = opts.gap || 12;
-
-    const cardsAll = Array.from(track.querySelectorAll(cardSelector));
-    const originals = cardsAll.filter(el => !el.dataset.clone);
-    const total = originals.length || 1;
-
-    const card = track.querySelector(cardSelector);
-    const w = card ? card.getBoundingClientRect().width : (opts.fallbackStep || 260);
-    const step = w + gap;
-
-    // scrollLeft/step 기반으로 “현재 카드” 추정
-    // clone이 앞에 1개 있으므로 -1 보정
-    let idx = Math.round(track.scrollLeft / step) - 1;
-
-    // wrap
-    idx = ((idx % total) + total) % total;
-    return idx;
+  // ✅ DOT 생성/업데이트(원본 카드 수 기준)
+  function setupDots(dotsEl, count){
+    dotsEl.innerHTML = '';
+    for(let i=0;i<count;i++){
+      const d = document.createElement('span');
+      d.className = 'dot' + (i===0 ? ' is-active' : '');
+      dotsEl.appendChild(d);
+    }
+  }
+  function setActiveDot(dotsEl, idx){
+    const dots = Array.from(dotsEl.querySelectorAll('.dot'));
+    dots.forEach((d,i)=> d.classList.toggle('is-active', i===idx));
   }
 
-  // ✅ 컨트롤 바인딩: 화살표 + dots + (옵션) 자동 스크롤
-  function bindScrollControls(opts){
+  // ✅ 컨트롤: 화살표 + DOT (무한루프에서도 "원본 인덱스"로 표시)
+  function bindCarouselWithDots(opts){
     const track = document.getElementById(opts.trackId);
     const prev  = document.getElementById(opts.prevId);
     const next  = document.getElementById(opts.nextId);
     const dotsEl= document.getElementById(opts.dotsId);
     if(!track || !prev || !next || !dotsEl) return;
 
-    // dots 초기 렌더(원본 개수 기준)
-    const originalsCount = Array.from(track.querySelectorAll(opts.cardSelector || '.card')).filter(el => !el.dataset.clone).length
-      || Array.from(track.querySelectorAll(opts.cardSelector || '.card')).length
-      || 1;
-    renderDots(dotsEl, originalsCount);
+    const cardSelector = opts.cardSelector || '.card';
+    const gap = opts.gap || 12;
 
     function getStep(){
-      const card = track.querySelector(opts.cardSelector || '.card');
-      const w = card ? (card.getBoundingClientRect().width) : (opts.fallbackStep || 260);
-      return w + (opts.gap || 12);
+      const card = track.querySelector(cardSelector);
+      const w = card ? card.getBoundingClientRect().width : (opts.fallbackStep || 260);
+      return w + gap;
+    }
+
+    // "원본 카드 수"는 clone 제외하고 계산
+    function getOriginalCount(){
+      return Array.from(track.querySelectorAll(cardSelector)).filter(el => !el.dataset.clone).length;
+    }
+
+    function getActiveIndex(){
+      const step = getStep();
+      if(step <= 0) return 0;
+
+      // 무한루프면 앞에 1개 clone이 있으므로, scrollLeft/step - 1 이 원본 인덱스의 베이스
+      const raw = Math.round(track.scrollLeft / step);
+      let idx = raw - 1;
+
+      const count = getOriginalCount();
+      if(count <= 0) return 0;
+
+      // normalize
+      idx = ((idx % count) + count) % count;
+      return idx;
+    }
+
+    function updateDots(){
+      if(!isMobile()) return;
+      const count = getOriginalCount();
+      if(count <= 0) return;
+
+      // dots가 아직 없거나 개수 달라지면 재생성
+      if(dotsEl.childElementCount !== count){
+        setupDots(dotsEl, count);
+      }
+      setActiveDot(dotsEl, getActiveIndex());
     }
 
     function scrollByCard(dir){
       track.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
     }
 
-    function updateUI(){
-      if(!isMobile()) return;
-
-      // 무한루프일 땐 disabled 의미 없음 → 항상 활성
-      prev.disabled = false;
-      next.disabled = false;
-
-      const active = getActiveIndexFromTrack(opts);
-      setActiveDot(dotsEl, active);
-    }
-
     prev.addEventListener('click', () => scrollByCard(-1));
     next.addEventListener('click', () => scrollByCard( 1));
-    track.addEventListener('scroll', () => window.requestAnimationFrame(updateUI), {passive:true});
+
+    let raf = null;
+    track.addEventListener('scroll', () => {
+      if(raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(updateDots);
+    }, {passive:true});
+
     window.addEventListener('resize', () => {
-      // 리사이즈 시 dots도 즉시 업데이트
-      window.requestAnimationFrame(updateUI);
+      updateDots();
     });
 
+    // 자동 스크롤(옵션)
     let timer = null;
     function startAuto(){
       stopAuto();
@@ -850,7 +839,6 @@
     function stopAuto(){
       if(timer){ clearInterval(timer); timer = null; }
     }
-
     if(opts.auto){
       ['pointerdown','touchstart','mouseenter','focusin'].forEach(evt=>{
         track.addEventListener(evt, stopAuto, {passive:true});
@@ -861,22 +849,20 @@
       window.addEventListener('resize', startAuto);
     }
 
-    updateUI();
+    updateDots();
     startAuto();
   }
 
   function setupMobileCarousels(){
     if(!isMobile()) return;
 
-    // 기사 무한루프
+    // 기사/신축 무한루프
     enableInfiniteLoop({
       trackId: 'pressTrack',
       cardSelector: '.pressCard',
       gap: 12,
       fallbackStep: 260
     });
-
-    // 신축 무한루프
     enableInfiniteLoop({
       trackId: 'newTrack',
       cardSelector: '.card',
@@ -884,8 +870,8 @@
       fallbackStep: 280
     });
 
-    // 기사 dots + 자동 스크롤
-    bindScrollControls({
+    // DOT+화살표 바인딩
+    bindCarouselWithDots({
       trackId: 'pressTrack',
       prevId: 'pressPrev',
       nextId: 'pressNext',
@@ -897,8 +883,7 @@
       autoInterval: 3200
     });
 
-    // 신축 dots (자동 없음)
-    bindScrollControls({
+    bindCarouselWithDots({
       trackId: 'newTrack',
       prevId: 'newPrev',
       nextId: 'newNext',
@@ -911,9 +896,7 @@
   }
 
   setupMobileCarousels();
-  window.addEventListener('resize', () => {
-    setupMobileCarousels();
-  });
+  window.addEventListener('resize', () => setupMobileCarousels());
 </script>
 </body>
 </html>
