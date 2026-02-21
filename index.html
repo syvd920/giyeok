@@ -15,6 +15,15 @@
       --card:#f9fafb;
       --max:1120px;
       --radius:18px;
+
+      /* ✅ 배지 컬러(은은) */
+      --yt-bg: rgba(239, 68, 68, .12);   /* red-500 */
+      --yt-bd: rgba(239, 68, 68, .22);
+      --yt-fg: #991b1b;
+
+      --blog-bg: rgba(16, 185, 129, .12); /* emerald-500 */
+      --blog-bd: rgba(16, 185, 129, .22);
+      --blog-fg: #065f46;
     }
     *{box-sizing:border-box}
     body{
@@ -83,21 +92,27 @@
     .pressCard:hover{ transform:translateY(-2px); transition:.18s ease; box-shadow:0 10px 30px rgba(0,0,0,.06) }
 
     /* =========================
-       NEW(신축) 섹션
+       NEW(신축)
     ========================= */
     .nowrap{ white-space:nowrap; }
 
     /* =========================
-       PRESS(기사) 섹션
-       - PC/태블릿: 2줄 clamp
-       - 모바일: "정확히 2줄 높이 고정" + 메타 1줄 고정
+       PRESS(기사)
+       ✅ 핵심 변경:
+       - height 고정 제거 → aspect-ratio로만 16:9 유지(모바일 가로로 길어지는 느낌 제거)
+       - 제목: clamp + fallback(max-height) 병행(모바일에서 2줄 안정화)
     ========================= */
-    #press .img{
-      height:120px;
+    #press .thumbWrap{
+      position:relative;
       aspect-ratio:16/9;
-      object-fit:cover;
-      object-position:center;
       background:#eaecef;
+      overflow:hidden;
+    }
+    #press .thumbWrap img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
     #press .pressCard .pad{
       padding:12px;
@@ -109,10 +124,15 @@
       font-size:14px;
       line-height:1.35;
       font-weight:650;
+
+      /* 기본: 2줄 */
       display:-webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow:hidden;
+
+      /* ✅ 폴백(클램프가 흔들려도 2줄 높이 제한으로 들쭉날쭉 방지) */
+      max-height:calc(1.35em * 2);
     }
     #press .meta{
       font-size:12px;
@@ -125,11 +145,12 @@
 
     /* =========================
        CONTENT(유튜브/블로그)
-       - 배지: 제목칸이 아니라 썸네일 오버레이
-       - 채널명(고급주거의기역) 제거
-       - PC: 3열, 모바일: 2열
-       - PC: 제목 1줄 고정 (칸 커지는 느낌 방지)
-       - 모바일: 제목 2줄 clamp
+       ✅ 핵심 변경:
+       - 배지 오버레이 제거 → 썸네일 아래 "라벨바"로 분리(묻힘 0)
+       - 배지 컬러 은은하게 복구/강화
+       - PC에서 제목 영역 답답함: padding/gap 살짝 증가
+       - PC: 제목 1줄, 모바일: 2줄
+       - 블로그 1:1 비율 PC에서도 유지(thumbWrap.blog로 해결)
     ========================= */
     #content .contentGrid{
       display:grid;
@@ -140,15 +161,13 @@
       #content .contentGrid{ grid-template-columns:repeat(3,1fr); }
     }
 
-    /* 썸네일 래퍼 + 배지 오버레이 */
     .thumbWrap{
       position:relative;
       overflow:hidden;
       background:#eaecef;
     }
-    /* 유튜브 16:9, 블로그 1:1 */
     .thumbWrap.yt { aspect-ratio:16/9; }
-    .thumbWrap.blog { aspect-ratio:1/1; }
+    .thumbWrap.blog { aspect-ratio:1/1; } /* ✅ PC/모바일 모두 1:1 */
     .thumbWrap img{
       width:100%;
       height:100%;
@@ -156,60 +175,79 @@
       display:block;
     }
 
-    /* 배지(은은하게 차별화) */
-    .badge{
-      position:absolute;
-      top:10px; left:10px;
+    /* 라벨바(썸네일 아래) */
+    .labelBar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px 0;
+    }
+
+    .badgePill{
       display:inline-flex;
       align-items:center;
-      gap:6px;
+      gap:8px;
       padding:7px 10px;
       border-radius:999px;
       font-size:12px;
-      font-weight:650;
+      font-weight:700;
       letter-spacing:-.2px;
-      color:#111;
-
-      /* 글씨 묻힘 방지용 */
-      background:rgba(255,255,255,.78);
-      backdrop-filter: blur(8px);
-      border:1px solid rgba(17,17,17,.08);
-      box-shadow:0 6px 18px rgba(0,0,0,.08);
-      user-select:none;
+      border:1px solid transparent;
+      white-space:nowrap;
     }
-    .badgeDot{
+    .badgePill .miniDot{
       width:7px; height:7px; border-radius:999px;
-      background:#111;
-      opacity:.65;
+      background:currentColor;
+      opacity:.7;
     }
-    /* 은은한 차별화: dot 색만 살짝 다르게 */
-    .badge--yt .badgeDot{ opacity:.7; }
-    .badge--blog .badgeDot{ opacity:.4; }
 
+    .badgePill--yt{
+      background:var(--yt-bg);
+      border-color:var(--yt-bd);
+      color:var(--yt-fg);
+    }
+    .badgePill--blog{
+      background:var(--blog-bg);
+      border-color:var(--blog-bd);
+      color:var(--blog-fg);
+    }
+
+    /* 제목 영역 */
     #content .pressCard .pad{
       padding:12px;
+      padding-top:10px;
       display:flex;
       flex-direction:column;
-      gap:10px; /* ✅ 제목이 답답하지 않게 "살짝" 여유 */
+      gap:10px;
     }
     #content .itemTitle{
       font-size:14px;
       line-height:1.32;
       font-weight:650;
       margin:0;
+
       display:-webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow:hidden;
+      max-height:calc(1.32em * 2);
     }
     @media (min-width: 981px){
-      /* ✅ PC: 제목 1줄 고정 */
+      /* ✅ PC: 제목 1줄 고정 + 여백 살짝 증가(답답함 제거) */
+      #content .pressCard .pad{
+        padding:14px;
+        padding-top:12px;
+        gap:12px;
+      }
       #content .itemTitle{
         display:block;
         white-space:nowrap;
         overflow:hidden;
         text-overflow:ellipsis;
+        max-height:none;
       }
+      .labelBar{ padding:12px 14px 0; }
     }
 
     /* 모바일에서 2x2만: yt3/blog3 숨김 */
@@ -220,8 +258,8 @@
 
     /* =========================
        모바일 캐러셀(기사/신축)
-       - 진행바 제거 → 도트 인디케이터
-       - 무한 루프(부드럽게) + 점 업데이트
+       - 점 인디케이터
+       - 무한 루프(부드럽게)
     ========================= */
     .carouselControls{
       display:none;
@@ -301,33 +339,23 @@
       .secTitle h2{ font-size:20px; }
       .secTitle p{ font-size:13px; }
 
-      /* 모바일 PRESS: 안내문 숨김 */
       #press .secTitle p{ display:none; }
       #new .secTitle p{ display:none; }
 
-      /* ✅ 모바일 PRESS 썸네일/카드 높이 완전 고정 */
-      #press .img{
-        height:110px;
-        width:100%;
-        object-fit:cover;
-        object-position:center;
-      }
-      #press .pressCard .pad{
-        padding:12px;
-        gap:6px;
-      }
+      /* ✅ 모바일 PRESS: 썸네일 비율만 유지(높이 고정 없음) */
+      #press .thumbWrap{ aspect-ratio:16/9; }
+
+      /* ✅ 모바일 PRESS: 제목/메타 높이 고정 → 카드 높이 통일 */
+      #press .pressCard .pad{ gap:6px; }
       #press .itemTitle{
-        /* ✅ "정확히 2줄 높이 고정" (제목 길이로 카드 높이 바뀌는 문제 해결) */
-        display:-webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow:hidden;
         line-height:1.35;
-        min-height:calc(1.35em * 2);
         max-height:calc(1.35em * 2);
+        min-height:calc(1.35em * 2);
+        display:block;          /* ✅ 줄바꿈 확실하게 */
+        white-space:normal;
+        overflow:hidden;
       }
       #press .meta{
-        line-height:1.2;
         min-height:1.2em;
         max-height:1.2em;
       }
@@ -364,13 +392,17 @@
       }
       #new .carouselControls{ display:flex; }
 
-      /* 모바일 NEW 이미지 높이 */
+      /* 모바일 NEW 이미지 높이(원하면 이건 유지) */
       #new .img{
         height:180px;
         aspect-ratio:auto;
         object-fit:cover;
       }
       #new .pad{ padding:14px; }
+
+      /* 모바일 CONTENT 라벨바/패딩 살짝 타이트 */
+      .labelBar{ padding:10px 12px 0; }
+      #content .pressCard .pad{ padding:12px; padding-top:10px; gap:10px; }
     }
   </style>
 </head>
@@ -458,7 +490,6 @@
         </div>
       </div>
 
-      <!-- 모바일 컨트롤(도트) -->
       <div class="carouselControls" id="newControls" aria-label="신축 캐러셀 컨트롤">
         <button class="cBtn" id="newPrev" aria-label="이전">‹</button>
         <div class="dots" id="newDots" aria-hidden="true"></div>
@@ -478,7 +509,9 @@
       <div class="grid5" id="pressTrack">
         <div class="card pressCard">
           <a href="https://biz.heraldcorp.com/article/10676551?ref=naver" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-1.jpg" alt="기사 썸네일 1" />
+            <div class="thumbWrap">
+              <img src="assets/press-1.jpg" alt="기사 썸네일 1" />
+            </div>
             <div class="pad">
               <div class="itemTitle">장원영, 137억 ‘이곳’에 쐈다…김태희도 산 한남 고급빌라 어딜까</div>
               <div class="meta">헤럴드경제 · 2026-02-16</div>
@@ -488,7 +521,9 @@
 
         <div class="card pressCard">
           <a href="https://www.chosun.com/economy/economy_general/2026/02/21/SS3XSFOD7NDOJFDNMPSBUPXVSA/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-2.jpg" alt="기사 썸네일 2" />
+            <div class="thumbWrap">
+              <img src="assets/press-2.jpg" alt="기사 썸네일 2" />
+            </div>
             <div class="pad">
               <div class="itemTitle">‘국토장관 "60억원 아파트 50억대로…</div>
               <div class="meta">조선경제 · 2026-02-21</div>
@@ -498,7 +533,9 @@
 
         <div class="card pressCard">
           <a href="https://www.mk.co.kr/news/economy/11967769" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-3.jpg" alt="기사 썸네일 3" />
+            <div class="thumbWrap">
+              <img src="assets/press-3.jpg" alt="기사 썸네일 3" />
+            </div>
             <div class="pad">
               <div class="itemTitle">주택 임대사업자 대출 14조 육박…</div>
               <div class="meta">매일경제 · 2026-02-21</div>
@@ -508,7 +545,9 @@
 
         <div class="card pressCard">
           <a href="https://www.mk.co.kr/news/realestate/11967967" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-4.jpg" alt="기사 썸네일 4" />
+            <div class="thumbWrap">
+              <img src="assets/press-4.jpg" alt="기사 썸네일 4" />
+            </div>
             <div class="pad">
               <div class="itemTitle">“1억 아니, 1억5천 낮출게요”…조급해진 다주택자들에 ‘이 동네’ 집값도 하락세</div>
               <div class="meta">매일경제 · 2026-02-21</div>
@@ -518,7 +557,9 @@
 
         <div class="card pressCard">
           <a href="https://biz.chosun.com/real_estate/real_estate_general/2026/02/21/E3GE7VZXGRDIRBCZZHIIU6PBYY/?utm_source=naver&utm_medium=original&utm_campaign=biz" target="_blank" rel="noreferrer">
-            <img class="img" src="assets/press-5.jpg" alt="기사 썸네일 5" />
+            <div class="thumbWrap">
+              <img src="assets/press-5.jpg" alt="기사 썸네일 5" />
+            </div>
             <div class="pad">
               <div class="itemTitle">"평당 3억 땅에 임대주택?"… 용산 이어 강남에도 근조화환 등장</div>
               <div class="meta">조선비즈 · 2026-02-21</div>
@@ -527,7 +568,6 @@
         </div>
       </div>
 
-      <!-- 모바일 컨트롤(도트) -->
       <div class="carouselControls" id="pressControls" aria-label="기사 캐러셀 컨트롤">
         <button class="cBtn" id="pressPrev" aria-label="이전 기사">‹</button>
         <div class="dots" id="pressDots" aria-hidden="true"></div>
@@ -549,7 +589,9 @@
         <a href="https://youtu.be/p2p5GNtTvF0" target="_blank" rel="noreferrer">
           <div class="thumbWrap yt">
             <img src="assets/yt-1.jpg" alt="유튜브 썸네일 1" />
-            <span class="badge badge--yt"><span class="badgeDot"></span>YouTube</span>
+          </div>
+          <div class="labelBar">
+            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
           </div>
           <div class="pad">
             <div class="itemTitle">제니는 왜 이 집을 골랐을까? Young & Rich Pretty</div>
@@ -562,7 +604,9 @@
         <a href="https://youtu.be/luUgVTGmNgo" target="_blank" rel="noreferrer">
           <div class="thumbWrap yt">
             <img src="assets/yt-2.jpg" alt="유튜브 썸네일 2" />
-            <span class="badge badge--yt"><span class="badgeDot"></span>YouTube</span>
+          </div>
+          <div class="labelBar">
+            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
           </div>
           <div class="pad">
             <div class="itemTitle">장원영의 집값이 137억? 루시드하우스 완전 분석!</div>
@@ -575,7 +619,9 @@
         <a href="https://youtu.be/BfmCFvGPwsE" target="_blank" rel="noreferrer">
           <div class="thumbWrap yt">
             <img src="assets/yt-3.jpg" alt="유튜브 썸네일 3" />
-            <span class="badge badge--yt"><span class="badgeDot"></span>YouTube</span>
+          </div>
+          <div class="labelBar">
+            <span class="badgePill badgePill--yt"><span class="miniDot"></span>YouTube</span>
           </div>
           <div class="pad">
             <div class="itemTitle">국내 하이퍼 하이엔드의 정점, 한남동 라스코 더 맨션</div>
@@ -588,7 +634,9 @@
         <a href="https://blog.naver.com/0zzabang/224174279026" target="_blank" rel="noreferrer">
           <div class="thumbWrap blog">
             <img src="assets/blog-1.jpg" alt="블로그 썸네일 1" />
-            <span class="badge badge--blog"><span class="badgeDot"></span>Blog</span>
+          </div>
+          <div class="labelBar">
+            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
           </div>
           <div class="pad">
             <div class="itemTitle">블랙핑크 제니와 이종석이 산 집?! 연예인들은 어떤 집에 살까?</div>
@@ -601,7 +649,9 @@
         <a href="https://blog.naver.com/0zzabang/224171721564" target="_blank" rel="noreferrer">
           <div class="thumbWrap blog">
             <img src="assets/blog-2.jpg" alt="블로그 썸네일 2" />
-            <span class="badge badge--blog"><span class="badgeDot"></span>Blog</span>
+          </div>
+          <div class="labelBar">
+            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
           </div>
           <div class="pad">
             <div class="itemTitle">민간도심복합개발 진행된다면.. 최고의 입지 삼성동!</div>
@@ -614,7 +664,9 @@
         <a href="https://blog.naver.com/0zzabang/224168771668" target="_blank" rel="noreferrer">
           <div class="thumbWrap blog">
             <img src="assets/blog-3.jpg" alt="블로그 썸네일 3" />
-            <span class="badge badge--blog"><span class="badgeDot"></span>Blog</span>
+          </div>
+          <div class="labelBar">
+            <span class="badgePill badgePill--blog"><span class="miniDot"></span>Blog</span>
           </div>
           <div class="pad">
             <div class="itemTitle">04년생이 137억원 집을 샀다?! 장원영의 루시드 하우스</div>
@@ -653,35 +705,27 @@
     return window.matchMedia && window.matchMedia('(max-width: 560px)').matches;
   }
 
-  /**
-   * 모바일 무한 캐러셀 + 도트 + prev/next
-   * - clones: 앞/뒤 2장씩 복제해서 "뚝" 느낌 완화
-   * - 점은 "원본 기준"으로만 계산
-   */
+  // 모바일 무한 캐러셀 + 도트
   function createInfiniteCarousel(opts){
     const track = document.getElementById(opts.trackId);
     const prev = document.getElementById(opts.prevId);
     const next = document.getElementById(opts.nextId);
     const dotsEl = document.getElementById(opts.dotsId);
     if(!track || !prev || !next || !dotsEl) return;
+    if(!isMobile()) return;
+
+    if(track.dataset.carousel === '1') return;
+    track.dataset.carousel = '1';
 
     const cardSelector = opts.cardSelector;
     const gap = opts.gap || 12;
     const cloneCount = opts.cloneCount || 2;
 
-    // 모바일에서만 동작
-    if(!isMobile()) return;
-
-    // 중복 적용 방지
-    if(track.dataset.carousel === '1') return;
-    track.dataset.carousel = '1';
-
-    // 원본 카드 수
     const originals = Array.from(track.querySelectorAll(cardSelector));
     const n = originals.length;
     if(n < 2) return;
 
-    // 도트 생성
+    // dots
     dotsEl.innerHTML = '';
     const dots = [];
     for(let i=0;i<n;i++){
@@ -691,23 +735,21 @@
       dots.push(d);
     }
 
-    // clones 앞/뒤 붙이기
-    const headClones = [];
-    const tailClones = [];
-
+    // clones
+    const head = [];
+    const tail = [];
     for(let i=0;i<cloneCount;i++){
       const fromEnd = originals[n - 1 - i].cloneNode(true);
       fromEnd.dataset.clone = '1';
-      headClones.unshift(fromEnd);
+      head.unshift(fromEnd);
     }
     for(let i=0;i<cloneCount;i++){
       const fromStart = originals[i].cloneNode(true);
       fromStart.dataset.clone = '1';
-      tailClones.push(fromStart);
+      tail.push(fromStart);
     }
-
-    headClones.forEach(node => track.insertBefore(node, track.firstChild));
-    tailClones.forEach(node => track.appendChild(node));
+    head.forEach(node => track.insertBefore(node, track.firstChild));
+    tail.forEach(node => track.appendChild(node));
 
     function getStep(){
       const card = track.querySelector(cardSelector);
@@ -715,12 +757,10 @@
       return w + gap;
     }
 
-    // 초기 위치: 첫 원본 시작 지점
     function jumpToFirstOriginal(){
       const step = getStep();
       const x = step * cloneCount;
       track.style.scrollBehavior = 'auto';
-      // 스냅 순간 흔들림 줄이기
       track.style.scrollSnapType = 'none';
       track.scrollLeft = x;
       requestAnimationFrame(() => {
@@ -729,11 +769,9 @@
       });
     }
 
-    // 현재 원본 인덱스 계산
     function getActiveIndex(){
       const step = getStep();
       const raw = Math.round(track.scrollLeft / step);
-      // raw가 cloneCount ~ cloneCount+n-1 사이가 원본
       let idx = (raw - cloneCount) % n;
       if(idx < 0) idx += n;
       return idx;
@@ -753,23 +791,18 @@
         const step = getStep();
         const maxScroll = track.scrollWidth - track.clientWidth;
 
-        // 도트 업데이트
         setDots(getActiveIndex());
 
-        // 루프 경계 처리(뚝 느낌 완화용: snap 잠깐 끄고 점프)
-        // 왼쪽 끝 영역(앞 clones)
+        // loop jump (snap 잠깐 off)
         if(track.scrollLeft <= step * (cloneCount - 0.6)){
           track.style.scrollBehavior = 'auto';
           track.style.scrollSnapType = 'none';
-          // 동일 카드가 보이도록 끝 원본 영역으로 점프
           track.scrollLeft = track.scrollLeft + step * n;
           requestAnimationFrame(() => {
             track.style.scrollSnapType = '';
             track.style.scrollBehavior = '';
           });
         }
-
-        // 오른쪽 끝 영역(뒤 clones)
         if(track.scrollLeft >= (maxScroll - step * (cloneCount - 0.6))){
           track.style.scrollBehavior = 'auto';
           track.style.scrollSnapType = 'none';
@@ -783,8 +816,7 @@
     }
 
     function scrollByCard(dir){
-      const step = getStep();
-      track.scrollBy({ left: dir * step, behavior: 'smooth' });
+      track.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
     }
 
     prev.addEventListener('click', () => scrollByCard(-1));
@@ -792,7 +824,6 @@
     track.addEventListener('scroll', onScroll, {passive:true});
 
     window.addEventListener('resize', () => {
-      // 모바일 유지일 때만 재정렬
       if(!isMobile()) return;
       jumpToFirstOriginal();
       setDots(getActiveIndex());
