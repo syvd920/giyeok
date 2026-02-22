@@ -21,6 +21,7 @@
       --yt-bd: rgba(239, 68, 68, .18);
       --yt-fg: #991b1b;
 
+      /* ✅ NAVER 계열 그린 */
       --blog-bg: rgba(3, 199, 90, .10);
       --blog-bd: rgba(3, 199, 90, .22);
       --blog-fg: #0f7a3a;
@@ -104,11 +105,10 @@
       height:100%;
     }
 
-    /* ✅ FIX: PRESS 썸네일은 항상 16:9 (height 고정 제거) */
     #press .img{
       width:100%;
-      height:auto;              /* ✅ */
-      aspect-ratio:16/9;        /* ✅ 1280x720 비율 유지 */
+      height:auto;
+      aspect-ratio:16/9;
       object-fit:cover;
       object-position:center;
       background:#eaecef;
@@ -144,7 +144,6 @@
       min-height:1.2em;
     }
 
-    /* ============ NEW 섹션 타이틀 한 줄 ============ */
     .nowrap{ white-space:nowrap; }
     #new .secTitle h2{
       font-weight:700;
@@ -152,7 +151,6 @@
       word-break:keep-all;
     }
 
-    /* ============ 모바일 캐러셀 컨트롤: 점 + 화살표 ============ */
     .carouselControls{
       display:none;
       margin-top:10px;
@@ -190,7 +188,6 @@
       transform:scale(1.25);
     }
 
-    /* ============ CONTENT(유튜브/블로그) ============ */
     #content .contentWrap{
       display:flex;
       flex-direction:column;
@@ -223,7 +220,6 @@
     .badge.yt{ background:var(--yt-bg); border-color:var(--yt-bd); color:var(--yt-fg); }
     .badge.blog{ background:var(--blog-bg); border-color:var(--blog-bd); color:var(--blog-fg); }
 
-    /* ✅ 배지 아이콘(재생/펜) */
     .badge::before{
       content:"";
       width:12px;
@@ -241,12 +237,10 @@
       mask-position:center;
       mask-size:contain;
     }
-    /* play icon */
     .badge.yt::before{
       -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8 5v14l12-7z'/></svg>");
       mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8 5v14l12-7z'/></svg>");
     }
-    /* pen/pencil icon */
     .badge.blog::before{
       -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
       mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
@@ -296,7 +290,6 @@
       }
     }
 
-    /* CTA */
     .cta{
       background:#0b0b0c;
       color:#fff;
@@ -325,15 +318,26 @@
     footer{padding:26px 0; color:var(--muted); font-size:13px; border-top:1px solid var(--line)}
     .hr{height:1px; background:var(--line); margin:8px 0 0}
 
-    /* ✅ Footer: 가운데 정렬 + 모바일 3단락 */
+    /* ✅ Footer: 가운데 정렬 + 2줄(본점/역삼점) */
     footer .wrap{ text-align:center; }
+
     .footerInfo{
       margin-top:10px;
-      line-height:1.6;
+      line-height:1.65;
       word-break:keep-all;
+      display:flex;
+      flex-direction:column; /* ✅ 항상 2줄 */
+      gap:6px;
     }
-    .footerInfo .line{ display:inline; } /* PC/태블릿: 한 줄처럼 */
-    .footerInfo .sep{ display:inline; }
+    .footerLine{
+      display:block;
+    }
+    .branchTag{
+      display:inline-block;
+      font-weight:700;
+      color:#111;
+      margin-right:6px;
+    }
 
     @media (max-width: 980px){
       .heroGrid{grid-template-columns:1fr}
@@ -354,7 +358,6 @@
       #new .secTitle p{ display:none; }
       #content .secTitle p{ display:none; }
 
-      /* ===== PRESS 모바일: 가로 스크롤 ===== */
       #press .grid5{
         display:flex;
         gap:12px;
@@ -366,22 +369,20 @@
       }
       #press .pressCard{
         flex:0 0 auto;
-        width:clamp(200px, 72vw, 240px); /* ✅ 카드 폭 줄이기 (작아짐) */
+        width:clamp(200px, 72vw, 240px);
         min-width:unset;
         scroll-snap-align:start;
       }
 
-      /* ✅ 모바일에서도 PRESS 썸네일 16:9 고정 (height 고정 제거) */
       #press .img{
         width:100%;
-        height:auto;              /* ✅ */
-        aspect-ratio:16/9;        /* ✅ */
+        height:auto;
+        aspect-ratio:16/9;
         object-fit:cover;
         object-position:center;
         display:block;
       }
 
-      /* ✅ 모바일 기사 제목: 무조건 2줄로 보이게(2줄 높이 고정) */
       #press .itemTitle{
         white-space:normal !important;
         overflow:hidden !important;
@@ -391,8 +392,8 @@
         -webkit-line-clamp:2 !important;
 
         line-height:1.35 !important;
-        min-height:calc(1.35em * 2) !important; /* ✅ 2줄 확보 */
-        max-height:calc(1.35em * 2) !important; /* ✅ 2줄 이상 늘지 않음 */
+        min-height:calc(1.35em * 2) !important;
+        max-height:calc(1.35em * 2) !important;
 
         overflow-wrap:anywhere !important;
         word-break:break-word !important;
@@ -407,7 +408,6 @@
 
       #press .carouselControls{ display:flex; }
 
-      /* ===== NEW 모바일: 가로 스크롤 ===== */
       #new .grid3.newTrack{
         display:flex;
         gap:14px;
@@ -445,10 +445,6 @@
       }
       .badge::before{ width:11px; height:11px; margin-right:6px; }
       .barText{ font-size:12.5px; }
-
-      /* ✅ 모바일 footer: 3단락으로 */
-      .footerInfo .line{ display:block; }
-      .footerInfo .sep{ display:none; }
     }
   </style>
 </head>
@@ -709,13 +705,16 @@
     <div>© <span id="y"></span> Real Estate Insight. All rights reserved.</div>
     <div class="hr"></div>
 
-    <!-- ✅ PC: 가운데정렬 + 한 줄 느낌 / 모바일: 3단락(줄바꿈) -->
+    <!-- ✅ 2줄: [본점] / [역삼점] -->
     <div class="footerInfo">
-      <span class="line">주식회사 부동산중개법인 수호ㅣ서울특별시 강남구 언주로93길 14-7 1층</span>
-      <span class="sep">ㅣ</span>
-      <span class="line">대표자 : 김남조ㅣ등록번호 : 11260-2025-10013-001</span>
-      <span class="sep">ㅣ</span>
-      <span class="line">대표번호 : 1588-1701 · 업데이트: 7일</span>
+      <div class="footerLine">
+        <span class="branchTag">[본점]</span>
+        주식회사 부동산중개법인 수호ㅣ서울특별시 중랑구 상봉로25길35-9, 2층 201호(상봉동, 힐링파크)ㅣ대표자 : 정연진ㅣ등록번호 : 11260-2025-10013
+      </div>
+      <div class="footerLine">
+        <span class="branchTag">[역삼점]</span>
+        주식회사 부동산중개법인 수호ㅣ서울특별시 강남구 언주로93길 14-7 1층ㅣ대표자 : 김남조ㅣ등록번호 : 11260-2025-10013-001ㅣ대표번호 : 1588-1701 · 콘텐츠 업데이트 주기 : 7일
+      </div>
     </div>
   </div>
 </footer>
@@ -727,9 +726,6 @@
     return window.matchMedia && window.matchMedia('(max-width: 560px)').matches;
   }
 
-  /**
-   * ✅ 모바일 인피니트 캐러셀 + 도트 + 버튼 (+옵션 autoplay)
-   */
   function createInfiniteCarousel(opts){
     const track = document.getElementById(opts.trackId);
     const prev  = document.getElementById(opts.prevId);
@@ -751,7 +747,6 @@
     const n = originals.length;
     if(n < 2) return;
 
-    // 도트 생성
     dotsEl.innerHTML = '';
     const dots = [];
     for(let i=0;i<n;i++){
@@ -761,7 +756,6 @@
       dots.push(d);
     }
 
-    // 클론
     const head = [];
     const tail = [];
     for(let i=0;i<cloneCount;i++){
@@ -850,7 +844,6 @@
     next.addEventListener('click', ()=> scrollByCard( 1));
     track.addEventListener('scroll', onScroll, {passive:true});
 
-    // autoplay 옵션
     const autoplay = !!opts.autoplay;
     const autoplayDelay = opts.autoplayDelay || 2600;
 
@@ -897,7 +890,6 @@
   function setupMobileCarousels(){
     if(!isMobile()) return;
 
-    // ✅ PRESS: 자동스크롤 + 무한루프 ON
     createInfiniteCarousel({
       trackId:'pressTrack',
       prevId:'pressPrev',
@@ -911,7 +903,6 @@
       autoplayDelay:2600
     });
 
-    // ✅ NEW: 무한루프는 유지(버튼/도트), 자동스크롤은 OFF
     createInfiniteCarousel({
       trackId:'newTrack',
       prevId:'newPrev',
