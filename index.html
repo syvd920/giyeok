@@ -318,23 +318,38 @@
     footer{padding:26px 0; color:var(--muted); font-size:13px; border-top:1px solid var(--line)}
     .hr{height:1px; background:var(--line); margin:8px 0 0}
 
-    /* ✅ Footer: 가운데 정렬 + 2줄(본점/역삼점) */
+    /* ✅ Footer: 가운데 정렬 + PC/모바일 규칙 */
     footer .wrap{ text-align:center; }
 
     .footerInfo{
       margin-top:10px;
-      line-height:1.65;
+      line-height:1.7;
       word-break:keep-all;
       display:flex;
-      flex-direction:column; /* ✅ 항상 2줄 */
+      flex-direction:column;
       gap:6px;
     }
-    .footerLine{
+
+    /* 공통 라인 */
+    .fRow{ display:block; }
+
+    /* PC 기본: 본점/역삼점은 2줄, 연락/업데이트는 "단락 바꿔서" 한 줄 더 */
+    .footerPcLine{
       display:block;
     }
+    .footerPcMeta{
+      display:block;           /* ✅ PC에서 단락 내려쓰기 */
+      margin-top:4px;
+    }
+
+    /* 모바일에서만 보일 블록 */
+    .footerMobile{ display:none; }
+    .footerPc{ display:block; }
+
+    /* 브랜치 태그 */
     .branchTag{
       display:inline-block;
-      font-weight:700;
+      font-weight:800;
       color:#111;
       margin-right:6px;
     }
@@ -445,6 +460,13 @@
       }
       .badge::before{ width:11px; height:11px; margin-right:6px; }
       .barText{ font-size:12.5px; }
+
+      /* ✅ 모바일: 요구한 단락 구조로 */
+      .footerPc{ display:none; }
+      .footerMobile{ display:block; }
+
+      .footerInfo{ gap:8px; }
+      .fRow{ display:block; }
     }
   </style>
 </head>
@@ -705,15 +727,33 @@
     <div>© <span id="y"></span> Real Estate Insight. All rights reserved.</div>
     <div class="hr"></div>
 
-    <!-- ✅ 2줄: [본점] / [역삼점] -->
     <div class="footerInfo">
-      <div class="footerLine">
-        <span class="branchTag">[본점]</span>
-        주식회사 부동산중개법인 수호ㅣ서울특별시 중랑구 상봉로25길35-9, 2층 201호(상봉동, 힐링파크)ㅣ대표자 : 정연진ㅣ등록번호 : 11260-2025-10013
+      <!-- ================== PC용 ================== -->
+      <div class="footerPc">
+        <div class="footerPcLine">
+          <span class="branchTag">[본점]</span>
+          주식회사 부동산중개법인 수호ㅣ서울특별시 중랑구 상봉로25길35-9, 2층 201호(상봉동, 힐링파크)ㅣ대표 : 정연진ㅣ등록번호 : 11260-2025-10013
+        </div>
+        <div class="footerPcLine" style="margin-top:4px;">
+          <span class="branchTag">[역삼점]</span>
+          서울특별시 강남구 언주로93길 14-7 1층ㅣ대표자 : 김남조ㅣ등록번호 : 11260-2025-10013-001
+        </div>
+        <!-- ✅ PC: 대표번호/업데이트는 단락 내려쓰기 -->
+        <div class="footerPcMeta">
+          대표번호 : 1588-1701 · 콘텐츠 업데이트: 7일
+        </div>
       </div>
-      <div class="footerLine">
-        <span class="branchTag">[역삼점]</span>
-        주식회사 부동산중개법인 수호ㅣ서울특별시 강남구 언주로93길 14-7 1층ㅣ대표자 : 김남조ㅣ등록번호 : 11260-2025-10013-001ㅣ대표번호 : 1588-1701 · 콘텐츠 업데이트 주기 : 7일
+
+      <!-- ================== 모바일용(요구한 단락 구조) ================== -->
+      <div class="footerMobile">
+        <div class="fRow"><span class="branchTag">[본점]</span>주식회사 부동산중개법인 수호</div>
+        <div class="fRow">서울특별시 중랑구 상봉로25길35-9, 2층 201호(상봉동, 힐링파크)</div>
+        <div class="fRow">대표 : 정연진ㅣ등록번호 : 11260-2025-10013</div>
+
+        <div class="fRow" style="margin-top:6px;"><span class="branchTag">[역삼점]</span></div>
+        <div class="fRow">서울특별시 강남구 언주로93길 14-7 1층</div>
+        <div class="fRow">대표자 : 김남조ㅣ등록번호 : 11260-2025-10013-001</div>
+        <div class="fRow">대표번호 : 1588-1701 · 콘텐츠 업데이트: 7일</div>
       </div>
     </div>
   </div>
