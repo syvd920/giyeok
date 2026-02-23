@@ -240,8 +240,8 @@
       mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8 5v14l12-7z'/></svg>");
     }
     .badge.blog::before{
-      -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
-      mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
+      -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 0 0 0 0-1.42L18.37 3.29a1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
+      mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 0 0 0 0-1.42L18.37 3.29a1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
     }
 
     .barText{
@@ -464,17 +464,18 @@
     }
 
     /* =========================================================
-       ✅ PC에서만 블로그: 좌측 썸네일 + 우측 제목/발행일 (모바일 유지)
-       - 적용범위: .contentGrid.blogList (블로그 그리드에만 클래스 부여)
+       ✅ PC에서만 블로그: 2열 리스트형(빈공간 해결) + 좌측 썸네일/우측 제목/발행일
+       - 모바일은 기존 카드형 그대로 유지
        ========================================================= */
     @media (min-width: 981px){
-      /* 블로그는 1열 리스트로 */
+      /* 블로그 영역만 2열 리스트 */
       .contentGrid.blogList{
-        display:flex;
-        flex-direction:column;
-        gap:14px;
+        display:grid;
+        grid-template-columns:repeat(2, 1fr);
+        gap:16px;
       }
 
+      /* 카드 상단 이미지(정사각) 때문에 높아지는 걸 방지: PC에서는 이미지를 "좌측 썸네일"로만 사용 */
       .contentGrid.blogList .card.pressCard{
         padding:16px;
       }
@@ -483,13 +484,14 @@
         display:flex;
         flex-direction:row;
         align-items:center;
-        gap:18px;
+        gap:16px;
         height:auto;
       }
 
+      /* 썸네일 크기: 너무 작으면 빈 느낌, 너무 크면 답답 → 96 추천 */
       .contentGrid.blogList .img.thumbBlog{
-        width:110px;
-        height:110px;
+        width:96px;
+        height:96px;
         aspect-ratio:1/1;
         object-fit:cover;
         border-radius:16px;
@@ -502,11 +504,12 @@
         flex-direction:column;
         gap:8px;
         flex:1;
+        min-width:0;
       }
 
-      /* PC에서는 블로그 제목을 2줄로(기존 PC 1줄 ellipsis 규칙 무력화) */
+      /* 블로그 제목은 PC에서도 2줄 클램프 */
       .contentGrid.blogList .itemTitle{
-        font-size:16px;
+        font-size:15.5px;
         font-weight:650;
         line-height:1.4;
 
@@ -522,6 +525,10 @@
       .contentGrid.blogList .blogMeta{
         font-size:13px;
         color:var(--muted);
+        line-height:1.2;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
       }
     }
   </style>
@@ -733,7 +740,7 @@
         <span class="barText">정리형 글 / 정책·입지 / 시세 체크</span>
       </div>
 
-      <!-- ✅ 블로그: 모바일 유지 / PC(981px+)에서만 좌측 썸네일 + 우측 제목/발행일 -->
+      <!-- ✅ 블로그: 모바일 유지 / PC(981px+)에서만 2열 리스트형 -->
       <div class="contentGrid blogList">
         <div class="card pressCard">
           <a href="https://blog.naver.com/0zzabang/224174279026" target="_blank" rel="noreferrer">
