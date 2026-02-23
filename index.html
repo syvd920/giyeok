@@ -462,6 +462,68 @@
       /* ✅ 등록번호 줄 다음 "대표번호/업데이트" 줄은 한 줄 더 띄우기 */
       .mobileGapTop{ margin-top:8px; } /* 한 단락 더 띄움 */
     }
+
+    /* =========================================================
+       ✅ PC에서만 블로그: 좌측 썸네일 + 우측 제목/발행일 (모바일 유지)
+       - 적용범위: .contentGrid.blogList (블로그 그리드에만 클래스 부여)
+       ========================================================= */
+    @media (min-width: 981px){
+      /* 블로그는 1열 리스트로 */
+      .contentGrid.blogList{
+        display:flex;
+        flex-direction:column;
+        gap:14px;
+      }
+
+      .contentGrid.blogList .card.pressCard{
+        padding:16px;
+      }
+
+      .contentGrid.blogList .card.pressCard a{
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        gap:18px;
+        height:auto;
+      }
+
+      .contentGrid.blogList .img.thumbBlog{
+        width:110px;
+        height:110px;
+        aspect-ratio:1/1;
+        object-fit:cover;
+        border-radius:16px;
+        flex:0 0 auto;
+      }
+
+      .contentGrid.blogList .card.pressCard .pad{
+        padding:0;
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+        flex:1;
+      }
+
+      /* PC에서는 블로그 제목을 2줄로(기존 PC 1줄 ellipsis 규칙 무력화) */
+      .contentGrid.blogList .itemTitle{
+        font-size:16px;
+        font-weight:650;
+        line-height:1.4;
+
+        display:-webkit-box !important;
+        -webkit-box-orient: vertical !important;
+        -webkit-line-clamp: 2 !important;
+        overflow:hidden !important;
+
+        white-space:normal !important;
+        text-overflow:unset !important;
+      }
+
+      .contentGrid.blogList .blogMeta{
+        font-size:13px;
+        color:var(--muted);
+      }
+    }
   </style>
 </head>
 
@@ -671,12 +733,14 @@
         <span class="barText">정리형 글 / 정책·입지 / 시세 체크</span>
       </div>
 
-      <div class="contentGrid">
+      <!-- ✅ 블로그: 모바일 유지 / PC(981px+)에서만 좌측 썸네일 + 우측 제목/발행일 -->
+      <div class="contentGrid blogList">
         <div class="card pressCard">
           <a href="https://blog.naver.com/0zzabang/224174279026" target="_blank" rel="noreferrer">
             <img class="img thumbBlog" src="assets/blog-1.jpg" alt="블로그 썸네일 1" />
             <div class="pad">
               <div class="itemTitle">블랙핑크 제니와 이종석이 산 집?! 연예인들은 어떤 집에 살까?</div>
+              <div class="blogMeta">2026-02-15</div>
             </div>
           </a>
         </div>
@@ -686,6 +750,7 @@
             <img class="img thumbBlog" src="assets/blog-2.jpg" alt="블로그 썸네일 2" />
             <div class="pad">
               <div class="itemTitle">민간도심복합개발 진행된다면.. 최고의 입지 삼성동!</div>
+              <div class="blogMeta">2026-02-12</div>
             </div>
           </a>
         </div>
@@ -695,6 +760,7 @@
             <img class="img thumbBlog" src="assets/blog-3.jpg" alt="블로그 썸네일 3" />
             <div class="pad">
               <div class="itemTitle">04년생이 137억원 집을 샀다?! 장원영의 루시드 하우스</div>
+              <div class="blogMeta">2026-02-08</div>
             </div>
           </a>
         </div>
