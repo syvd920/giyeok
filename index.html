@@ -240,8 +240,8 @@
       mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8 5v14l12-7z'/></svg>");
     }
     .badge.blog::before{
-      -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 0 0 0 0-1.42L18.37 3.29a1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
-      mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 0 0 0 0-1.42L18.37 3.29a1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
+      -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
+      mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
     }
 
     .barText{
@@ -440,11 +440,11 @@
     }
 
     /* =========================
-       NEW 섹션: 갤러리 + 정보형
+       NEW 섹션: 갤러리 + 정보형 (✅ 덮임 방지 완성본)
        ========================= */
     .newDetail{
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
       gap:0;
       overflow:hidden;
     }
@@ -453,12 +453,15 @@
       position:relative;
       background:#0b0b0c;
       min-height:320px;
+      overflow:hidden; /* ✅ 핵심: 트랙이 오른쪽 칼럼 침범 못함 */
+      min-width:0;     /* ✅ 핵심 */
     }
 
     .newGalleryTrack{
       display:flex;
       height:100%;
       width:100%;
+      will-change:transform;
       transform:translateX(0);
       transition:transform .35s ease;
     }
@@ -485,7 +488,7 @@
       cursor:pointer;
       user-select:none;
       backdrop-filter: blur(6px);
-      touch-action: manipulation;
+      z-index:2;
     }
     .gBtn:hover{ background:rgba(0,0,0,.35); }
     .gBtn.prev{ left:12px; }
@@ -498,6 +501,8 @@
       display:flex;
       justify-content:center;
       gap:6px;
+      z-index:2;
+      pointer-events:auto;
     }
     .gDots span{
       width:7px; height:7px;
@@ -505,6 +510,7 @@
       background:rgba(255,255,255,.45);
       opacity:.8;
       transition:transform .12s ease, opacity .12s ease, background .12s ease;
+      cursor:pointer;
     }
     .gDots span.on{
       background:#fff;
@@ -512,13 +518,13 @@
       transform:scale(1.25);
     }
 
-    /* Right info */
     .newInfo{
       background:#fff;
       padding:18px 18px 16px;
       display:flex;
       flex-direction:column;
       gap:14px;
+      min-width:0; /* ✅ 핵심 */
     }
 
     .newTop{ display:flex; flex-direction:column; gap:6px; }
@@ -536,10 +542,14 @@
       font-size:20px;
       font-weight:800;
       letter-spacing:-.3px;
+      word-break:keep-all;
     }
     .newSub{
       font-size:13px;
       color:var(--muted);
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
     }
 
     .newSpecs{
@@ -548,17 +558,20 @@
       gap:10px;
       padding-top:6px;
       border-top:1px solid var(--line);
+      min-width:0;
     }
     .spec{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
       gap:14px;
+      min-width:0;
     }
     .spec .k{
       font-size:12.5px;
       color:var(--muted);
       white-space:nowrap;
+      flex:0 0 auto;
     }
     .spec .v{
       font-size:13.5px;
@@ -566,6 +579,10 @@
       font-weight:650;
       text-align:right;
       line-height:1.35;
+      min-width:0;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
     }
 
     .newNote{
@@ -602,10 +619,11 @@
     }
     .newBtn.ghost:hover{ background:#f3f4f6; }
 
-    /* Mobile stack */
     @media (max-width: 980px){
       .newDetail{ grid-template-columns:1fr; }
       .newGalleryImg{ min-height:240px; }
+      .newSub{ white-space:normal; }
+      .spec .v{ white-space:normal; }
     }
     @media (max-width: 560px){
       .gBtn{ width:36px; height:36px; }
@@ -614,7 +632,8 @@
     }
 
     /* =========================================================
-       ✅ PC에서만 블로그: 2열 리스트형 + 좌측 썸네일/우측 제목/발행일
+       ✅ PC에서만 블로그: 2열 리스트형(빈공간 해결) + 좌측 썸네일/우측 제목/발행일
+       - 모바일은 기존 카드형 그대로 유지
        ========================================================= */
     @media (min-width: 981px){
       .contentGrid.blogList{
@@ -905,7 +924,6 @@
         <span class="barText">정리형 글 / 정책·입지 / 시세 체크</span>
       </div>
 
-      <!-- ✅ 블로그: 모바일 유지 / PC(981px+)에서만 2열 리스트형 -->
       <div class="contentGrid blogList">
         <div class="card pressCard">
           <a href="https://blog.naver.com/0zzabang/224174279026" target="_blank" rel="noreferrer">
@@ -981,7 +999,6 @@
           주식회사 부동산중개법인 수호ㅣ서울특별시 강남구 언주로93길 14-7, 1층 (역삼동, ym빌딩)ㅣ대표자 : 김남조ㅣ등록번호 : 11260-2025-10013-001
         </div>
 
-        <!-- ✅ PC: 대표번호/업데이트 단락 내려쓰기 -->
         <div class="footerPcMeta">
           대표번호 : 1588-1701 · 콘텐츠 업데이트: 7일
         </div>
@@ -997,7 +1014,6 @@
         <div class="fRow">서울특별시 강남구 언주로93길 14-7, 1층 (역삼동, ym빌딩)</div>
         <div class="fRow">대표자 : 김남조ㅣ등록번호 : 11260-2025-10013-001</div>
 
-        <!-- ✅ 등록번호 다음, 한 줄 더 띄워서(추가 단락 간격) -->
         <div class="fRow mobileGapTop">대표번호 : 1588-1701 · 콘텐츠 업데이트: 7일</div>
       </div>
     </div>
