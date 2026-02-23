@@ -329,7 +329,6 @@
 
     .fRow{ display:block; }
 
-    /* PC: 본점/역삼점 2줄 + 대표번호/업데이트는 단락 내려쓰기 */
     .footerPcMeta{
       display:block;
       margin-top:6px;
@@ -428,20 +427,19 @@
       .badge::before{ width:11px; height:11px; margin-right:6px; }
       .barText{ font-size:12.5px; }
 
-      /* 모바일: 요구한 단락 구조 */
       .footerPc{ display:none; }
       .footerMobile{ display:block; }
 
       .footerInfo{ gap:8px; }
       .fRow{ display:block; }
 
-      /* ✅ 등록번호 줄 다음 "대표번호/업데이트" 줄은 한 줄 더 띄우기 */
-      .mobileGapTop{ margin-top:8px; } /* 한 단락 더 띄움 */
+      .mobileGapTop{ margin-top:8px; }
     }
 
     /* =========================
-       NEW 섹션: 갤러리 + 정보형 (✅ 덮임 방지)
-       + NEW 배지 반짝임
+       NEW 섹션: 갤러리 + 정보형 (덮임 방지)
+       + NEW 배지(줄 제거) + 왼→오 shine
+       + 타이틀 좌측 NEW + 우측 분양가(빨강)
        ========================= */
     .newDetail{
       display:grid;
@@ -521,45 +519,62 @@
 
     .newInfo{
       background:#fff;
-      padding:18px 18px 16px;
+      padding:16px 16px 14px; /* ✅ 살짝 줄임 */
       display:flex;
       flex-direction:column;
-      gap:14px;
+      gap:12px;               /* ✅ 살짝 줄임 */
       min-width:0;
     }
 
     .newTop{ display:flex; flex-direction:column; gap:6px; }
 
-    /* ✅ NEW 반짝 */
+    /* ✅ 타이틀 라인: [NEW][라스코 더 맨션] ... 우측 분양가 */
+    .newTitleRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      min-width:0;
+    }
+    .newTitleLeft{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
+    }
+
+    /* ✅ NEW 배지: 가운데 줄(가운에 줄) 없애기 위해 단색 배경으로 */
     .newTag{
       width:fit-content;
-      font-size:12px;
+      font-size:11.5px;
       font-weight:900;
       padding:6px 10px;
       border-radius:999px;
       border:1px solid rgba(0,0,0,.08);
-      background:linear-gradient(90deg, #111 0%, #111 40%, rgba(255,255,255,.75) 50%, #111 60%, #111 100%);
+      background:#0b0b0c; /* ✅ 단색 */
       color:#fff;
       position:relative;
       overflow:hidden;
+      flex:0 0 auto;
     }
+    /* ✅ shine: 왼→오 한번씩 지나감 */
     .newTag::after{
       content:"";
       position:absolute;
       top:-40%;
-      left:-60%;
-      width:60%;
+      left:-70%;
+      width:55%;
       height:180%;
-      background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.7) 50%, rgba(255,255,255,0) 100%);
+      background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.78) 50%, rgba(255,255,255,0) 100%);
       transform:skewX(-18deg);
-      animation:newShine 1.6s ease-in-out infinite;
-      opacity:.9;
+      animation:newShine 1.9s ease-in-out infinite;
+      opacity:.95;
     }
     @keyframes newShine{
-      0%{ transform:translateX(-120%) skewX(-18deg); opacity:.0; }
-      20%{ opacity:.9; }
-      55%{ opacity:.9; }
-      100%{ transform:translateX(260%) skewX(-18deg); opacity:0; }
+      0%{ transform:translateX(-140%) skewX(-18deg); opacity:0; }
+      18%{ opacity:.95; }
+      55%{ opacity:.95; }
+      100%{ transform:translateX(280%) skewX(-18deg); opacity:0; }
     }
     @media (prefers-reduced-motion: reduce){
       .newTag::after{ animation:none; display:none; }
@@ -567,10 +582,24 @@
 
     .newTitle{
       font-size:20px;
-      font-weight:800;
+      font-weight:900;
       letter-spacing:-.3px;
       word-break:keep-all;
+      min-width:0;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
+
+    /* ✅ 분양가 (우측, 빨강) */
+    .newPrice{
+      flex:0 0 auto;
+      font-size:14px;
+      font-weight:900;
+      color:#dc2626; /* red-600 */
+      white-space:nowrap;
+    }
+
     .newSub{
       font-size:13px;
       color:var(--muted);
@@ -582,8 +611,8 @@
     .newSpecs{
       display:grid;
       grid-template-columns: 1fr;
-      gap:10px;
-      padding-top:6px;
+      gap:8px;                 /* ✅ 줄임 */
+      padding-top:8px;
       border-top:1px solid var(--line);
       min-width:0;
     }
@@ -591,17 +620,17 @@
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
-      gap:14px;
+      gap:12px;
       min-width:0;
     }
     .spec .k{
-      font-size:12.5px;
+      font-size:12px;
       color:var(--muted);
       white-space:nowrap;
       flex:0 0 auto;
     }
     .spec .v{
-      font-size:13.5px;
+      font-size:13px;
       color:#111;
       font-weight:650;
       text-align:right;
@@ -651,15 +680,18 @@
       .newGalleryImg{ min-height:240px; }
       .newSub{ white-space:normal; }
       .spec .v{ white-space:normal; }
+      .newTitle{ white-space:normal; }
+      .newTitleRow{ align-items:flex-start; }
     }
     @media (max-width: 560px){
       .gBtn{ width:36px; height:36px; }
       .newInfo{ padding:14px; }
       .newTitle{ font-size:18px; }
+      .newPrice{ font-size:13px; }
     }
 
     /* =========================================================
-       ✅ PC에서만 블로그: 2열 리스트형 + 좌측 썸네일/우측 제목/발행일
+       PC에서만 블로그: 2열 리스트형 + 좌측 썸네일/우측 제목/발행일
        ========================================================= */
     @media (min-width: 981px){
       .contentGrid.blogList{
@@ -798,12 +830,16 @@
       <!-- RIGHT: Listing Info -->
       <div class="newInfo" aria-label="신축 매물 정보">
         <div class="newTop">
-          <div class="newTag">NEW</div>
-          <div class="newTitle">라스코 더 맨션</div>
+          <div class="newTitleRow">
+            <div class="newTitleLeft">
+              <div class="newTag">NEW</div>
+              <div class="newTitle">라스코 더 맨션</div>
+            </div>
+            <div class="newPrice">155~300억</div>
+          </div>
           <div class="newSub">한남동 · 하이퍼 하이엔드 · 남산뷰</div>
         </div>
 
-        <!-- ✅ 외장마감 제거 + 요청 스펙 추가 -->
         <div class="newSpecs">
           <div class="spec">
             <div class="k">용도</div>
@@ -814,11 +850,11 @@
             <div class="v">지하 3층 ~ 지상 3층</div>
           </div>
           <div class="spec">
-            <div class="k">총 세대수</div>
+            <div class="k">세대수</div>
             <div class="v">5세대</div>
           </div>
           <div class="spec">
-            <div class="k">대지면적</div>
+            <div class="k">대지</div>
             <div class="v">1,102㎡</div>
           </div>
           <div class="spec">
@@ -826,7 +862,7 @@
             <div class="v">2,983.49㎡</div>
           </div>
           <div class="spec">
-            <div class="k">입주가능일</div>
+            <div class="k">입주</div>
             <div class="v">협의</div>
           </div>
         </div>
@@ -1225,7 +1261,6 @@
   function setupMobileCarousels(){
     if(!isMobile()) return;
 
-    // ✅ PRESS만 유지
     createInfiniteCarousel({
       trackId:'pressTrack',
       prevId:'pressPrev',
