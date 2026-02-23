@@ -440,7 +440,8 @@
     }
 
     /* =========================
-       NEW 섹션: 갤러리 + 정보형 (✅ 덮임 방지 완성본)
+       NEW 섹션: 갤러리 + 정보형 (✅ 덮임 방지)
+       + NEW 배지 반짝임
        ========================= */
     .newDetail{
       display:grid;
@@ -453,8 +454,8 @@
       position:relative;
       background:#0b0b0c;
       min-height:320px;
-      overflow:hidden; /* ✅ 핵심: 트랙이 오른쪽 칼럼 침범 못함 */
-      min-width:0;     /* ✅ 핵심 */
+      overflow:hidden;
+      min-width:0;
     }
 
     .newGalleryTrack{
@@ -524,20 +525,46 @@
       display:flex;
       flex-direction:column;
       gap:14px;
-      min-width:0; /* ✅ 핵심 */
+      min-width:0;
     }
 
     .newTop{ display:flex; flex-direction:column; gap:6px; }
+
+    /* ✅ NEW 반짝 */
     .newTag{
       width:fit-content;
       font-size:12px;
-      font-weight:800;
+      font-weight:900;
       padding:6px 10px;
       border-radius:999px;
-      border:1px solid var(--line);
-      background:#f9fafb;
-      color:#111;
+      border:1px solid rgba(0,0,0,.08);
+      background:linear-gradient(90deg, #111 0%, #111 40%, rgba(255,255,255,.75) 50%, #111 60%, #111 100%);
+      color:#fff;
+      position:relative;
+      overflow:hidden;
     }
+    .newTag::after{
+      content:"";
+      position:absolute;
+      top:-40%;
+      left:-60%;
+      width:60%;
+      height:180%;
+      background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.7) 50%, rgba(255,255,255,0) 100%);
+      transform:skewX(-18deg);
+      animation:newShine 1.6s ease-in-out infinite;
+      opacity:.9;
+    }
+    @keyframes newShine{
+      0%{ transform:translateX(-120%) skewX(-18deg); opacity:.0; }
+      20%{ opacity:.9; }
+      55%{ opacity:.9; }
+      100%{ transform:translateX(260%) skewX(-18deg); opacity:0; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .newTag::after{ animation:none; display:none; }
+    }
+
     .newTitle{
       font-size:20px;
       font-weight:800;
@@ -632,8 +659,7 @@
     }
 
     /* =========================================================
-       ✅ PC에서만 블로그: 2열 리스트형(빈공간 해결) + 좌측 썸네일/우측 제목/발행일
-       - 모바일은 기존 카드형 그대로 유지
+       ✅ PC에서만 블로그: 2열 리스트형 + 좌측 썸네일/우측 제목/발행일
        ========================================================= */
     @media (min-width: 981px){
       .contentGrid.blogList{
@@ -747,7 +773,7 @@
     </div>
   </section>
 
-  <!-- NEW BUILD (REWORK) -->
+  <!-- NEW BUILD -->
   <section id="new">
     <div class="secTitle">
       <h2><span class="nowrap">추천 신축 분양 현장</span></h2>
@@ -758,7 +784,6 @@
       <!-- LEFT: Gallery -->
       <div class="newGallery" aria-label="신축 갤러리">
         <div class="newGalleryTrack" id="newGalleryTrack">
-          <!-- ✅ 여기 img만 추가/삭제하면 됨 -->
           <img class="newGalleryImg" src="assets/new-1.jpg" alt="신축 갤러리 1" />
           <img class="newGalleryImg" src="assets/new-2.jpg" alt="신축 갤러리 2" />
           <img class="newGalleryImg" src="assets/new-3.jpg" alt="신축 갤러리 3" />
@@ -778,22 +803,31 @@
           <div class="newSub">한남동 · 하이퍼 하이엔드 · 남산뷰</div>
         </div>
 
+        <!-- ✅ 외장마감 제거 + 요청 스펙 추가 -->
         <div class="newSpecs">
           <div class="spec">
-            <div class="k">외장 마감</div>
-            <div class="v">나보나 트래버틴</div>
+            <div class="k">용도</div>
+            <div class="v">공동주택(연립주택)</div>
           </div>
           <div class="spec">
-            <div class="k">타입</div>
-            <div class="v">A,B,C,D타입 / 펜트</div>
+            <div class="k">규모</div>
+            <div class="v">지하 3층 ~ 지상 3층</div>
           </div>
           <div class="spec">
-            <div class="k">뷰</div>
-            <div class="v">남산뷰</div>
+            <div class="k">총 세대수</div>
+            <div class="v">5세대</div>
           </div>
           <div class="spec">
-            <div class="k">포인트</div>
-            <div class="v">LDK 18mㅣ층고 2.85m</div>
+            <div class="k">대지면적</div>
+            <div class="v">1,102㎡</div>
+          </div>
+          <div class="spec">
+            <div class="k">연면적</div>
+            <div class="v">2,983.49㎡</div>
+          </div>
+          <div class="spec">
+            <div class="k">입주가능일</div>
+            <div class="v">협의</div>
           </div>
         </div>
 
@@ -803,7 +837,7 @@
 
         <div class="newCtas">
           <a class="newBtn primary" href="tel:1588-1701">전화 상담</a>
-          <a class="newBtn ghost" href="https://www.youtube.com/watch?v=BfmCFvGPwsE&t=207s">콘텐츠 보기</a>
+          <a class="newBtn ghost" href="https://www.youtube.com/watch?v=BfmCFvGPwsE&t=207s" target="_blank" rel="noreferrer">콘텐츠 보기</a>
         </div>
       </div>
     </div>
