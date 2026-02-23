@@ -243,8 +243,8 @@
       mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8 5v14l12-7z'/></svg>");
     }
     .badge.blog::before{
-      -webkit-mask-image:url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>\");
-      mask-image:url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>\");
+      -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
+      mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
     }
 
     .barText{
@@ -442,16 +442,17 @@
     }
 
     /* =========================
-       NEW 섹션: ✅ 갤러리 16:9 프레임 고정 + 타이틀라인(NEW/라스코/분양가 같은 줄)
+       NEW 섹션: ✅ 좌/우 높이 꽉 맞추기(PC) + 모바일은 16:9 유지
        ========================= */
     .newDetail{
       display:grid;
       grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
       gap:0;
       overflow:hidden;
+      align-items:stretch; /* ✅ 둘 다 같은 높이로 쫙 */
     }
 
-    /* ✅ 핵심: 사진이 “줄어들어 보이는” 느낌 방지 → 항상 16:9 프레임 */
+    /* 기본(모바일/태블릿): 16:9 유지 */
     .newGallery{
       position:relative;
       background:#0b0b0c;
@@ -473,6 +474,17 @@
       object-fit:cover;
       flex:0 0 100%;
       display:block;
+    }
+
+    /* ✅ PC(981px~): 오른쪽(newInfo) 높이에 갤러리 높이 맞춤 → 아래 남는 공간 제거 */
+    @media (min-width: 981px){
+      .newGallery{
+        aspect-ratio:auto; /* ✅ 16:9 고정 해제 */
+        height:100%;
+      }
+      .newInfo{
+        height:100%;
+      }
     }
 
     .gBtn{
@@ -527,7 +539,6 @@
       min-width:0;
     }
 
-    /* ✅ 타이틀 라인: NEW + 라스코 + (오른쪽) 분양가 블록 */
     .newTitleRow{
       display:flex;
       align-items:center;
@@ -587,7 +598,7 @@
       white-space:nowrap;
     }
 
-    /* ✅ 분양가 라벨 + 값(오른쪽 정렬) */
+    /* ✅ 분양가 라벨 + 값 */
     .priceInlineWrap{
       flex:0 0 auto;
       display:flex;
@@ -620,7 +631,6 @@
       white-space:nowrap;
     }
 
-    /* ✅ 스펙 2열 + (조망추가/주차상세 제거) */
     .newSpecs{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -854,7 +864,6 @@
               <h3 class="newTitle">라스코 더 맨션</h3>
             </div>
 
-            <!-- ✅ 분양가 라벨(작게) + 값 -->
             <div class="priceInlineWrap" aria-label="분양가">
               <div class="priceMiniLabel">분양가</div>
               <div class="priceInline">155-300억</div>
@@ -864,7 +873,6 @@
           <div class="newSub">한남동 · 하이퍼 하이엔드 · 남산뷰</div>
         </div>
 
-        <!-- ✅ 스펙 2열 (조망추가/주차상세 삭제됨) -->
         <div class="newSpecs" aria-label="핵심 스펙">
           <div class="spec">
             <div class="k">용도</div>
