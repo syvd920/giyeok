@@ -243,8 +243,8 @@
       mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8 5v14l12-7z'/></svg>");
     }
     .badge.blog::before{
-      -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
-      mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>");
+      -webkit-mask-image:url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>\");
+      mask-image:url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1.003 1.003 0 0 0 0-1.42L18.37 3.29a1.003 1.003 0 0 0-1.42 0l-1.6 1.6 3.75 3.75 1.61-1.6z'/></svg>\");
     }
 
     .barText{
@@ -442,7 +442,7 @@
     }
 
     /* =========================
-       NEW 섹션: 갤러리 + 정보형 (프레임 유지 + 글씨 키우기 + 스펙 2열)
+       NEW 섹션: ✅ 갤러리 16:9 프레임 고정 + 타이틀라인(NEW/라스코/분양가 같은 줄)
        ========================= */
     .newDetail{
       display:grid;
@@ -451,27 +451,26 @@
       overflow:hidden;
     }
 
+    /* ✅ 핵심: 사진이 “줄어들어 보이는” 느낌 방지 → 항상 16:9 프레임 */
     .newGallery{
       position:relative;
       background:#0b0b0c;
-      min-height:320px;
       overflow:hidden;
       min-width:0;
-    }
 
+      aspect-ratio: 16 / 9; /* ✅ 1280×720 느낌 고정 */
+    }
     .newGalleryTrack{
       display:flex;
-      height:100%;
       width:100%;
+      height:100%;
       will-change:transform;
       transform:translateX(0);
       transition:transform .35s ease;
     }
-
     .newGalleryImg{
       width:100%;
       height:100%;
-      min-height:320px;
       object-fit:cover;
       flex:0 0 100%;
       display:block;
@@ -529,15 +528,22 @@
       min-width:0;
     }
 
-    /* ✅ 타이틀 라인: "라스코 더 맨션" + 작은 NEW 배지(왼쪽) */
+    /* ✅ 타이틀 라인: NEW + 라스코 + 분양가(오른쪽) 한줄 정렬 */
     .newTitleRow{
       display:flex;
-      align-items:baseline;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      min-width:0;
+    }
+    .newTitleLeft{
+      display:flex;
+      align-items:center;
       gap:10px;
       min-width:0;
     }
 
-    /* ✅ NEW 배지: 줄(테두리) 제거 + 왼->오 빛나는 스윕 */
+    /* ✅ NEW 배지: 라스코 높이/정렬 맞춤 + 어중간함 제거 */
     .newBadge{
       position:relative;
       display:inline-flex;
@@ -551,10 +557,9 @@
       letter-spacing:-.2px;
       color:#fff;
       background:#111;
-      border:none;           /* ✅ 줄 없앰 */
+      border:none;
       overflow:hidden;
       flex:0 0 auto;
-      transform:translateY(-1px);
     }
     .newBadge::after{
       content:"";
@@ -574,10 +579,9 @@
     }
 
     .newTitle{
-      font-size:22px;     /* ✅ 글씨 조금 키움 */
-      font-weight:850;
-      letter-spacing:-.4px;
-      word-break:keep-all;
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:-.45px;
       margin:0;
       min-width:0;
       overflow:hidden;
@@ -585,39 +589,29 @@
       white-space:nowrap;
     }
 
+    /* ✅ “라스코 옆” 분양가: 같은 줄 오른쪽, 더 크고 강하게 */
+    .priceInline{
+      flex:0 0 auto;
+      font-size:20px;
+      font-weight:950;
+      color:var(--price);
+      letter-spacing:-.4px;
+      line-height:1;
+      white-space:nowrap;
+    }
+
     .newSub{
-      font-size:14px;   /* ✅ 키움 */
+      font-size:14px;
       color:var(--muted);
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
     }
 
-    /* ✅ 분양가: "분양가" 다음 줄에 크게(빨강) */
-    .priceBlock{
-      border-top:1px solid var(--line);
-      padding-top:10px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .priceLabel{
-      font-size:12.5px;
-      color:var(--muted);
-      font-weight:650;
-    }
-    .priceValue{
-      font-size:22px;     /* ✅ 더 크게 */
-      font-weight:900;
-      color:var(--price);
-      letter-spacing:-.4px;
-      line-height:1.1;
-    }
-
-    /* ✅ 스펙 2열: 글씨 키워도 공간 확보 */
+    /* ✅ 스펙 2열 */
     .newSpecs{
       display:grid;
-      grid-template-columns: 1fr 1fr;  /* ✅ 2열 */
+      grid-template-columns: 1fr 1fr;
       gap:10px 16px;
       padding-top:10px;
       border-top:1px solid var(--line);
@@ -632,15 +626,15 @@
       padding:0;
     }
     .spec .k{
-      font-size:13px;    /* ✅ 키움 */
+      font-size:13px;
       color:var(--muted);
       white-space:nowrap;
       flex:0 0 auto;
     }
     .spec .v{
-      font-size:14.5px;  /* ✅ 키움 */
+      font-size:14.5px;
       color:#111;
-      font-weight:750;
+      font-weight:800;
       text-align:right;
       line-height:1.25;
       min-width:0;
@@ -685,17 +679,21 @@
 
     @media (max-width: 980px){
       .newDetail{ grid-template-columns:1fr; }
-      .newGalleryImg{ min-height:240px; }
+      .newGallery{ aspect-ratio:16/9; } /* 모바일도 16:9 유지 */
       .newSub{ white-space:normal; }
-      .newSpecs{ grid-template-columns:1fr; } /* ✅ 모바일은 1열 */
+
+      .newSpecs{ grid-template-columns:1fr; }
       .spec .v{ white-space:normal; }
+
       .newTitle{ white-space:normal; }
+      .newTitleRow{ align-items:flex-start; }
+      .priceInline{ font-size:18px; }
     }
     @media (max-width: 560px){
       .gBtn{ width:36px; height:36px; }
       .newInfo{ padding:14px; }
       .newTitle{ font-size:19px; }
-      .priceValue{ font-size:20px; }
+      .priceInline{ font-size:17px; }
     }
 
     /* =========================================================
@@ -838,17 +836,16 @@
       <!-- RIGHT: Listing Info -->
       <div class="newInfo" aria-label="신축 매물 정보">
         <div class="newTop">
+          <!-- ✅ NEW/라스코/분양가 같은 줄 -->
           <div class="newTitleRow">
-            <span class="newBadge" aria-label="NEW">NEW</span>
-            <h3 class="newTitle">라스코 더 맨션</h3>
+            <div class="newTitleLeft">
+              <span class="newBadge" aria-label="NEW">NEW</span>
+              <h3 class="newTitle">라스코 더 맨션</h3>
+            </div>
+            <div class="priceInline" aria-label="분양가">155~300억</div>
           </div>
-          <div class="newSub">한남동 · 하이퍼 하이엔드 · 남산뷰</div>
-        </div>
 
-        <!-- ✅ 분양가: 단락 분리 + 크게 + 빨강 -->
-        <div class="priceBlock" aria-label="분양가">
-          <div class="priceLabel">분양가</div>
-          <div class="priceValue">155~300억</div>
+          <div class="newSub">한남동 · 하이퍼 하이엔드 · 남산뷰</div>
         </div>
 
         <!-- ✅ 스펙 2열 배치 -->
@@ -912,7 +909,6 @@
           ※ 실제 분양 조건/가격/면적은 상담 시 안내됩니다.
         </div>
 
-        <!-- ✅ 버튼은 유지 (원하면 다음 턴에 숨김 처리 가능) -->
         <div class="newCtas">
           <a class="newBtn primary" href="tel:1588-1701">전화 상담</a>
           <a class="newBtn ghost" href="https://www.youtube.com/watch?v=BfmCFvGPwsE&t=207s" target="_blank" rel="noreferrer">콘텐츠 보기</a>
